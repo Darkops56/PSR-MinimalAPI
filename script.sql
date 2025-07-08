@@ -1,0 +1,7 @@
+DROP DATABASE IF EXISTS 5to_Todos;
+CREATE DATABASE 5to_Todos;
+CREATE TABLE 5to_Todos.Todo(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(45) NULL,
+    isComplete BOOL
+);

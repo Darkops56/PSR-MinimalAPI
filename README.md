@@ -13,6 +13,7 @@ Despliegue de API TODO basado en el ejemplo de _minimal API_ de MSDN.
 - SDK .NET 8
 - SDK GoLang 1.24.4
 - Visual Studio Code
+- MySQL Server 8.0.40
 
 ## Comenzando 🚀
 
@@ -24,6 +25,23 @@ git clone https://github.com/luchoxx87/PSR-MinimalAPI
 
 ## Despliegue 📦
 
+1. Abrir la terminal en el directorio raiz e instalar la BD por ejemplo con ingresando al SGBD por terminal `mysql -u 5to_agbd -p`, luego ingresar la pass y una vez dentro del _shell_ de MySQL, ejecutar el comando `SOURCE script.sql`.
+1. Crear el archivo _appsettings.json_ dentro del directorio `TodoPSR` con el contenido
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "MySQL": "Server=localhost;User ID=5to_agbd;Password=Trigg3rs!;Database=5to_Todos;"
+  }
+}
+
+```
 1. Abrir la terminal en el directorio donde están los scripts, entrar al directorio `TodoPSR` y ejecutar el comando `dotnet run`. Esto va a dejar en una terminal corriendo el servicio de tu _API REST_.
 1. Podemos ver la documentación y consumir nuestra _API REST_, ingresando a http://localhost:5250/scalar/
 1. De vuelta en el directorio raíz, ejecutar el comando `go run consumo.go`. Esto va a compilar y ejecutar el script de golang, el cual va a consumir nuestra _API REST_ consumiendo el _endpoint_ `/todoitems` mediante _GET_.
