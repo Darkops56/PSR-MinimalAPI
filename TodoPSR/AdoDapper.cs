@@ -1,5 +1,6 @@
 
 using System.Data;
+using Dapper;
 
 namespace TodoPSR;
 
@@ -14,9 +15,17 @@ public class AdoDapper : IADO
         throw new NotImplementedException();
     }
 
-    public Task AgregarTodoAsync(Todo todo)
+    public async Task AgregarTodoAsync(Todo todo)
     {
-        throw new NotImplementedException();
+        var query = @"INSERT INTO Todo (name, isComplete)
+                    VALUE (@name, @isComplete);
+                    SELECT last_insert_id();";
+
+        var parametros = new DynamicParameters();
+        parametros.Add("name", todo.Name);
+        parametros.Add("isComplete", todo.IsComplete);
+
+        todo.Id = await Conexion.QuerySingleAsync<int>(query, parametros);
     }
 
     public Task EliminarTodoAsync(Todo todo)
@@ -29,9 +38,11 @@ public class AdoDapper : IADO
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Todo>> ObtenerTodosAsync()
+    public async Task<IEnumerable<Todo>> ObtenerTodosAsync()
     {
-        throw new NotImplementedException();
+        var query = @"SELECT * FROM Todo";
+        var todos = await Conexion.QueryAsync<Todo>(query);
+        return todos;
     }
 
     public Task<IEnumerable<Todo>> ObtenerTodosFinalizadosAsync()
