@@ -1,0 +1,894 @@
+{
+  "nodes": [
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
+      "label": "Todo.cs",
+      "type": "File",
+      "community": 3,
+      "file_path": "TodoPSR/Todo.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs",
+      "label": "Program.cs",
+      "type": "File",
+      "community": 5,
+      "file_path": "TodoPSR/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs"
+      }
+    },
+    {
+      "id": "adodapper_obtenertodosasync",
+      "label": "ObtenerTodosAsync()",
+      "type": "Entity",
+      "community": 2,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L40"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go",
+      "label": "consumo.go",
+      "type": "File",
+      "community": 6,
+      "file_path": "consumo.go",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go"
+      }
+    },
+    {
+      "id": "adodapper_notimplementedexception",
+      "label": "NotImplementedException()",
+      "type": "Entity",
+      "community": 2,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L50",
+        "merge_count": "4"
+      }
+    },
+    {
+      "id": "consumo_main",
+      "label": "main()",
+      "type": "Entity",
+      "community": 6,
+      "file_path": "consumo.go",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L8"
+      }
+    },
+    {
+      "id": "iado_obtenertodosfinalizadosasync",
+      "label": "ObtenerTodosFinalizadosAsync()",
+      "type": "Entity",
+      "community": 4,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L6"
+      }
+    },
+    {
+      "id": "program_if",
+      "label": "if()",
+      "type": "Entity",
+      "community": 5,
+      "file_path": "TodoPSR/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L66",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "consumo",
+      "label": "consumo.go",
+      "type": "Entity",
+      "community": 6,
+      "file_path": "consumo.go",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "adodapper_adodapper",
+      "label": "AdoDapper()",
+      "type": "Entity",
+      "community": 2,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L10",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "program",
+      "label": "Program.cs",
+      "type": "Entity",
+      "community": 5,
+      "file_path": "TodoPSR/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "adodapper_obtenertodosfinalizadosasync",
+      "label": "ObtenerTodosFinalizadosAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L47"
+      }
+    },
+    {
+      "id": "adodapper_last_insert_id",
+      "label": "last_insert_id()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L22"
+      }
+    },
+    {
+      "id": "iado_todopsr",
+      "label": "TodoPSR",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "iado_eliminartodoasync",
+      "label": "EliminarTodoAsync()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L10"
+      }
+    },
+    {
+      "id": "iado_obtenertodosasync",
+      "label": "ObtenerTodosAsync()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L5"
+      }
+    },
+    {
+      "id": "iado_actualizartodoasync",
+      "label": "ActualizarTodoAsync()",
+      "type": "Entity",
+      "community": 4,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L9"
+      }
+    },
+    {
+      "id": "todo",
+      "label": "Todo.cs",
+      "type": "Entity",
+      "community": 3,
+      "file_path": "TodoPSR/Todo.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "label": "AdoDapper.cs",
+      "type": "File",
+      "community": 0,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "id": "todo_todo",
+      "label": "Todo",
+      "type": "Entity",
+      "community": 3,
+      "file_path": "TodoPSR/Todo.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L2"
+      }
+    },
+    {
+      "id": "adodapper_value",
+      "label": "VALUE()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L21"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "label": "IADO.cs",
+      "type": "File",
+      "community": 4,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "id": "iado",
+      "label": "IADO.cs",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "todo_todopsr",
+      "label": "TodoPSR",
+      "type": "Entity",
+      "community": 3,
+      "file_path": "TodoPSR/Todo.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "adodapper_eliminartodoasync",
+      "label": "EliminarTodoAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L30"
+      }
+    },
+    {
+      "id": "adodapper_agregartodoasync",
+      "label": "AgregarTodoAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L17"
+      }
+    },
+    {
+      "id": "iado_iado",
+      "label": "IADO",
+      "type": "Entity",
+      "community": 4,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L2"
+      }
+    },
+    {
+      "id": "adodapper_todopsr",
+      "label": "TodoPSR",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L4"
+      }
+    },
+    {
+      "id": "adodapper",
+      "label": "AdoDapper.cs",
+      "type": "Entity",
+      "community": 2,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "iado_agregartodoasync",
+      "label": "AgregarTodoAsync()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "TodoPSR/IADO.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L8"
+      }
+    },
+    {
+      "id": "adodapper_actualizartodoasync",
+      "label": "ActualizarTodoAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "TodoPSR/AdoDapper.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L12"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
+      "target": "todo",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
+      "target": "todo_todopsr",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
+      "target": "todo_todo",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs",
+      "target": "program",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs",
+      "target": "program_if",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go",
+      "target": "consumo",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go",
+      "target": "consumo_main",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go"
+      }
+    },
+    {
+      "source": "consumo",
+      "target": "consumo_main",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go",
+        "source_location": "L8"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_if",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs",
+        "source_location": "L53"
+      }
+    },
+    {
+      "source": "todo",
+      "target": "todo_todopsr",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "todo",
+      "target": "todo_todo",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_actualizartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_agregartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_eliminartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_last_insert_id",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_obtenertodosfinalizadosasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_todopsr",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_value",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_adodapper",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_notimplementedexception",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+      "target": "adodapper_obtenertodosasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "target": "iado",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "target": "iado_agregartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "target": "iado_eliminartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "target": "iado_obtenertodosasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "target": "iado_todopsr",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "target": "iado_iado",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "target": "iado_obtenertodosfinalizadosasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+      "target": "iado_actualizartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+      }
+    },
+    {
+      "source": "iado",
+      "target": "iado_todopsr",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "iado",
+      "target": "iado_iado",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "iado",
+      "target": "iado_obtenertodosasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+        "source_location": "L5"
+      }
+    },
+    {
+      "source": "iado",
+      "target": "iado_obtenertodosfinalizadosasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+        "source_location": "L6"
+      }
+    },
+    {
+      "source": "iado",
+      "target": "iado_agregartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+        "source_location": "L8"
+      }
+    },
+    {
+      "source": "iado",
+      "target": "iado_actualizartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+        "source_location": "L9"
+      }
+    },
+    {
+      "source": "iado",
+      "target": "iado_eliminartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
+        "source_location": "L10"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_actualizartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L12"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_agregartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L17"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_eliminartodoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L30"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_last_insert_id",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L22"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_obtenertodosfinalizadosasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L47"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_todopsr",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L4"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_value",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L21"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_adodapper",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L6"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_notimplementedexception",
+      "relationship": "contains",
+      "weight": 4,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "4",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L15"
+      }
+    },
+    {
+      "source": "adodapper",
+      "target": "adodapper_obtenertodosasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
+        "source_location": "L40"
+      }
+    }
+  ],
+  "metadata": {
+    "node_count": 31,
+    "edge_count": 47,
+    "community_count": 7,
+    "generated_at": "2026-07-06T17:34:14.4738189Z"
+  }
+}
