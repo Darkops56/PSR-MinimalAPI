@@ -1,43 +1,1038 @@
 {
   "nodes": [
     {
-      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
-      "label": "Todo.cs",
+      "id": "pedidopizza_bearpizzeria_api_models",
+      "label": "BearPizzeria.Api.Models",
+      "type": "Entity",
+      "community": 10,
+      "file_path": "src/BearPizzeria.Api/Models/PedidoPizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "actualizarestadorequest_bearpizzeria_api_models_dtos",
+      "label": "BearPizzeria.Api.Models.DTOs",
+      "type": "Entity",
+      "community": 7,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+      "label": "PedidoItemRequest.cs",
       "type": "File",
+      "community": 9,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs"
+      }
+    },
+    {
+      "id": "pedido_pedido",
+      "label": "Pedido",
+      "type": "Entity",
+      "community": 8,
+      "file_path": "src/BearPizzeria.Api/Models/Pedido.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L2"
+      }
+    },
+    {
+      "id": "pedidopizza",
+      "label": "PedidoPizza.cs",
+      "type": "Entity",
+      "community": 10,
+      "file_path": "src/BearPizzeria.Api/Models/PedidoPizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "actualizarestadorequest",
+      "label": "ActualizarEstadoRequest.cs",
+      "type": "Entity",
+      "community": 7,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "label": "ClienteValidator.cs",
+      "type": "File",
+      "community": 6,
+      "file_path": "src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs"
+      }
+    },
+    {
+      "id": "clientevalidator_clientevalidator",
+      "label": "ClienteValidator()",
+      "type": "Entity",
+      "community": 6,
+      "file_path": "src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L8",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "clientevalidator_rulefor",
+      "label": "RuleFor()",
+      "type": "Entity",
+      "community": 6,
+      "file_path": "src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L23",
+        "merge_count": "4"
+      }
+    },
+    {
+      "id": "clientevalidator_bearpizzeria_api_validators",
+      "label": "BearPizzeria.Api.Validators",
+      "type": "Entity",
+      "community": 6,
+      "file_path": "src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L3"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs",
+      "label": "Pedido.cs",
+      "type": "File",
+      "community": 8,
+      "file_path": "src/BearPizzeria.Api/Models/Pedido.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs"
+      }
+    },
+    {
+      "id": "pedido",
+      "label": "Pedido.cs",
+      "type": "Entity",
+      "community": 8,
+      "file_path": "src/BearPizzeria.Api/Models/Pedido.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+      "label": "ActualizarEstadoRequest.cs",
+      "type": "File",
+      "community": 7,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs"
+      }
+    },
+    {
+      "id": "pedido_bearpizzeria_api_models",
+      "label": "BearPizzeria.Api.Models",
+      "type": "Entity",
+      "community": 8,
+      "file_path": "src/BearPizzeria.Api/Models/Pedido.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs",
+      "label": "PedidoPizza.cs",
+      "type": "File",
+      "community": 10,
+      "file_path": "src/BearPizzeria.Api/Models/PedidoPizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs"
+      }
+    },
+    {
+      "id": "pedidoitemrequest",
+      "label": "PedidoItemRequest.cs",
+      "type": "Entity",
+      "community": 9,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "crearpedidorequestvalidator_ruleforeach",
+      "label": "RuleForEach()",
+      "type": "Entity",
       "community": 3,
-      "file_path": "TodoPSR/Todo.cs",
+      "file_path": "src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
       "confidence": "EXTRACTED",
       "metadata": {
-        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs"
+        "source_location": "L16"
       }
     },
     {
-      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs",
-      "label": "Program.cs",
-      "type": "File",
+      "id": "crearpedidorequestvalidator_rulefor",
+      "label": "RuleFor()",
+      "type": "Entity",
+      "community": 3,
+      "file_path": "src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L12",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "crearpedidorequestvalidator_crearpedidorequestvalidator",
+      "label": "CrearPedidoRequestValidator()",
+      "type": "Entity",
+      "community": 3,
+      "file_path": "src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L8",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "crearpedidorequestvalidator_bearpizzeria_api_validators",
+      "label": "BearPizzeria.Api.Validators",
+      "type": "Entity",
+      "community": 3,
+      "file_path": "src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L3"
+      }
+    },
+    {
+      "id": "clientevalidator",
+      "label": "ClienteValidator.cs",
+      "type": "Entity",
+      "community": 6,
+      "file_path": "src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "pedidoitemrequestvalidator_rulefor",
+      "label": "RuleFor()",
+      "type": "Entity",
       "community": 5,
-      "file_path": "TodoPSR/Program.cs",
+      "file_path": "src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
       "confidence": "EXTRACTED",
       "metadata": {
-        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs"
+        "source_location": "L12",
+        "merge_count": "2"
       }
     },
     {
-      "id": "adodapper_obtenertodosasync",
-      "label": "ObtenerTodosAsync()",
+      "id": "pedidoitemrequestvalidator_pedidoitemrequestvalidator",
+      "label": "PedidoItemRequestValidator()",
+      "type": "Entity",
+      "community": 5,
+      "file_path": "src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L8",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "pedidoitemrequestvalidator_bearpizzeria_api_validators",
+      "label": "BearPizzeria.Api.Validators",
+      "type": "Entity",
+      "community": 5,
+      "file_path": "src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L3"
+      }
+    },
+    {
+      "id": "pedidoitemrequestvalidator",
+      "label": "PedidoItemRequestValidator.cs",
+      "type": "Entity",
+      "community": 5,
+      "file_path": "src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "crearpedidorequestvalidator",
+      "label": "CrearPedidoRequestValidator.cs",
+      "type": "Entity",
+      "community": 3,
+      "file_path": "src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "pedidodbcontext_seeddata",
+      "label": "SeedData()",
       "type": "Entity",
       "community": 2,
-      "file_path": "TodoPSR/AdoDapper.cs",
+      "file_path": "src/BearPizzeria.Api/Data/PedidoDbContext.cs",
       "confidence": "EXTRACTED",
       "metadata": {
-        "source_location": "L40"
+        "source_location": "L69",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "pedidodbcontext_pedidodbcontext",
+      "label": "PedidoDbContext()",
+      "type": "Entity",
+      "community": 2,
+      "file_path": "src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L5",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "pedidodbcontext_onmodelcreating",
+      "label": "OnModelCreating()",
+      "type": "Entity",
+      "community": 2,
+      "file_path": "src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L12"
+      }
+    },
+    {
+      "id": "socketserverservice_bearpizzeria_api_services",
+      "label": "BearPizzeria.Api.Services",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L10"
+      }
+    },
+    {
+      "id": "socketserverservice_actualizarestadopedidoasync",
+      "label": "ActualizarEstadoPedidoAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L207",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "socketserverservice_socketserverservice",
+      "label": "SocketServerService()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L23",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "socketserverservice_removercliente",
+      "label": "RemoverCliente()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L116",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "socketserverservice_procesarpedidoschannelasync",
+      "label": "ProcesarPedidosChannelAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L220"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "label": "ActualizarEstadoRequestValidator.cs",
+      "type": "File",
+      "community": 4,
+      "file_path": "src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs"
+      }
+    },
+    {
+      "id": "actualizarestadorequestvalidator_bevalidestado",
+      "label": "BeValidEstado()",
+      "type": "Entity",
+      "community": 4,
+      "file_path": "src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L14"
+      }
+    },
+    {
+      "id": "actualizarestadorequestvalidator_rulefor",
+      "label": "RuleFor()",
+      "type": "Entity",
+      "community": 4,
+      "file_path": "src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L10"
+      }
+    },
+    {
+      "id": "actualizarestadorequestvalidator_actualizarestadorequestvalidator",
+      "label": "ActualizarEstadoRequestValidator()",
+      "type": "Entity",
+      "community": 4,
+      "file_path": "src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L8",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "actualizarestadorequestvalidator_bearpizzeria_api_validators",
+      "label": "BearPizzeria.Api.Validators",
+      "type": "Entity",
+      "community": 4,
+      "file_path": "src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L3"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+      "label": "Program.cs",
+      "type": "File",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Client/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs",
+      "label": "Program.cs",
+      "type": "File",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Api/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs"
+      }
+    },
+    {
+      "id": "socketserverservice_while",
+      "label": "while()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L89",
+        "merge_count": "3"
+      }
+    },
+    {
+      "id": "socketserverservice_notificarnuevopedidoasync",
+      "label": "NotificarNuevoPedidoAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L29"
+      }
+    },
+    {
+      "id": "socketserverservice_if",
+      "label": "if()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L292",
+        "merge_count": "16"
+      }
+    },
+    {
+      "id": "socketserverservice_handleclientasync",
+      "label": "HandleClientAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L68"
+      }
+    },
+    {
+      "id": "consumo_main",
+      "label": "main()",
+      "type": "Entity",
+      "community": 16,
+      "file_path": "consumo.go",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L8"
+      }
+    },
+    {
+      "id": "tamanopizza",
+      "label": "TamanoPizza.cs",
+      "type": "Entity",
+      "community": 15,
+      "file_path": "src/BearPizzeria.Api/Models/TamanoPizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "cliente",
+      "label": "Cliente.cs",
+      "type": "Entity",
+      "community": 12,
+      "file_path": "src/BearPizzeria.Api/Models/Cliente.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "crearpedidorequest",
+      "label": "CrearPedidoRequest.cs",
+      "type": "Entity",
+      "community": 13,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "estadopedido",
+      "label": "EstadoPedido.cs",
+      "type": "Entity",
+      "community": 14,
+      "file_path": "src/BearPizzeria.Api/Models/EstadoPedido.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "consumo",
+      "label": "consumo.go",
+      "type": "Entity",
+      "community": 16,
+      "file_path": "consumo.go",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "pizza_pizza",
+      "label": "Pizza",
+      "type": "Entity",
+      "community": 11,
+      "file_path": "src/BearPizzeria.Api/Models/Pizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L2"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/TamanoPizza.cs",
+      "label": "TamanoPizza.cs",
+      "type": "File",
+      "community": 15,
+      "file_path": "src/BearPizzeria.Api/Models/TamanoPizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/TamanoPizza.cs"
+      }
+    },
+    {
+      "id": "crearpedidorequest_crearpedidorequest",
+      "label": "CrearPedidoRequest",
+      "type": "Entity",
+      "community": 13,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L2"
+      }
+    },
+    {
+      "id": "crearpedidorequest_bearpizzeria_api_models_dtos",
+      "label": "BearPizzeria.Api.Models.DTOs",
+      "type": "Entity",
+      "community": 13,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "cliente_bearpizzeria_api_models",
+      "label": "BearPizzeria.Api.Models",
+      "type": "Entity",
+      "community": 12,
+      "file_path": "src/BearPizzeria.Api/Models/Cliente.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs",
+      "label": "Cliente.cs",
+      "type": "File",
+      "community": 12,
+      "file_path": "src/BearPizzeria.Api/Models/Cliente.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs"
+      }
+    },
+    {
+      "id": "tamanopizza_bearpizzeria_api_models",
+      "label": "BearPizzeria.Api.Models",
+      "type": "Entity",
+      "community": 15,
+      "file_path": "src/BearPizzeria.Api/Models/TamanoPizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/EstadoPedido.cs",
+      "label": "EstadoPedido.cs",
+      "type": "File",
+      "community": 14,
+      "file_path": "src/BearPizzeria.Api/Models/EstadoPedido.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/EstadoPedido.cs"
+      }
+    },
+    {
+      "id": "cliente_cliente",
+      "label": "Cliente",
+      "type": "Entity",
+      "community": 12,
+      "file_path": "src/BearPizzeria.Api/Models/Cliente.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L2"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+      "label": "CrearPedidoRequest.cs",
+      "type": "File",
+      "community": 13,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs"
+      }
+    },
+    {
+      "id": "estadopedido_bearpizzeria_api_models",
+      "label": "BearPizzeria.Api.Models",
+      "type": "Entity",
+      "community": 14,
+      "file_path": "src/BearPizzeria.Api/Models/EstadoPedido.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "program_catch",
+      "label": "catch()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Kitchen/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L108",
+        "merge_count": "6"
+      }
+    },
+    {
+      "id": "program",
+      "label": "Program.cs",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Api/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1",
+        "merge_count": "4"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs",
+      "label": "Program.cs",
+      "type": "File",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Kitchen/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs"
+      }
+    },
+    {
+      "id": "program_foreach",
+      "label": "foreach()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Kitchen/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L82",
+        "merge_count": "5"
+      }
+    },
+    {
+      "id": "program_errorresponse",
+      "label": "ErrorResponse()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Api/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L287",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "program_errordetalle",
+      "label": "ErrorDetalle()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Api/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L300",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "program_registrarcliente",
+      "label": "RegistrarCliente()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Client/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L70",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "program_realizarpedido",
+      "label": "RealizarPedido()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Client/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L124",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "program_procesarmensaje",
+      "label": "ProcesarMensaje()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Kitchen/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L60",
+        "merge_count": "4"
+      }
+    },
+    {
+      "id": "pedidodbcontext",
+      "label": "PedidoDbContext.cs",
+      "type": "Entity",
+      "community": 2,
+      "file_path": "src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "program_while",
+      "label": "while()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Kitchen/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L35",
+        "merge_count": "4"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "label": "PedidoDbContext.cs",
+      "type": "File",
+      "community": 2,
+      "file_path": "src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs"
+      }
+    },
+    {
+      "id": "pedidoitemrequest_bearpizzeria_api_models_dtos",
+      "label": "BearPizzeria.Api.Models.DTOs",
+      "type": "Entity",
+      "community": 9,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "pedidoitemrequest_pedidoitemrequest",
+      "label": "PedidoItemRequest",
+      "type": "Entity",
+      "community": 9,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L2"
+      }
+    },
+    {
+      "id": "socketserverservice_executeasync",
+      "label": "ExecuteAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L34"
+      }
+    },
+    {
+      "id": "socketserverservice_enviaratodosasync",
+      "label": "EnviarATodosAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L282",
+        "merge_count": "3"
+      }
+    },
+    {
+      "id": "socketserverservice_acceptclientsasync",
+      "label": "AcceptClientsAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L48",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "socketserverservice",
+      "label": "SocketServerService.cs",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs",
+      "label": "Pizza.cs",
+      "type": "File",
+      "community": 11,
+      "file_path": "src/BearPizzeria.Api/Models/Pizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs"
+      }
+    },
+    {
+      "id": "actualizarestadorequest_actualizarestadorequest",
+      "label": "ActualizarEstadoRequest",
+      "type": "Entity",
+      "community": 7,
+      "file_path": "src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L2"
+      }
+    },
+    {
+      "id": "pizza",
+      "label": "Pizza.cs",
+      "type": "Entity",
+      "community": 11,
+      "file_path": "src/BearPizzeria.Api/Models/Pizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "label": "CrearPedidoRequestValidator.cs",
+      "type": "File",
+      "community": 3,
+      "file_path": "src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "label": "PedidoItemRequestValidator.cs",
+      "type": "File",
+      "community": 5,
+      "file_path": "src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs"
+      }
+    },
+    {
+      "id": "pedidodbcontext_bearpizzeria_api_data",
+      "label": "BearPizzeria.Api.Data",
+      "type": "Entity",
+      "community": 2,
+      "file_path": "src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L3"
+      }
+    },
+    {
+      "id": "socketserverservice_catch",
+      "label": "catch()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L301",
+        "merge_count": "6"
+      }
+    },
+    {
+      "id": "socketserverservice_procesarmensajeasync",
+      "label": "ProcesarMensajeAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L152"
+      }
+    },
+    {
+      "id": "actualizarestadorequestvalidator",
+      "label": "ActualizarEstadoRequestValidator.cs",
+      "type": "Entity",
+      "community": 4,
+      "file_path": "src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+      "label": "Program.cs",
+      "type": "File",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Delivery/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs"
+      }
+    },
+    {
+      "id": "socketserverservice_foreach",
+      "label": "foreach()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L306",
+        "merge_count": "3"
       }
     },
     {
       "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go",
       "label": "consumo.go",
       "type": "File",
-      "community": 6,
+      "community": 16,
       "file_path": "consumo.go",
       "confidence": "EXTRACTED",
       "metadata": {
@@ -45,360 +1040,1645 @@
       }
     },
     {
-      "id": "adodapper_notimplementedexception",
-      "label": "NotImplementedException()",
+      "id": "program_consultarpedido",
+      "label": "ConsultarPedido()",
       "type": "Entity",
-      "community": 2,
-      "file_path": "TodoPSR/AdoDapper.cs",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Client/Program.cs",
       "confidence": "EXTRACTED",
       "metadata": {
-        "source_location": "L50",
-        "merge_count": "4"
-      }
-    },
-    {
-      "id": "consumo_main",
-      "label": "main()",
-      "type": "Entity",
-      "community": 6,
-      "file_path": "consumo.go",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L8"
-      }
-    },
-    {
-      "id": "iado_obtenertodosfinalizadosasync",
-      "label": "ObtenerTodosFinalizadosAsync()",
-      "type": "Entity",
-      "community": 4,
-      "file_path": "TodoPSR/IADO.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L6"
+        "source_location": "L170",
+        "merge_count": "2"
       }
     },
     {
       "id": "program_if",
       "label": "if()",
       "type": "Entity",
-      "community": 5,
-      "file_path": "TodoPSR/Program.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L66",
-        "merge_count": "2"
-      }
-    },
-    {
-      "id": "consumo",
-      "label": "consumo.go",
-      "type": "Entity",
-      "community": 6,
-      "file_path": "consumo.go",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L1"
-      }
-    },
-    {
-      "id": "adodapper_adodapper",
-      "label": "AdoDapper()",
-      "type": "Entity",
-      "community": 2,
-      "file_path": "TodoPSR/AdoDapper.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L10",
-        "merge_count": "2"
-      }
-    },
-    {
-      "id": "program",
-      "label": "Program.cs",
-      "type": "Entity",
-      "community": 5,
-      "file_path": "TodoPSR/Program.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L1"
-      }
-    },
-    {
-      "id": "adodapper_obtenertodosfinalizadosasync",
-      "label": "ObtenerTodosFinalizadosAsync()",
-      "type": "Entity",
-      "community": 0,
-      "file_path": "TodoPSR/AdoDapper.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L47"
-      }
-    },
-    {
-      "id": "adodapper_last_insert_id",
-      "label": "last_insert_id()",
-      "type": "Entity",
-      "community": 0,
-      "file_path": "TodoPSR/AdoDapper.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L22"
-      }
-    },
-    {
-      "id": "iado_todopsr",
-      "label": "TodoPSR",
-      "type": "Entity",
       "community": 1,
-      "file_path": "TodoPSR/IADO.cs",
+      "file_path": "src/BearPizzeria.Api/Program.cs",
       "confidence": "EXTRACTED",
       "metadata": {
-        "source_location": "L1"
+        "source_location": "L271",
+        "merge_count": "28"
       }
     },
     {
-      "id": "iado_eliminartodoasync",
-      "label": "EliminarTodoAsync()",
+      "id": "pedidopizza_pedidopizza",
+      "label": "PedidoPizza",
       "type": "Entity",
-      "community": 1,
-      "file_path": "TodoPSR/IADO.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L10"
-      }
-    },
-    {
-      "id": "iado_obtenertodosasync",
-      "label": "ObtenerTodosAsync()",
-      "type": "Entity",
-      "community": 1,
-      "file_path": "TodoPSR/IADO.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L5"
-      }
-    },
-    {
-      "id": "iado_actualizartodoasync",
-      "label": "ActualizarTodoAsync()",
-      "type": "Entity",
-      "community": 4,
-      "file_path": "TodoPSR/IADO.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L9"
-      }
-    },
-    {
-      "id": "todo",
-      "label": "Todo.cs",
-      "type": "Entity",
-      "community": 3,
-      "file_path": "TodoPSR/Todo.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L1"
-      }
-    },
-    {
-      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "label": "AdoDapper.cs",
-      "type": "File",
-      "community": 0,
-      "file_path": "TodoPSR/AdoDapper.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
-      }
-    },
-    {
-      "id": "todo_todo",
-      "label": "Todo",
-      "type": "Entity",
-      "community": 3,
-      "file_path": "TodoPSR/Todo.cs",
+      "community": 10,
+      "file_path": "src/BearPizzeria.Api/Models/PedidoPizza.cs",
       "confidence": "EXTRACTED",
       "metadata": {
         "source_location": "L2"
       }
     },
     {
-      "id": "adodapper_value",
-      "label": "VALUE()",
+      "id": "program_switch",
+      "label": "switch()",
       "type": "Entity",
-      "community": 0,
-      "file_path": "TodoPSR/AdoDapper.cs",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Client/Program.cs",
       "confidence": "EXTRACTED",
       "metadata": {
-        "source_location": "L21"
+        "source_location": "L36"
       }
     },
     {
-      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "label": "IADO.cs",
+      "id": "program_vercatalogo",
+      "label": "VerCatalogo()",
+      "type": "Entity",
+      "community": 1,
+      "file_path": "src/BearPizzeria.Client/Program.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L132",
+        "merge_count": "3"
+      }
+    },
+    {
+      "id": "pizza_bearpizzeria_api_models",
+      "label": "BearPizzeria.Api.Models",
+      "type": "Entity",
+      "community": 11,
+      "file_path": "src/BearPizzeria.Api/Models/Pizza.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L1"
+      }
+    },
+    {
+      "id": "socketserverservice_enviaradeliveryasync",
+      "label": "EnviarADeliveryAsync()",
+      "type": "Entity",
+      "community": 0,
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "source_location": "L257",
+        "merge_count": "2"
+      }
+    },
+    {
+      "id": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "label": "SocketServerService.cs",
       "type": "File",
-      "community": 4,
-      "file_path": "TodoPSR/IADO.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
-      }
-    },
-    {
-      "id": "iado",
-      "label": "IADO.cs",
-      "type": "Entity",
-      "community": 1,
-      "file_path": "TodoPSR/IADO.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L1"
-      }
-    },
-    {
-      "id": "todo_todopsr",
-      "label": "TodoPSR",
-      "type": "Entity",
-      "community": 3,
-      "file_path": "TodoPSR/Todo.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L1"
-      }
-    },
-    {
-      "id": "adodapper_eliminartodoasync",
-      "label": "EliminarTodoAsync()",
-      "type": "Entity",
       "community": 0,
-      "file_path": "TodoPSR/AdoDapper.cs",
+      "file_path": "src/BearPizzeria.Api/Services/SocketServerService.cs",
       "confidence": "EXTRACTED",
       "metadata": {
-        "source_location": "L30"
-      }
-    },
-    {
-      "id": "adodapper_agregartodoasync",
-      "label": "AgregarTodoAsync()",
-      "type": "Entity",
-      "community": 0,
-      "file_path": "TodoPSR/AdoDapper.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L17"
-      }
-    },
-    {
-      "id": "iado_iado",
-      "label": "IADO",
-      "type": "Entity",
-      "community": 4,
-      "file_path": "TodoPSR/IADO.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L2"
-      }
-    },
-    {
-      "id": "adodapper_todopsr",
-      "label": "TodoPSR",
-      "type": "Entity",
-      "community": 0,
-      "file_path": "TodoPSR/AdoDapper.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L4"
-      }
-    },
-    {
-      "id": "adodapper",
-      "label": "AdoDapper.cs",
-      "type": "Entity",
-      "community": 2,
-      "file_path": "TodoPSR/AdoDapper.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L1"
-      }
-    },
-    {
-      "id": "iado_agregartodoasync",
-      "label": "AgregarTodoAsync()",
-      "type": "Entity",
-      "community": 1,
-      "file_path": "TodoPSR/IADO.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L8"
-      }
-    },
-    {
-      "id": "adodapper_actualizartodoasync",
-      "label": "ActualizarTodoAsync()",
-      "type": "Entity",
-      "community": 0,
-      "file_path": "TodoPSR/AdoDapper.cs",
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "source_location": "L12"
+        "full_path": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     }
   ],
   "edges": [
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
-      "target": "todo",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+      "target": "pedidoitemrequest",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
-      "target": "todo_todopsr",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+      "target": "pedidoitemrequest_bearpizzeria_api_models_dtos",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
-      "target": "todo_todo",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+      "target": "pedidoitemrequest_pedidoitemrequest",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs",
+      "source": "pedidopizza",
+      "target": "pedidopizza_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "pedidopizza",
+      "target": "pedidopizza_pedidopizza",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "actualizarestadorequest",
+      "target": "actualizarestadorequest_bearpizzeria_api_models_dtos",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "actualizarestadorequest",
+      "target": "actualizarestadorequest_actualizarestadorequest",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "target": "clientevalidator",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "target": "clientevalidator_bearpizzeria_api_validators",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "target": "clientevalidator_clientevalidator",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+      "target": "clientevalidator_rulefor",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs",
+      "target": "pedido",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs",
+      "target": "pedido_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs",
+      "target": "pedido_pedido",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs"
+      }
+    },
+    {
+      "source": "pedido",
+      "target": "pedido_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "pedido",
+      "target": "pedido_pedido",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pedido.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+      "target": "actualizarestadorequest",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+      "target": "actualizarestadorequest_actualizarestadorequest",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs",
+      "target": "actualizarestadorequest_bearpizzeria_api_models_dtos",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/ActualizarEstadoRequest.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs",
+      "target": "pedidopizza",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs",
+      "target": "pedidopizza_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs",
+      "target": "pedidopizza_pedidopizza",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/PedidoPizza.cs"
+      }
+    },
+    {
+      "source": "pedidoitemrequest",
+      "target": "pedidoitemrequest_bearpizzeria_api_models_dtos",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "pedidoitemrequest",
+      "target": "pedidoitemrequest_pedidoitemrequest",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/PedidoItemRequest.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "clientevalidator",
+      "target": "clientevalidator_bearpizzeria_api_validators",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+        "source_location": "L3"
+      }
+    },
+    {
+      "source": "clientevalidator",
+      "target": "clientevalidator_clientevalidator",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+        "source_location": "L5"
+      }
+    },
+    {
+      "source": "clientevalidator",
+      "target": "clientevalidator_rulefor",
+      "relationship": "contains",
+      "weight": 4,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "4",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ClienteValidator.cs",
+        "source_location": "L10"
+      }
+    },
+    {
+      "source": "pedidoitemrequestvalidator",
+      "target": "pedidoitemrequestvalidator_bearpizzeria_api_validators",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+        "source_location": "L3"
+      }
+    },
+    {
+      "source": "pedidoitemrequestvalidator",
+      "target": "pedidoitemrequestvalidator_pedidoitemrequestvalidator",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+        "source_location": "L5"
+      }
+    },
+    {
+      "source": "pedidoitemrequestvalidator",
+      "target": "pedidoitemrequestvalidator_rulefor",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+        "source_location": "L10"
+      }
+    },
+    {
+      "source": "crearpedidorequestvalidator",
+      "target": "crearpedidorequestvalidator_bearpizzeria_api_validators",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+        "source_location": "L3"
+      }
+    },
+    {
+      "source": "crearpedidorequestvalidator",
+      "target": "crearpedidorequestvalidator_crearpedidorequestvalidator",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+        "source_location": "L5"
+      }
+    },
+    {
+      "source": "crearpedidorequestvalidator",
+      "target": "crearpedidorequestvalidator_rulefor",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+        "source_location": "L10"
+      }
+    },
+    {
+      "source": "crearpedidorequestvalidator",
+      "target": "crearpedidorequestvalidator_ruleforeach",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+        "source_location": "L16"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "target": "actualizarestadorequestvalidator",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "target": "actualizarestadorequestvalidator_actualizarestadorequestvalidator",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "target": "actualizarestadorequestvalidator_bearpizzeria_api_validators",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "target": "actualizarestadorequestvalidator_bevalidestado",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+      "target": "actualizarestadorequestvalidator_rulefor",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
       "target": "program",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
       "target": "program_if",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+      "target": "program_switch",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+      "target": "program_registrarcliente",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+      "target": "program_vercatalogo",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+      "target": "program_realizarpedido",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+      "target": "program_consultarpedido",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+      "target": "program_catch",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+      "target": "program_foreach",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs",
+      "target": "program",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs",
+      "target": "program_errorresponse",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs",
+      "target": "program_errordetalle",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs",
+      "target": "program_if",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs"
+      }
+    },
+    {
+      "source": "tamanopizza",
+      "target": "tamanopizza_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/TamanoPizza.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "cliente",
+      "target": "cliente_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "cliente",
+      "target": "cliente_cliente",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "crearpedidorequest",
+      "target": "crearpedidorequest_bearpizzeria_api_models_dtos",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "crearpedidorequest",
+      "target": "crearpedidorequest_crearpedidorequest",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "estadopedido",
+      "target": "estadopedido_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/EstadoPedido.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "consumo",
+      "target": "consumo_main",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go",
+        "source_location": "L8"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/TamanoPizza.cs",
+      "target": "tamanopizza",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/TamanoPizza.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/TamanoPizza.cs",
+      "target": "tamanopizza_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/TamanoPizza.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs",
+      "target": "cliente",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs",
+      "target": "cliente_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs",
+      "target": "cliente_cliente",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Cliente.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/EstadoPedido.cs",
+      "target": "estadopedido",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/EstadoPedido.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/EstadoPedido.cs",
+      "target": "estadopedido_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/EstadoPedido.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+      "target": "crearpedidorequest",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+      "target": "crearpedidorequest_bearpizzeria_api_models_dtos",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs",
+      "target": "crearpedidorequest_crearpedidorequest",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/DTOs/CrearPedidoRequest.cs"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_while",
+      "relationship": "contains",
+      "weight": 4,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "4",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+        "source_location": "L27"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_if",
+      "relationship": "contains",
+      "weight": 28,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "28",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+        "source_location": "L31"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_procesarmensaje",
+      "relationship": "contains",
+      "weight": 4,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "4",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+        "source_location": "L44"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_catch",
+      "relationship": "contains",
+      "weight": 6,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "6",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+        "source_location": "L52"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_switch",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+        "source_location": "L36"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_registrarcliente",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+        "source_location": "L39"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_vercatalogo",
+      "relationship": "contains",
+      "weight": 3,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "3",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+        "source_location": "L42"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_realizarpedido",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+        "source_location": "L45"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_consultarpedido",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+        "source_location": "L48"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_foreach",
+      "relationship": "contains",
+      "weight": 5,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "5",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Client/Program.cs",
+        "source_location": "L97"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_errorresponse",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs",
+        "source_location": "L281"
+      }
+    },
+    {
+      "source": "program",
+      "target": "program_errordetalle",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Program.cs",
+        "source_location": "L295"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs",
+      "target": "program",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs",
+      "target": "program_while",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs",
+      "target": "program_if",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs",
+      "target": "program_procesarmensaje",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs",
+      "target": "program_catch",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs",
+      "target": "program_foreach",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Kitchen/Program.cs"
+      }
+    },
+    {
+      "source": "pedidodbcontext",
+      "target": "pedidodbcontext_bearpizzeria_api_data",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+        "source_location": "L3"
+      }
+    },
+    {
+      "source": "pedidodbcontext",
+      "target": "pedidodbcontext_pedidodbcontext",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+        "source_location": "L5"
+      }
+    },
+    {
+      "source": "pedidodbcontext",
+      "target": "pedidodbcontext_onmodelcreating",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+        "source_location": "L12"
+      }
+    },
+    {
+      "source": "pedidodbcontext",
+      "target": "pedidodbcontext_seeddata",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+        "source_location": "L66"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "target": "pedidodbcontext",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "target": "pedidodbcontext_bearpizzeria_api_data",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "target": "pedidodbcontext_pedidodbcontext",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "target": "pedidodbcontext_onmodelcreating",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs",
+      "target": "pedidodbcontext_seeddata",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Data/PedidoDbContext.cs"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_bearpizzeria_api_services",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L10"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_socketserverservice",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L12"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_notificarnuevopedidoasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L29"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_executeasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L34"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_acceptclientsasync",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L43"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_while",
+      "relationship": "contains",
+      "weight": 3,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "3",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L51"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_catch",
+      "relationship": "contains",
+      "weight": 6,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "6",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L58"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_handleclientasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L68"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_if",
+      "relationship": "contains",
+      "weight": 16,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "16",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L85"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_removercliente",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L112"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_procesarmensajeasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L152"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_actualizarestadopedidoasync",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L189"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_enviaradeliveryasync",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L194"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_procesarpedidoschannelasync",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L220"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_foreach",
+      "relationship": "contains",
+      "weight": 3,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "3",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L223"
+      }
+    },
+    {
+      "source": "socketserverservice",
+      "target": "socketserverservice_enviaratodosasync",
+      "relationship": "contains",
+      "weight": 3,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "3",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+        "source_location": "L253"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs",
+      "target": "pizza",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs",
+      "target": "pizza_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs",
+      "target": "pizza_pizza",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs"
+      }
+    },
+    {
+      "source": "pizza",
+      "target": "pizza_bearpizzeria_api_models",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs",
+        "source_location": "L1"
+      }
+    },
+    {
+      "source": "pizza",
+      "target": "pizza_pizza",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Models/Pizza.cs",
+        "source_location": "L2"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "target": "crearpedidorequestvalidator",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "target": "crearpedidorequestvalidator_bearpizzeria_api_validators",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "target": "crearpedidorequestvalidator_crearpedidorequestvalidator",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "target": "crearpedidorequestvalidator_rulefor",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs",
+      "target": "crearpedidorequestvalidator_ruleforeach",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/CrearPedidoRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "target": "pedidoitemrequestvalidator",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "target": "pedidoitemrequestvalidator_bearpizzeria_api_validators",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "target": "pedidoitemrequestvalidator_pedidoitemrequestvalidator",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs",
+      "target": "pedidoitemrequestvalidator_rulefor",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/PedidoItemRequestValidator.cs"
+      }
+    },
+    {
+      "source": "actualizarestadorequestvalidator",
+      "target": "actualizarestadorequestvalidator_bearpizzeria_api_validators",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+        "source_location": "L3"
+      }
+    },
+    {
+      "source": "actualizarestadorequestvalidator",
+      "target": "actualizarestadorequestvalidator_actualizarestadorequestvalidator",
+      "relationship": "contains",
+      "weight": 2,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "2",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+        "source_location": "L5"
+      }
+    },
+    {
+      "source": "actualizarestadorequestvalidator",
+      "target": "actualizarestadorequestvalidator_rulefor",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+        "source_location": "L10"
+      }
+    },
+    {
+      "source": "actualizarestadorequestvalidator",
+      "target": "actualizarestadorequestvalidator_bevalidestado",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Validators/ActualizarEstadoRequestValidator.cs",
+        "source_location": "L14"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+      "target": "program",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+      "target": "program_while",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+      "target": "program_if",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+      "target": "program_procesarmensaje",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs"
+      }
+    },
+    {
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs",
+      "target": "program_catch",
+      "relationship": "contains",
+      "weight": 1,
+      "confidence": "EXTRACTED",
+      "metadata": {
+        "merge_count": "1",
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Delivery/Program.cs"
       }
     },
     {
@@ -424,471 +2704,197 @@
       }
     },
     {
-      "source": "consumo",
-      "target": "consumo_main",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/consumo.go",
-        "source_location": "L8"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "program",
-      "target": "program_if",
-      "relationship": "contains",
-      "weight": 2,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "2",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Program.cs",
-        "source_location": "L53"
-      }
-    },
-    {
-      "source": "todo",
-      "target": "todo_todopsr",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_bearpizzeria_api_services",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
-        "source_location": "L1"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "todo",
-      "target": "todo_todo",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_socketserverservice",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/Todo.cs",
-        "source_location": "L2"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_actualizartodoasync",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_notificarnuevopedidoasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_agregartodoasync",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_executeasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_eliminartodoasync",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_acceptclientsasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_last_insert_id",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_while",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_obtenertodosfinalizadosasync",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_catch",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_todopsr",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_handleclientasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_value",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_if",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_removercliente",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_adodapper",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_procesarmensajeasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_notimplementedexception",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_actualizarestadopedidoasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-      "target": "adodapper_obtenertodosasync",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_enviaradeliveryasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "target": "iado",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_procesarpedidoschannelasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "target": "iado_agregartodoasync",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_foreach",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     },
     {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "target": "iado_eliminartodoasync",
+      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs",
+      "target": "socketserverservice_enviaratodosasync",
       "relationship": "contains",
       "weight": 1,
       "confidence": "EXTRACTED",
       "metadata": {
         "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
-      }
-    },
-    {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "target": "iado_obtenertodosasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
-      }
-    },
-    {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "target": "iado_todopsr",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
-      }
-    },
-    {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "target": "iado_iado",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
-      }
-    },
-    {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "target": "iado_obtenertodosfinalizadosasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
-      }
-    },
-    {
-      "source": "file:/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-      "target": "iado_actualizartodoasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs"
-      }
-    },
-    {
-      "source": "iado",
-      "target": "iado_todopsr",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-        "source_location": "L1"
-      }
-    },
-    {
-      "source": "iado",
-      "target": "iado_iado",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-        "source_location": "L2"
-      }
-    },
-    {
-      "source": "iado",
-      "target": "iado_obtenertodosasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-        "source_location": "L5"
-      }
-    },
-    {
-      "source": "iado",
-      "target": "iado_obtenertodosfinalizadosasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-        "source_location": "L6"
-      }
-    },
-    {
-      "source": "iado",
-      "target": "iado_agregartodoasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-        "source_location": "L8"
-      }
-    },
-    {
-      "source": "iado",
-      "target": "iado_actualizartodoasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-        "source_location": "L9"
-      }
-    },
-    {
-      "source": "iado",
-      "target": "iado_eliminartodoasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/IADO.cs",
-        "source_location": "L10"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_actualizartodoasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L12"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_agregartodoasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L17"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_eliminartodoasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L30"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_last_insert_id",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L22"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_obtenertodosfinalizadosasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L47"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_todopsr",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L4"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_value",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L21"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_adodapper",
-      "relationship": "contains",
-      "weight": 2,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "2",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L6"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_notimplementedexception",
-      "relationship": "contains",
-      "weight": 4,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "4",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L15"
-      }
-    },
-    {
-      "source": "adodapper",
-      "target": "adodapper_obtenertodosasync",
-      "relationship": "contains",
-      "weight": 1,
-      "confidence": "EXTRACTED",
-      "metadata": {
-        "merge_count": "1",
-        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/TodoPSR/AdoDapper.cs",
-        "source_location": "L40"
+        "source_file": "/mnt/Datos/Repos/PSR-MinimalAPI/src/BearPizzeria.Api/Services/SocketServerService.cs"
       }
     }
   ],
   "metadata": {
-    "node_count": 31,
-    "edge_count": 47,
-    "community_count": 7,
-    "generated_at": "2026-07-06T17:34:14.4738189Z"
+    "node_count": 100,
+    "edge_count": 154,
+    "community_count": 17,
+    "generated_at": "2026-07-06T20:52:26.8255736Z"
   }
 }

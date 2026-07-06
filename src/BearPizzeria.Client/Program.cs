@@ -193,9 +193,8 @@ async Task ConsultarPedido()
     Console.WriteLine($"Fecha: {pedido.GetProperty("fechaPedido").GetString()}");
 
     Console.WriteLine("\nItems:");
-    foreach (var pp in pedido.GetProperty("pedidoPizzas").EnumerateArray())
+    foreach (var item in pedido.GetProperty("items").EnumerateArray())
     {
-        var pizza = pp.GetProperty("pizza");
-        Console.WriteLine($"  - {pp.GetProperty("cantidad").GetInt32()}x {pizza.GetProperty("nombre").GetString()} (${pp.GetProperty("precioUnitario").GetDecimal()} c/u)");
+        Console.WriteLine($"  - {item.GetProperty("cantidad").GetInt32()}x {item.GetProperty("pizzaNombre").GetString()} (${item.GetProperty("precioUnitario").GetDecimal()} c/u)");
     }
 }
