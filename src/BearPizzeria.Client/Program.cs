@@ -87,7 +87,20 @@ async Task RegistrarCliente()
         Email = email
     });
 
-    response.EnsureSuccessStatusCode();
+    if (!response.IsSuccessStatusCode)
+    {
+        var error = await response.Content.ReadFromJsonAsync<JsonElement>();
+        Console.WriteLine($"\n{error.GetProperty("mensaje").GetString()}");
+
+        if (error.TryGetProperty("errores", out var errores))
+        {
+            foreach (var detalle in errores.EnumerateArray())
+            {
+                Console.WriteLine($"  - {detalle.GetProperty("campo").GetString()}: {detalle.GetProperty("mensaje").GetString()}");
+            }
+        }
+        return;
+    }
 
     var cliente = await response.Content.ReadFromJsonAsync<JsonElement>();
     clienteId = cliente.GetProperty("id").GetInt32();
@@ -133,7 +146,21 @@ async Task RealizarPedido()
         Items = items
     });
 
-    response.EnsureSuccessStatusCode();
+    if (!response.IsSuccessStatusCode)
+    {
+        var error = await response.Content.ReadFromJsonAsync<JsonElement>();
+        Console.WriteLine($"\n{error.GetProperty("mensaje").GetString()}");
+
+        if (error.TryGetProperty("errores", out var errores))
+        {
+            foreach (var detalle in errores.EnumerateArray())
+            {
+                Console.WriteLine($"  - {detalle.GetProperty("campo").GetString()}: {detalle.GetProperty("mensaje").GetString()}");
+            }
+        }
+        return;
+    }
+
     var pedido = await response.Content.ReadFromJsonAsync<JsonElement>();
 
     Console.WriteLine($"\nPedido #{pedido.GetProperty("id").GetInt32()} creado!");
