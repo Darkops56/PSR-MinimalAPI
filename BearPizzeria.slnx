@@ -1,7 +1,6 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/BearPizzeria.Api/BearPizzeria.Api.csproj" />
-    <Project Path="src/BearPizzeria.Client/BearPizzeria.Client.csproj" />
     <Project Path="src/BearPizzeria.Delivery/BearPizzeria.Delivery.csproj" />
     <Project Path="src/BearPizzeria.Kitchen/BearPizzeria.Kitchen.csproj" />
   </Folder>

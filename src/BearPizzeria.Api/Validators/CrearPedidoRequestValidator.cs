@@ -7,8 +7,8 @@ public class CrearPedidoRequestValidator : AbstractValidator<CrearPedidoRequest>
 {
     public CrearPedidoRequestValidator()
     {
-        RuleFor(x => x.ClienteId)
-            .GreaterThan(0).WithMessage("El ID del cliente debe ser un número positivo. Registrate como cliente primero.");
+        RuleFor(x => x.ClienteNombre)
+            .NotEmpty().WithMessage("El nombre del cliente es obligatorio. Proporcioná tu nombre.");
 
         RuleFor(x => x.Items)
             .NotNull().WithMessage("El pedido debe contener al menos una pizza. Agregá pizzas al pedido.")

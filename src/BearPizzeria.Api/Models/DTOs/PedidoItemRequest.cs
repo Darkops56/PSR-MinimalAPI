@@ -2,6 +2,6 @@ namespace BearPizzeria.Api.Models.DTOs;
 
 public class PedidoItemRequest
 {
-    public int PizzaId { get; set; }
+    public string PizzaNombre { get; set; } = string.Empty;
     public int Cantidad { get; set; } = 1;
 }

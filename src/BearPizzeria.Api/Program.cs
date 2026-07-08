@@ -173,30 +173,35 @@ app.MapPost("/api/pedidos", async (CrearPedidoRequest request, PedidoDbContext d
         return Results.BadRequest(new ErrorResponse("PEDIDO-400", "No se pudo crear el pedido. Corregí los datos.", errores));
     }
 
-    var cliente = await db.Clientes.FindAsync(request.ClienteId);
+    var cliente = await db.Clientes.FirstOrDefaultAsync(c => c.Nombre == request.ClienteNombre);
     if (cliente is null)
-        return Results.BadRequest(new ErrorResponse("PEDIDO-404", $"Cliente con ID {request.ClienteId} no encontrado"));
+        return Results.BadRequest(new ErrorResponse("PEDIDO-404", $"Cliente '{request.ClienteNombre}' no encontrado. Registrate como cliente primero."));
 
-    var pizzaIds = request.Items.Select(i => i.PizzaId).ToList();
-    var pizzas = await db.Pizzas.Where(p => pizzaIds.Contains(p.Id)).ToListAsync();
+    var pizzas = await db.Pizzas.ToListAsync();
 
-    if (pizzas.Count != pizzaIds.Count)
+    var nombresPizzas = request.Items.Select(i => NormalizePizzaName(i.PizzaNombre)).ToList();
+    var pizzasCoincidentes = pizzas
+        .Where(p => nombresPizzas.Contains(NormalizePizzaName(p.Nombre)))
+        .ToList();
+
+    if (pizzasCoincidentes.Count != nombresPizzas.Count)
     {
-        var idsExistentes = pizzas.Select(p => p.Id).ToHashSet();
-        var idsInvalidos = pizzaIds.Where(id => !idsExistentes.Contains(id));
-        return Results.BadRequest(new ErrorResponse("PEDIDO-400", $"Las pizzas con IDs {string.Join(", ", idsInvalidos)} no existen"));
+        var nombresExistentes = pizzasCoincidentes.Select(p => NormalizePizzaName(p.Nombre)).ToHashSet();
+        var nombresInvalidos = nombresPizzas.Where(n => !nombresExistentes.Contains(n));
+        return Results.BadRequest(new ErrorResponse("PEDIDO-404", $"Las pizzas '{string.Join(", ", nombresInvalidos)}' no existen. Elegí pizzas del catálogo."));
     }
 
     var pedido = new Pedido
     {
-        ClienteId = request.ClienteId,
+        ClienteId = cliente.Id,
         Estado = EstadoPedido.EsperaDeConfirmacion,
         PedidoPizzas = request.Items.Select(item =>
         {
-            var pizza = pizzas.First(p => p.Id == item.PizzaId);
+            var nombreNormalizado = NormalizePizzaName(item.PizzaNombre);
+            var pizza = pizzasCoincidentes.First(p => NormalizePizzaName(p.Nombre) == nombreNormalizado);
             return new PedidoPizza
             {
-                PizzaId = item.PizzaId,
+                PizzaId = pizza.Id,
                 Cantidad = item.Cantidad,
                 PrecioUnitario = pizza.Precio
             };
@@ -234,31 +239,26 @@ app.MapGet("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
             : Results.NotFound(new ErrorResponse("PEDIDO-404", $"Pedido con ID {id} no encontrado"));
 });
 
-app.MapPatch("/api/pedidos/{id}/estado", async (int id, ActualizarEstadoRequest? request, PedidoDbContext db, IValidator<ActualizarEstadoRequest> validator) =>
+app.MapPatch("/api/pedidos/{id}/estado", async (int id, PedidoDbContext db) =>
 {
-    if (request is null || string.IsNullOrWhiteSpace(request.Estado))
-    {
-        return Results.BadRequest(new ErrorResponse("ESTADO-400",
-            "Debés enviar un cuerpo JSON con el campo \"estado\". Ejemplo: { \"estado\": \"EnPreparacion\" }"));
-    }
-
-    var validationResult = await validator.ValidateAsync(request);
-    if (!validationResult.IsValid)
-    {
-        var errores = validationResult.Errors
-            .Select(e => new ErrorDetalle(e.PropertyName, e.ErrorMessage))
-            .ToList();
-        return Results.BadRequest(new ErrorResponse("ESTADO-400", "No se pudo actualizar el estado. Corregí el dato.", errores));
-    }
-
     var pedido = await db.Pedidos.FindAsync(id);
     if (pedido is null)
         return Results.NotFound(new ErrorResponse("PEDIDO-404", $"Pedido con ID {id} no encontrado"));
 
-    var nuevoEstado = Enum.Parse<EstadoPedido>(request.Estado);
+    var siguienteEstado = pedido.Estado switch
+    {
+        EstadoPedido.EsperaDeConfirmacion => EstadoPedido.EnPreparacion,
+        EstadoPedido.EnPreparacion => EstadoPedido.EnViaje,
+        EstadoPedido.EnViaje => EstadoPedido.Entregado,
+        _ => (EstadoPedido?)null
+    };
 
-    logger.LogInformation("Pedido #{Id}: {EstadoAnterior} -> {EstadoNuevo}", id, pedido.Estado, nuevoEstado);
-    pedido.Estado = nuevoEstado;
+    if (siguienteEstado is null)
+        return Results.BadRequest(new ErrorResponse("ESTADO-400",
+            $"El pedido #{id} ya fue entregado. No se puede avanzar al siguiente estado."));
+
+    logger.LogInformation("Pedido #{Id}: {EstadoAnterior} -> {EstadoNuevo}", id, pedido.Estado, siguienteEstado);
+    pedido.Estado = siguienteEstado.Value;
     await db.SaveChangesAsync();
 
     var pedidoActualizado = await db.Pedidos
@@ -287,6 +287,16 @@ app.MapDelete("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
 });
 
 app.Run();
+
+static string NormalizePizzaName(string nombre)
+{
+    if (string.IsNullOrWhiteSpace(nombre))
+        return string.Empty;
+
+    return string.Concat(nombre.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)))
+        .ToLowerInvariant()
+        .Trim();
+}
 
 public class ErrorResponse
 {
