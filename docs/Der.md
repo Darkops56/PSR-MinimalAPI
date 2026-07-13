@@ -44,11 +44,11 @@
 erDiagram
     Cliente {
         int Id PK
-        varchar Usuario UQ
+        varchar Usuario
         varchar Nombre
         varchar Direccion
         varchar Telefono
-        varchar Email UQ
+        varchar Email
     }
 
     Pedido {
@@ -68,8 +68,8 @@ erDiagram
     }
 
     PedidoPizza {
-        int PedidoId PK FK
-        int PizzaId PK FK
+        int PedidoId PK, FK
+        int PizzaId PK, FK
         int Cantidad
         decimal PrecioUnitario
     }
@@ -96,3 +96,7 @@ stateDiagram-v2
     EnViaje --> Entregado : Reparto entrega
     Entregado --> [*]
 ```
+
+
+
+
