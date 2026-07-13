@@ -2,6 +2,6 @@ namespace BearPizzeria.Api.Models.DTOs;
 
 public class CrearPedidoRequest
 {
-    public int ClienteId { get; set; }
+    public string ClienteUsuario { get; set; } = string.Empty;
     public List<PedidoItemRequest> Items { get; set; } = [];
 }

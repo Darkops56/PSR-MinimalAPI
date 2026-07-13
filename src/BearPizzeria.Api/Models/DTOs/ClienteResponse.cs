@@ -3,6 +3,7 @@ namespace BearPizzeria.Api.Models.DTOs;
 public class ClienteResponse
 {
     public int Id { get; set; }
+    public string Usuario { get; set; } = string.Empty;
     public string Nombre { get; set; } = string.Empty;
     public string Direccion { get; set; } = string.Empty;
     public string Telefono { get; set; } = string.Empty;

@@ -8,7 +8,10 @@ CREATE TABLE Clientes (
     Nombre VARCHAR(100) NOT NULL,
     Direccion VARCHAR(200) NOT NULL,
     Telefono VARCHAR(20) NOT NULL,
-    Email VARCHAR(100) NOT NULL
+    Email VARCHAR(100) NOT NULL,
+    Usuario VARCHAR(50) NOT NULL,
+    UNIQUE (Email),
+    UNIQUE (Usuario)
 );
 
 -- Tabla de pizzas
@@ -25,7 +28,7 @@ CREATE TABLE Pedidos (
     Id INT PRIMARY KEY AUTO_INCREMENT,
     ClienteId INT NOT NULL,
     FechaPedido DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Estado ENUM('EsperaDeConfirmacion', 'EnPreparacion', 'EnViaje', 'Entregado') NOT NULL DEFAULT 'EsperaDeConfirmacion',
+    Estado ENUM('EnPreparacion', 'EnViaje', 'Entregado') NOT NULL DEFAULT 'EnPreparacion',
     Total DECIMAL(10,2) NOT NULL DEFAULT 0,
     FOREIGN KEY (ClienteId) REFERENCES Clientes(Id)
 );

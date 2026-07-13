@@ -183,17 +183,7 @@ public class SocketServerService : BackgroundService
                 {
                     var pedidoId = root.GetProperty("PedidoId").GetInt32();
                     var estadoStr = root.GetProperty("Estado").GetString();
-
-                    if (Enum.TryParse<EstadoPedido>(estadoStr, out var nuevoEstado))
-                    {
-                        await ActualizarEstadoPedidoAsync(pedidoId, nuevoEstado);
-                        _logger.LogInformation("Pedido {Id} actualizado a {Estado}", pedidoId, nuevoEstado);
-
-                        if (nuevoEstado == EstadoPedido.EnViaje)
-                        {
-                            await EnviarADeliveryAsync(pedidoId, stoppingToken);
-                        }
-                    }
+                    _logger.LogInformation("Solicitud de actualización ignorada (usar PATCH manual): Pedido {Id} -> {Estado}", pedidoId, estadoStr);
                 }
             }
         }
@@ -203,19 +193,6 @@ public class SocketServerService : BackgroundService
         }
 
         return false;
-    }
-
-    private async Task ActualizarEstadoPedidoAsync(int pedidoId, EstadoPedido nuevoEstado)
-    {
-        using var scope = _scopeFactory.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<PedidoDbContext>();
-
-        var pedido = await db.Pedidos.FindAsync(pedidoId);
-        if (pedido is not null)
-        {
-            pedido.Estado = nuevoEstado;
-            await db.SaveChangesAsync();
-        }
     }
 
     private async Task ProcesarPedidosChannelAsync(CancellationToken stoppingToken)

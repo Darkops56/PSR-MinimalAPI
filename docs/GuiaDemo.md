@@ -55,7 +55,7 @@ dotnet run --project src/BearPizzeria.Client
 
 | Terminal | Evento |
 |----------|--------|
-| **Cliente** | Recibe `201 Created` con ID y estado `EsperaDeConfirmacion` |
+| **Cliente** | Recibe `201 Created` con ID y estado `EnPreparacion` |
 | **Cocina** | Muestra "NUEVO PEDIDO #X", simula 5s de preparación |
 | **Cocina** | Envía "EnViaje" |
 | **Reparto** | Muestra "PEDIDO EN VIAJE #X", simula 5s de entrega |

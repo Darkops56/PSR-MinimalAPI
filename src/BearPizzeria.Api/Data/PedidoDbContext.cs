@@ -20,6 +20,9 @@ public class PedidoDbContext(DbContextOptions<PedidoDbContext> options) : DbCont
             entity.Property(e => e.Direccion).HasMaxLength(200).IsRequired();
             entity.Property(e => e.Telefono).HasMaxLength(20).IsRequired();
             entity.Property(e => e.Email).HasMaxLength(100).IsRequired();
+            entity.HasIndex(e => e.Email).IsUnique();
+            entity.Property(e => e.Usuario).HasMaxLength(50).IsRequired();
+            entity.HasIndex(e => e.Usuario).IsUnique();
         });
 
         modelBuilder.Entity<Pizza>(entity =>

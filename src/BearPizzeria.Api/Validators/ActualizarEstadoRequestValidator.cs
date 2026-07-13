@@ -9,7 +9,7 @@ public class ActualizarEstadoRequestValidator : AbstractValidator<ActualizarEsta
     {
         RuleFor(x => x.Estado)
             .NotEmpty().WithMessage("El estado es obligatorio")
-            .Must(BeValidEstado).WithMessage("Estado inválido. Valores válidos: EsperaDeConfirmacion, EnPreparacion, EnViaje, Entregado");
+            .Must(BeValidEstado).WithMessage("Estado inválido. Valores válidos: EnPreparacion, EnViaje, Entregado");
     }
 
     private static bool BeValidEstado(string estado)
