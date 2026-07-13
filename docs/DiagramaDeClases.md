@@ -4,103 +4,61 @@
 
 ```mermaid
 classDiagram
+    %% --- Clientes ---
     class Cliente {
         +int Id
-        +string Usuario
         +string Nombre
-        +string Direccion
         +string Telefono
-        +string Email
+        +string Direccion
     }
 
-    class Pizza {
-        +int Id
-        +string Nombre
-        +string Descripcion
-        +decimal Precio
-        +TamanoPizza Tamano
-    }
-
-    class TamanoPizza {
-        <<enumeration>>
-        Personal
-        Mediana
-        Grande
-        Familiar
-    }
-
+    %% --- Pedidos ---
     class Pedido {
         +int Id
         +int ClienteId
-        +DateTime FechaPedido
+        +DateTime Fecha
         +EstadoPedido Estado
-        +decimal Total
-    }
-
-    class EstadoPedido {
-        <<enumeration>>
-        EnPreparacion
-        EnViaje
-        Entregado
+        +List~PedidoPizza~ Items
+        +double Total
     }
 
     class PedidoPizza {
         +int PedidoId
         +int PizzaId
         +int Cantidad
-        +decimal PrecioUnitario
+        +TamanoPizza Tamano
     }
 
-    class PedidoDbContext {
-        +DbSet~Cliente~ Clientes
-        +DbSet~Pizza~ Pizzas
-        +DbSet~Pedido~ Pedidos
-        +DbSet~PedidoPizza~ PedidoPizzas
-        +OnModelCreating()
+    class Pizza {
+        +int Id
+        +string Nombre
+        +double PrecioBase
     }
 
-    class SocketServerService {
-        -ConcurrentDictionary~string, TcpClient~ _kitchenClients
-        -ConcurrentDictionary~string, TcpClient~ _deliveryClients
-        -Channel~Pedido~ _pedidoChannel
-        +ExecuteAsync()
-        +NotificarNuevoPedidoAsync(Pedido)
-        -AcceptClientsAsync()
-        -HandleClientAsync()
-        -RemoverCliente()
-        -ProcesarMensajeAsync()
-        -ProcesarPedidosChannelAsync()
-        -EnviarADeliveryAsync()
-        -EnviarATodosAsync()
+    class EstadoPedido {
+        <<enumeration>>
+        EN_PREPARACION
+        EN_VIAJE
+        ENTREGADO
     }
 
-    class CrearPedidoRequest {
-        +int ClienteId
-        +List~PedidoItemRequest~ Items
+    class TamanoPizza {
+        <<enumeration>>
+        INDIVIDUAL
+        MEDIANA
+        GRANDE
+        FAMILIAR
     }
 
-    class PedidoItemRequest {
-        +int PizzaId
-        +int Cantidad
-    }
+    
 
-    class ActualizarEstadoRequest {
-        +string Estado
-    }
+    %% --- Relaciones ---
+    Cliente "1" --o "0..*" Pedido : realiza
+    Pedido "1" *-- "1..*" PedidoPizza : contiene
+    PedidoPizza "0..*" --> "1" Pizza : referencia
+    Pedido --> EstadoPedido : tiene
+    PedidoPizza --> TamanoPizza : de tamaño
 
-    Cliente "1" --> "*" Pedido
-    Pedido "1" --> "*" PedidoPizza
-    Pizza "1" --> "*" PedidoPizza
-    Pedido "1" --> "1" EstadoPedido
-    Pizza "1" --> "1" TamanoPizza
-    PedidoDbContext --> Cliente
-    PedidoDbContext --> Pizza
-    PedidoDbContext --> Pedido
-    PedidoDbContext --> PedidoPizza
-    Program --> PedidoDbContext
-    Program --> SocketServerService
-    Program --> CrearPedidoRequest
-    CrearPedidoRequest "1" --> "*" PedidoItemRequest
 ```
 
 ## Diagrama de Arquitectura Distribuida

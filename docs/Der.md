@@ -42,41 +42,46 @@
 
 ```mermaid
 erDiagram
-    Cliente {
-        int Id PK
-        varchar Usuario
+    %% --- Entidad Clientes ---
+    Clientes {
+        int Id PK "AUTO_INCREMENT"
         varchar Nombre
         varchar Direccion
         varchar Telefono
-        varchar Email
+        varchar Email "UK"
+        varchar Usuario "UK"
     }
 
-    Pedido {
-        int Id PK
-        int ClienteId FK
-        datetime FechaPedido
-        enum Estado
-        decimal Total
-    }
-
-    Pizza {
-        int Id PK
+    %% --- Entidad Pizzas ---
+    Pizzas {
+        int Id PK "AUTO_INCREMENT"
         varchar Nombre
         text Descripcion
         decimal Precio
-        enum Tamano
+        enum Tamano "Personal, Mediana, Grande, Familiar"
     }
 
-    PedidoPizza {
+    %% --- Entidad Pedidos ---
+    Pedidos {
+        int Id PK "AUTO_INCREMENT"
+        int ClienteId FK
+        datetime FechaPedido
+        enum Estado "EnPreparacion, EnViaje, Entregado"
+        decimal Total
+    }
+
+    %% --- Entidad Detalle / Intermedia ---
+    PedidoPizzas {
         int PedidoId PK, FK
         int PizzaId PK, FK
         int Cantidad
         decimal PrecioUnitario
     }
 
-    Cliente ||--o{ Pedido : "realiza"
-    Pedido ||--|{ PedidoPizza : "contiene"
-    Pizza ||--o{ PedidoPizza : "incluida en"
+    %% --- Relaciones y Cardinalidades ---
+    Clientes ||--o{ Pedidos : "realiza"
+    Pedidos ||--|{ PedidoPizzas : "contiene"
+    Pizzas ||--o{ PedidoPizzas : "es incluida en"
 ```
 
 ## Relaciones

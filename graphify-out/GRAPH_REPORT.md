@@ -1,4 +1,4 @@
-# Graph Report - PSR-MinimalAPI  (2026-07-06)
+# Graph Report - PSR-MinimalAPI  (2026-07-13)
 
 ## Summary
 - 100 nodes · 154 edges · 17 communities detected
@@ -88,6 +88,12 @@ Nodes (3): TamanoPizza.cs, TamanoPizza.cs, BearPizzeria.Api.Models
 ### Community 14 - "Entity (Community 14)"
 Cohesion: 1,00
 Nodes (3): EstadoPedido.cs, EstadoPedido.cs, BearPizzeria.Api.Models
+
+## Notas
+- Generado automáticamente por la herramienta `graphify` (solo analiza archivos `.cs`).
+- No se modificaron archivos `.cs` en la última actualización (07/2026), solo documentación (`.md`, `.sql`).
+- Si se agregan o modifican clases, DTOs, validators o servicios, debe regenerarse con `graphify`.
+- Los archivos nuevos `bd/`, `src/README.md` no son analizados por ser `.sql`/`.md`.
 
 ## Suggested Questions
 _Not enough signal to generate questions. The graph has no ambiguous edges, no bridge nodes, and all communities are well-connected._
