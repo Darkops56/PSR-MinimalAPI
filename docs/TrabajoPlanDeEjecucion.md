@@ -71,7 +71,7 @@ Migrar la base `TodoPSR` (Minimal API + Dapper) hacia un ecosistema distribuido,
 | # | Tarea | Archivos |
 |---|-------|----------|
 | 2.1 | Endpoints de Pizzas: `GET /api/pizzas`, `GET /api/pizzas/{id}`. | `src/BearPizzeria.Api/Program.cs` |
-| 2.2 | Endpoint `POST /api/pedidos`: recibe pedido con lista de pizzas y cantidades, crea en estado `EsperaDeConfirmacion`. | `src/BearPizzeria.Api/Program.cs` |
+| 2.2 | Endpoint `POST /api/pedidos`: recibe pedido con lista de pizzas y cantidades, crea en estado `EnPreparacion`. | `src/BearPizzeria.Api/Program.cs` |
 | 2.3 | Endpoint `GET /api/pedidos/{id}`: consulta estado y detalle del pedido. | `src/BearPizzeria.Api/Program.cs` |
 | 2.4 | Endpoint `PATCH /api/pedidos/{id}/estado`: actualiza estado (uso interno). | `src/BearPizzeria.Api/Program.cs` |
 | 2.5 | Endpoint `POST /api/clientes`: registrar cliente. | `src/BearPizzeria.Api/Program.cs` |
@@ -100,7 +100,7 @@ Migrar la base `TodoPSR` (Minimal API + Dapper) hacia un ecosistema distribuido,
 {
   "TipoMensaje": "NuevoPedido" | "ActualizarEstado",
   "PedidoId": int,
-  "Estado": "EsperaDeConfirmacion" | "EnPreparacion" | "EnViaje" | "Entregado",
+  "Estado": "EnPreparacion" | "EnViaje" | "Entregado",
   "Detalle": { ... }
 }
 ```

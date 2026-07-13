@@ -74,8 +74,20 @@ app.MapPost("/api/clientes", async (CrearClienteRequest request, PedidoDbContext
         return Results.BadRequest(new ErrorResponse("CLIENTE-400", "No se pudo registrar el cliente. Corregí los campos indicados.", errores));
     }
 
+    var erroresUnicos = new List<ErrorDetalle>();
+
+    if (await db.Clientes.AnyAsync(c => c.Usuario == request.Usuario))
+        erroresUnicos.Add(new ErrorDetalle("Usuario", $"El usuario '{request.Usuario}' ya está registrado. Elegí otro nombre de usuario."));
+
+    if (await db.Clientes.AnyAsync(c => c.Email == request.Email))
+        erroresUnicos.Add(new ErrorDetalle("Email", $"El email '{request.Email}' ya está registrado. Usá otro correo electrónico."));
+
+    if (erroresUnicos.Count > 0)
+        return Results.BadRequest(new ErrorResponse("CLIENTE-400", "No se pudo registrar el cliente. Corregí los campos indicados.", erroresUnicos));
+
     var cliente = new Cliente
     {
+        Usuario = request.Usuario,
         Nombre = request.Nombre,
         Direccion = request.Direccion,
         Telefono = request.Telefono,
@@ -84,7 +96,7 @@ app.MapPost("/api/clientes", async (CrearClienteRequest request, PedidoDbContext
 
     db.Clientes.Add(cliente);
     await db.SaveChangesAsync();
-    logger.LogInformation("Cliente registrado: {Id} - {Nombre}", cliente.Id, cliente.Nombre);
+    logger.LogInformation("Cliente registrado: {Id} - {Usuario} - {Nombre}", cliente.Id, cliente.Usuario, cliente.Nombre);
     return Results.Created($"/api/clientes/{cliente.Id}", cliente.ToResponse());
 });
 
@@ -136,7 +148,7 @@ app.MapPost("/api/pizzas", async (CrearPizzaRequest request, PedidoDbContext db,
         Nombre = request.Nombre,
         Descripcion = request.Descripcion,
         Precio = request.Precio,
-        Tamano = Enum.Parse<TamanoPizza>(request.Tamano)
+        Tamano = Enum.Parse<TamanoPizza>(request.Tamano, ignoreCase: true)
     };
 
     db.Pizzas.Add(pizza);
@@ -173,32 +185,36 @@ app.MapPost("/api/pedidos", async (CrearPedidoRequest request, PedidoDbContext d
         return Results.BadRequest(new ErrorResponse("PEDIDO-400", "No se pudo crear el pedido. Corregí los datos.", errores));
     }
 
-    var cliente = await db.Clientes.FirstOrDefaultAsync(c => c.Nombre == request.ClienteNombre);
+    var cliente = await db.Clientes.FirstOrDefaultAsync(c => c.Usuario == request.ClienteUsuario);
     if (cliente is null)
-        return Results.BadRequest(new ErrorResponse("PEDIDO-404", $"Cliente '{request.ClienteNombre}' no encontrado. Registrate como cliente primero."));
+        return Results.BadRequest(new ErrorResponse("PEDIDO-404", $"Cliente '{request.ClienteUsuario}' no encontrado. Registrate como cliente primero."));
 
     var pizzas = await db.Pizzas.ToListAsync();
 
-    var nombresPizzas = request.Items.Select(i => NormalizePizzaName(i.PizzaNombre)).ToList();
-    var pizzasCoincidentes = pizzas
-        .Where(p => nombresPizzas.Contains(NormalizePizzaName(p.Nombre)))
+    var itemsAgrupados = request.Items
+        .GroupBy(i => NormalizePizzaName(i.PizzaNombre))
+        .Select(g => new { NombreNormalizado = g.Key, Cantidad = g.Sum(i => i.Cantidad) })
         .ToList();
 
-    if (pizzasCoincidentes.Count != nombresPizzas.Count)
+    var nombresPizzasUnicos = itemsAgrupados.Select(i => i.NombreNormalizado).ToList();
+    var pizzasCoincidentes = pizzas
+        .Where(p => nombresPizzasUnicos.Contains(NormalizePizzaName(p.Nombre)))
+        .ToList();
+
+    if (pizzasCoincidentes.Count != nombresPizzasUnicos.Count)
     {
         var nombresExistentes = pizzasCoincidentes.Select(p => NormalizePizzaName(p.Nombre)).ToHashSet();
-        var nombresInvalidos = nombresPizzas.Where(n => !nombresExistentes.Contains(n));
+        var nombresInvalidos = nombresPizzasUnicos.Where(n => !nombresExistentes.Contains(n));
         return Results.BadRequest(new ErrorResponse("PEDIDO-404", $"Las pizzas '{string.Join(", ", nombresInvalidos)}' no existen. Elegí pizzas del catálogo."));
     }
 
     var pedido = new Pedido
     {
         ClienteId = cliente.Id,
-        Estado = EstadoPedido.EsperaDeConfirmacion,
-        PedidoPizzas = request.Items.Select(item =>
+        Estado = EstadoPedido.EnPreparacion,
+        PedidoPizzas = itemsAgrupados.Select(item =>
         {
-            var nombreNormalizado = NormalizePizzaName(item.PizzaNombre);
-            var pizza = pizzasCoincidentes.First(p => NormalizePizzaName(p.Nombre) == nombreNormalizado);
+            var pizza = pizzasCoincidentes.First(p => NormalizePizzaName(p.Nombre) == item.NombreNormalizado);
             return new PedidoPizza
             {
                 PizzaId = pizza.Id,
@@ -220,7 +236,7 @@ app.MapPost("/api/pedidos", async (CrearPedidoRequest request, PedidoDbContext d
         .FirstAsync(p => p.Id == pedido.Id);
 
     logger.LogInformation("Pedido creado: #{Id} - Cliente: {Cliente} - Total: {Total}",
-        pedido.Id, cliente.Nombre, pedido.Total);
+        pedido.Id, cliente.Usuario, pedido.Total);
 
     await socketServer.NotificarNuevoPedidoAsync(pedido);
 
@@ -231,6 +247,7 @@ app.MapGet("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
 {
     logger.LogInformation("Consultando pedido #{Id}", id);
     return await db.Pedidos
+        .AsNoTracking()
         .Include(p => p.Cliente)
         .Include(p => p.PedidoPizzas)
             .ThenInclude(pp => pp.Pizza)
@@ -247,7 +264,6 @@ app.MapPatch("/api/pedidos/{id}/estado", async (int id, PedidoDbContext db) =>
 
     var siguienteEstado = pedido.Estado switch
     {
-        EstadoPedido.EsperaDeConfirmacion => EstadoPedido.EnPreparacion,
         EstadoPedido.EnPreparacion => EstadoPedido.EnViaje,
         EstadoPedido.EnViaje => EstadoPedido.Entregado,
         _ => (EstadoPedido?)null

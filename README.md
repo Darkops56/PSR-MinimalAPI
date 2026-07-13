@@ -119,7 +119,7 @@ dotnet run --project src/BearPizzeria.Client
 ## Ciclo de Vida del Pedido
 
 ```
-EsperaDeConfirmacion → EnPreparacion → EnViaje → Entregado
+EnPreparacion → EnViaje → Entregado
 ```
 
 ## Documentación

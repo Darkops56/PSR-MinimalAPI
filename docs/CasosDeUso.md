@@ -85,7 +85,7 @@ flowchart TB
 | Campo | Valor |
 |-------|-------|
 | **Actor** | Cliente Hambriento |
-| **Descripción** | El cliente ingresa nombre, dirección, teléfono y email para registrarse. |
+| **Descripción** | El cliente ingresa usuario, nombre, dirección, teléfono y email para registrarse. |
 | **Precondición** | El cliente no existe en el sistema. |
 | **Flujo básico** | 1. El cliente envía sus datos vía `POST /api/clientes`.<br>2. El backend valida los datos.<br>3. El backend persiste el cliente.<br>4. El backend retorna el cliente creado con su ID. |
 | **Flujo alternativo** | 2a. Si los datos son inválidos, se retorna `400 Bad Request` con detalle del error. |
@@ -107,7 +107,7 @@ flowchart TB
 | **Actor** | Cliente Hambriento |
 | **Descripción** | El cliente selecciona pizzas, cantidades y confirma su pedido. |
 | **Precondición** | El cliente está registrado. Las pizzas existen en el catálogo. |
-| **Flujo básico** | 1. El cliente envía `POST /api/pedidos` con `ClienteId` y lista de `{PizzaId, Cantidad}`.<br>2. El backend valida los datos.<br>3. El backend calcula el total.<br>4. El backend persiste el pedido con estado `EsperaDeConfirmacion`.<br>5. El backend notifica a Cocina por socket TCP.<br>6. El backend retorna el pedido creado. |
+| **Flujo básico** | 1. El cliente envía `POST /api/pedidos` con `ClienteUsuario` y lista de `{PizzaNombre, Cantidad}`.<br>2. El backend valida los datos.<br>3. El backend calcula el total.<br>4. El backend persiste el pedido con estado `EnPreparacion`.<br>5. El backend notifica a Cocina por socket TCP.<br>6. El backend retorna el pedido creado. |
 | **Flujo alternativo** | 2a. Cliente inexistente o pizzas inválidas → `400 Bad Request`.<br>5a. Si Cocina no está conectada, el pedido queda en cola. |
 | **Postcondición** | El pedido queda registrado y notificado a Cocina. |
 

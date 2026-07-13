@@ -6,6 +6,7 @@ public static class Mappings
         => new()
         {
             Id = cliente.Id,
+            Usuario = cliente.Usuario,
             Nombre = cliente.Nombre,
             Direccion = cliente.Direccion,
             Telefono = cliente.Telefono,
@@ -27,7 +28,7 @@ public static class Mappings
         {
             Id = pedido.Id,
             ClienteId = pedido.ClienteId,
-            ClienteNombre = pedido.Cliente?.Nombre ?? "",
+            ClienteUsuario = pedido.Cliente?.Usuario ?? "",
             FechaPedido = pedido.FechaPedido,
             Estado = pedido.Estado.ToString(),
             Total = pedido.Total,

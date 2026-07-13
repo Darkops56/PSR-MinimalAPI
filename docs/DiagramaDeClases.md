@@ -6,6 +6,7 @@
 classDiagram
     class Cliente {
         +int Id
+        +string Usuario
         +string Nombre
         +string Direccion
         +string Telefono
@@ -38,7 +39,6 @@ classDiagram
 
     class EstadoPedido {
         <<enumeration>>
-        EsperaDeConfirmacion
         EnPreparacion
         EnViaje
         Entregado
@@ -136,7 +136,7 @@ sequenceDiagram
     participant D as Reparto
 
     C->>API: POST /api/pedidos
-    API->>DB: INSERT Pedido (EsperaDeConfirmacion)
+    API->>DB: INSERT Pedido (EnPreparacion)
     DB-->>API: Pedido creado
     API->>K: TCP: NuevoPedido {Id, items}
     API-->>C: 201 Created

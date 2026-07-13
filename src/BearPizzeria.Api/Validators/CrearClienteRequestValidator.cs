@@ -7,6 +7,11 @@ public class CrearClienteRequestValidator : AbstractValidator<CrearClienteReques
 {
     public CrearClienteRequestValidator()
     {
+        RuleFor(x => x.Usuario)
+            .NotEmpty().WithMessage("El usuario es obligatorio. Escribí un nombre de usuario.")
+            .MaximumLength(50).WithMessage("El usuario es demasiado largo. Usá máximo 50 caracteres.")
+            .Matches(@"^[a-zA-Z0-9_]+$").WithMessage("El usuario solo puede contener letras, números y guiones bajos.");
+
         RuleFor(x => x.Nombre)
             .NotEmpty().WithMessage("El nombre es obligatorio. Escribí tu nombre completo.")
             .MaximumLength(100).WithMessage("El nombre es demasiado largo. Usá máximo 100 caracteres.");

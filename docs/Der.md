@@ -6,10 +6,11 @@
 | Atributo | Tipo | Descripción |
 |----------|------|-------------|
 | `Id` | INT (PK) | Identificador único |
+| `Usuario` | VARCHAR(50) (UQ) | Nombre de usuario único |
 | `Nombre` | VARCHAR(100) | Nombre completo |
 | `Direccion` | VARCHAR(200) | Dirección de entrega |
 | `Telefono` | VARCHAR(20) | Teléfono de contacto |
-| `Email` | VARCHAR(100) | Correo electrónico |
+| `Email` | VARCHAR(100) (UQ) | Correo electrónico único |
 
 ### Pizza
 | Atributo | Tipo | Descripción |
@@ -43,10 +44,11 @@
 erDiagram
     Cliente {
         int Id PK
+        varchar Usuario UQ
         varchar Nombre
         varchar Direccion
         varchar Telefono
-        varchar Email
+        varchar Email UQ
     }
 
     Pedido {
@@ -89,8 +91,7 @@ erDiagram
 
 ```mermaid
 stateDiagram-v2
-    [*] --> EsperaDeConfirmacion : Pedido creado
-    EsperaDeConfirmacion --> EnPreparacion : Cocina confirma
+    [*] --> EnPreparacion : Pedido creado
     EnPreparacion --> EnViaje : Cocina termina
     EnViaje --> Entregado : Reparto entrega
     Entregado --> [*]

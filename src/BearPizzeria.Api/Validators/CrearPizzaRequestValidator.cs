@@ -18,7 +18,7 @@ public class CrearPizzaRequestValidator : AbstractValidator<CrearPizzaRequest>
 
         RuleFor(x => x.Tamano)
             .NotEmpty().WithMessage("El tamaño es obligatorio. Elegí entre: Personal, Mediana, Grande, Familiar.")
-            .Must(t => Enum.TryParse<TamanoPizza>(t, out _))
+            .Must(t => Enum.TryParse<TamanoPizza>(t, ignoreCase: true, out _))
             .WithMessage("Tamaño inválido. Valores válidos: Personal, Mediana, Grande, Familiar.");
     }
 }
