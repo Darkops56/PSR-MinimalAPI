@@ -2,4 +2,5 @@
     <Project Path="BearPizzeria.Api/BearPizzeria.Api.csproj" />
     <Project Path="BearPizzeria.Delivery/BearPizzeria.Delivery.csproj" />
     <Project Path="BearPizzeria.Kitchen/BearPizzeria.Kitchen.csproj" />
+    <Project Path="BearPizzeria.Mvc/BearPizzeria.Mvc.csproj" />
 </Solution>
