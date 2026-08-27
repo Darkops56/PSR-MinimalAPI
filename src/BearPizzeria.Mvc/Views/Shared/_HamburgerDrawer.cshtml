@@ -1,0 +1,68 @@
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<aside class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+        <div class="brand-logo">
+            <span>🐻 <span>BEAR</span>PIZZERIA</span>
+        </div>
+        <button type="button" class="btn-close btn-close-white" id="drawer-close-btn" aria-label="Cerrar menú"></button>
+    </div>
+
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <div class="drawer-user-info">
+            <div class="drawer-avatar">
+                @(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "U")
+            </div>
+            <div>
+                <div class="fw-bold text-light">@User.Identity?.Name</div>
+                <small class="text-muted">@User.FindFirst("Nombre")?.Value</small>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="drawer-user-info">
+            <div class="drawer-avatar bg-secondary">
+                <i class="bi bi-person"></i>
+            </div>
+            <div>
+                <div class="fw-bold text-light">Invitado</div>
+                <a asp-controller="Auth" asp-action="Login" class="text-danger small fw-semibold">Iniciar sesión / Registrarse</a>
+            </div>
+        </div>
+    }
+
+    <nav class="drawer-nav">
+        <a asp-controller="Home" asp-action="Index" class="drawer-link">
+            <i class="bi bi-house-door text-danger"></i>
+            <span>Inicio / Menú</span>
+        </a>
+        <a asp-controller="Cart" asp-action="Index" class="drawer-link">
+            <i class="bi bi-bag text-warning"></i>
+            <span>Mi Carrito</span>
+            <span class="badge bg-danger rounded-pill cart-badge-count" style="display: none;">0</span>
+        </a>
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <a asp-controller="Profile" asp-action="Index" class="drawer-link">
+                <i class="bi bi-person-circle text-info"></i>
+                <span>Mi Perfil y Pedidos</span>
+            </a>
+            <form asp-controller="Auth" asp-action="Logout" method="post" class="mt-auto pt-3 border-top border-secondary border-opacity-25">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="drawer-link text-danger w-100 border-0 bg-transparent text-start">
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </form>
+        }
+        else
+        {
+            <a asp-controller="Auth" asp-action="Login" class="btn btn-brand-primary mt-auto text-center">
+                <i class="bi bi-box-arrow-in-right me-1"></i>
+                <span>Iniciar Sesión</span>
+            </a>
+        }
+    </nav>
+</aside>

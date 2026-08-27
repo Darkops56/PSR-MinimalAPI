@@ -1,31 +1,106 @@
-html {
-  font-size: 14px;
-}
+/* ==========================================================================
+   BearPizzeria - Global CSS & Bootstrap Enhancements
+   ========================================================================== */
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+:root {
+  --bs-body-bg: #0b0b0e;
+  --bs-body-color: #f3f4f6;
+  --bs-dark-rgb: 20, 20, 25;
 }
 
 html {
-  position: relative;
+  font-size: 16px;
+  background-color: #0b0b0e;
+  color: #f3f4f6;
   min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+  background-color: #0b0b0e;
+  color: #f3f4f6;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* Enlaces con estilo y transición */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+/* Inputs y controles grandes y redondeados para formularios de Login y Registro */
+.form-control-custom {
+  background-color: #1e1e26 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 14px !important;
+  color: #ffffff !important;
+  padding: 0.85rem 1.15rem !important;
+  font-size: 1rem !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control-custom:focus {
+  background-color: #24242e !important;
+  border-color: #e53935 !important;
+  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.25) !important;
+  color: #ffffff !important;
+  outline: none !important;
+}
+
+.form-control-custom::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Enlace destacado para Auth (Login & Register) */
+.auth-highlight-link {
+  color: #f59e0b !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease;
+}
+
+.auth-highlight-link:hover {
+  color: #e53935 !important;
+  text-decoration: underline !important;
+}
+
+/* Cards elevados de Dark Theme */
+.card-dark {
+  background-color: #141419 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Botones principales con gradiente */
+.btn-brand-primary {
+  background: linear-gradient(135deg, #e53935, #c62828) !important;
+  border: none !important;
+  border-radius: 14px !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 0.85rem 1.5rem !important;
+  box-shadow: 0 4px 15px rgba(229, 57, 53, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-brand-primary:hover {
+  background: linear-gradient(135deg, #f44336, #d32f2f) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(229, 57, 53, 0.5) !important;
+  color: #ffffff !important;
+}
+
+/* Margen inferior en móvil para que el sticky bar no tape contenido */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 70px;
+  }
 }

@@ -32,6 +32,11 @@ public class SocketServerService : BackgroundService
         await _pedidoChannel.Writer.WriteAsync(pedido);
     }
 
+    public async Task NotificarPedidoEnViajeAsync(int pedidoId, CancellationToken cancellationToken = default)
+    {
+        await EnviarADeliveryAsync(pedidoId, cancellationToken);
+    }
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("SocketServer iniciado en puerto {Puerto}", Puerto);
@@ -183,7 +188,34 @@ public class SocketServerService : BackgroundService
                 {
                     var pedidoId = root.GetProperty("PedidoId").GetInt32();
                     var estadoStr = root.GetProperty("Estado").GetString();
-                    _logger.LogInformation("Solicitud de actualización ignorada (usar PATCH manual): Pedido {Id} -> {Estado}", pedidoId, estadoStr);
+
+                    if (!string.IsNullOrEmpty(estadoStr) && Enum.TryParse<EstadoPedido>(estadoStr, true, out var nuevoEstado))
+                    {
+                        using var scope = _scopeFactory.CreateScope();
+                        var db = scope.ServiceProvider.GetRequiredService<PedidoDbContext>();
+
+                        var pedido = await db.Pedidos.FindAsync(new object?[] { pedidoId }, stoppingToken);
+                        if (pedido is not null)
+                        {
+                            var estadoAnterior = pedido.Estado;
+                            pedido.Estado = nuevoEstado;
+                            await db.SaveChangesAsync(stoppingToken);
+
+                            _logger.LogInformation("Pedido #{Id} actualizado en BD por socket: {EstadoAnterior} -> {EstadoNuevo}",
+                                pedidoId, estadoAnterior, nuevoEstado);
+
+                            // Si Cocina terminó y el estado pasó a EnViaje, notificar automáticamente a Reparto
+                            if (nuevoEstado == EstadoPedido.EnViaje)
+                            {
+                                await EnviarADeliveryAsync(pedidoId, stoppingToken);
+                            }
+                            return true;
+                        }
+                        else
+                        {
+                            _logger.LogWarning("No se encontró el pedido #{Id} para actualizar estado por socket", pedidoId);
+                        }
+                    }
                 }
             }
         }
@@ -221,8 +253,10 @@ public class SocketServerService : BackgroundService
                     Items = pedidoCompleto.PedidoPizzas.Select(pp => new
                     {
                         Pizza = pp.Pizza.Nombre,
+                        Tamano = pp.Tamano.ToString(),
                         pp.Cantidad,
-                        pp.PrecioUnitario
+                        pp.PrecioUnitario,
+                        pp.Subtotal
                     }),
                     Total = pedidoCompleto.Total
                 }
@@ -254,6 +288,7 @@ public class SocketServerService : BackgroundService
             }
         });
 
+        _logger.LogInformation("Enviando Pedido #{Id} al socket de Reparto (PedidoEnViaje)...", pedidoId);
         await EnviarATodosAsync(_deliveryClients, mensaje, stoppingToken);
     }
 

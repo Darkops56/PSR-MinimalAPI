@@ -1,0 +1,63 @@
+@model HomeViewModel
+
+<div class="product-grid">
+    @foreach (var pizza in Model.Pizzas)
+    {
+        var category = pizza.Nombre.Contains("Napolitana") || pizza.Nombre.Contains("Calabresa") ? "Especiales"
+                     : pizza.Nombre.Contains("Especial") ? "Gourmet" : "Clásicas";
+        
+        var stock = pizza.Id == 1 ? 12 : pizza.Id == 2 ? 4 : pizza.Id == 5 ? 2 : 10;
+        var stockBadgeClass = stock == 0 ? "stock-red" : stock < 6 ? "stock-yellow" : "stock-green";
+        var stockText = stock == 0 ? "Agotado" : stock < 6 ? $"¡Últimas {stock} un.!" : "En Stock";
+
+        <div class="product-card" data-category="@category">
+            <!-- Imagen / Preview -->
+            <div class="product-card-img-wrapper">
+                <div class="display-3">
+                    🍕
+                </div>
+                <div class="position-absolute top-0 end-0 m-3">
+                    <div class="stock-badge @stockBadgeClass">
+                        <span class="stock-dot"></span>
+                        <span>@stockText</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cuerpo de Card -->
+            <div class="product-card-body">
+                <div class="mb-2">
+                    <span class="text-muted small text-uppercase fw-bold">@category</span>
+                    <h3 class="product-title font-display h5 text-light mb-0 mt-1">
+                        @pizza.Nombre
+                    </h3>
+                </div>
+
+                <p class="product-desc">
+                    @pizza.Descripcion
+                </p>
+
+                <!-- Footer de Card con Precio y Botón -->
+                <div class="product-footer-row">
+                    <div>
+                        <span class="text-muted text-uppercase d-block" style="font-size: 0.7rem; font-weight: 700;">Desde</span>
+                        <span class="product-price font-display fw-bold text-warning fs-5">
+                            $@pizza.Precio.ToString("N2")
+                        </span>
+                    </div>
+
+                    <button type="button" class="btn btn-card-action"
+                            data-open-customizer
+                            data-pizza-id="@pizza.Id"
+                            data-pizza-name="@pizza.Nombre"
+                            data-pizza-desc="@pizza.Descripcion"
+                            data-pizza-price="@pizza.Precio">
+                        <i class="bi bi-sliders me-1"></i>
+                        <span>Personalizar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

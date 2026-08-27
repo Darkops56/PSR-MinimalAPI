@@ -16,8 +16,25 @@ var connectionString = builder.Configuration.GetConnectionString("MySQL")
 builder.Services.AddDbContext<PedidoDbContext>(options =>
     options.UseMySQL(connectionString));
 
+builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
+builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddSingleton<SocketServerService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<SocketServerService>());
+
+// Configuración de CORS Estricto: Aislamiento exclusivo con el frontend MVC
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMvcClient", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:5082",
+                "https://localhost:7188"
+              )
+              .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+              .WithHeaders("Content-Type", "X-Requested-With", "Authorization", "Cookie")
+              .AllowCredentials();
+    });
+});
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -25,7 +42,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
 });
 
-builder.Services.AddValidatorsFromAssemblyContaining<ClienteValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
 builder.Services.AddOpenApi(options =>
 {
@@ -33,13 +50,15 @@ builder.Services.AddOpenApi(options =>
     {
         document.Info.Title = "BearPizzeria API";
         document.Info.Version = "v1";
-        document.Info.Description = "API de gestión de pedidos de pizzas";
+        document.Info.Description = "API de gestión de pedidos, carritos y autenticación de pizzería";
         return Task.CompletedTask;
     });
 });
 
 var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+app.UseCors("AllowMvcClient");
 
 app.MapOpenApi();
 app.MapScalarApiReference(options =>
@@ -48,22 +67,16 @@ app.MapScalarApiReference(options =>
            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
 });
 
-app.MapGet("/api/clientes", async (PedidoDbContext db) =>
-{
-    logger.LogInformation("Consultando lista de clientes");
-    var clientes = await db.Clientes.ToListAsync();
-    return Results.Ok(clientes.Select(c => c.ToResponse()).ToList());
-});
+// ==========================================
+// 🔐 AUTENTICACIÓN Y TOKEN SERVICE (JWT)
+// ==========================================
 
-app.MapGet("/api/clientes/{id}", async (int id, PedidoDbContext db) =>
-{
-    logger.LogInformation("Consultando cliente {Id}", id);
-    return await db.Clientes.FindAsync(id) is Cliente cliente
-        ? Results.Ok(cliente.ToResponse())
-        : Results.NotFound(new ErrorResponse("CLIENTE-404", $"Cliente con ID {id} no encontrado"));
-});
-
-app.MapPost("/api/clientes", async (CrearClienteRequest request, PedidoDbContext db, IValidator<CrearClienteRequest> validator) =>
+app.MapPost("/api/auth/register", async (
+    RegisterRequest request,
+    PedidoDbContext db,
+    IPasswordHasherService passwordHasher,
+    ITokenService tokenService,
+    IValidator<RegisterRequest> validator) =>
 {
     var validationResult = await validator.ValidateAsync(request);
     if (!validationResult.IsValid)
@@ -71,51 +84,394 @@ app.MapPost("/api/clientes", async (CrearClienteRequest request, PedidoDbContext
         var errores = validationResult.Errors
             .Select(e => new ErrorDetalle(e.PropertyName, e.ErrorMessage))
             .ToList();
-        return Results.BadRequest(new ErrorResponse("CLIENTE-400", "No se pudo registrar el cliente. Corregí los campos indicados.", errores));
+        return Results.BadRequest(new ErrorResponse("AUTH-400", "Datos de registro inválidos.", errores));
     }
 
     var erroresUnicos = new List<ErrorDetalle>();
 
-    if (await db.Clientes.AnyAsync(c => c.Usuario == request.Usuario))
-        erroresUnicos.Add(new ErrorDetalle("Usuario", $"El usuario '{request.Usuario}' ya está registrado. Elegí otro nombre de usuario."));
+    if (await db.Usuarios.AnyAsync(u => u.Username == request.Username))
+        erroresUnicos.Add(new ErrorDetalle("Username", $"El usuario '{request.Username}' ya está registrado."));
 
     if (await db.Clientes.AnyAsync(c => c.Email == request.Email))
-        erroresUnicos.Add(new ErrorDetalle("Email", $"El email '{request.Email}' ya está registrado. Usá otro correo electrónico."));
+        erroresUnicos.Add(new ErrorDetalle("Email", $"El email '{request.Email}' ya está registrado."));
 
     if (erroresUnicos.Count > 0)
-        return Results.BadRequest(new ErrorResponse("CLIENTE-400", "No se pudo registrar el cliente. Corregí los campos indicados.", erroresUnicos));
+        return Results.BadRequest(new ErrorResponse("AUTH-400", "No se pudo completar el registro.", erroresUnicos));
 
-    var cliente = new Cliente
+    using var transaction = await db.Database.BeginTransactionAsync();
+    try
     {
-        Usuario = request.Usuario,
-        Nombre = request.Nombre,
-        Direccion = request.Direccion,
-        Telefono = request.Telefono,
-        Email = request.Email
-    };
+        // 1. Instanciar y guardar Cliente primero
+        var cliente = new Cliente
+        {
+            Nombre = request.Nombre.Trim(),
+            Direccion = request.Direccion.Trim(),
+            Telefono = request.Telefono.Trim(),
+            Email = request.Email.Trim().ToLowerInvariant()
+        };
+        db.Clientes.Add(cliente);
+        await db.SaveChangesAsync();
 
-    db.Clientes.Add(cliente);
-    await db.SaveChangesAsync();
-    logger.LogInformation("Cliente registrado: {Id} - {Usuario} - {Nombre}", cliente.Id, cliente.Usuario, cliente.Nombre);
-    return Results.Created($"/api/clientes/{cliente.Id}", cliente.ToResponse());
+        // 2. Encriptar contraseña y crear Usuario vinculado a Cliente
+        var passwordHash = passwordHasher.HashPassword(request.Password);
+        var usuario = new Usuario
+        {
+            ClienteId = cliente.Id,
+            Username = request.Username.Trim(),
+            PasswordHash = passwordHash,
+            FechaCreacion = DateTime.UtcNow,
+            UltimoAcceso = DateTime.UtcNow
+        };
+        db.Usuarios.Add(usuario);
+
+        // 3. Crear Carrito persistido inicial para el cliente
+        var carrito = new Carrito
+        {
+            ClienteId = cliente.Id,
+            FechaActualizacion = DateTime.UtcNow,
+            Total = 0.00m
+        };
+        db.Carritos.Add(carrito);
+
+        await db.SaveChangesAsync();
+        await transaction.CommitAsync();
+
+        logger.LogInformation("Cliente y Usuario registrados exitosamente: ID Cliente {ClienteId} - Usuario {Username}", cliente.Id, usuario.Username);
+
+        var token = tokenService.GenerarToken(cliente.Id, usuario.Username, cliente.Email);
+
+        var response = new AuthResponse(
+            cliente.Id,
+            usuario.Username,
+            cliente.Nombre,
+            cliente.Email,
+            cliente.Direccion,
+            cliente.Telefono,
+            token
+        );
+
+        return Results.Created($"/api/clientes/{cliente.Id}", response);
+    }
+    catch (Exception ex)
+    {
+        await transaction.RollbackAsync();
+        logger.LogError(ex, "Error al registrar cliente y usuario");
+        return Results.Problem("Ocurrió un error interno al registrar la cuenta.");
+    }
 });
 
-app.MapDelete("/api/clientes/{id}", async (int id, PedidoDbContext db) =>
+app.MapPost("/api/auth/login", async (
+    LoginRequest request,
+    PedidoDbContext db,
+    IPasswordHasherService passwordHasher,
+    ITokenService tokenService,
+    IValidator<LoginRequest> validator) =>
 {
-    logger.LogInformation("Eliminando cliente {Id}", id);
-    var cliente = await db.Clientes.FindAsync(id);
-    if (cliente is null)
-        return Results.NotFound(new ErrorResponse("CLIENTE-404", $"Cliente con ID {id} no encontrado"));
+    var validationResult = await validator.ValidateAsync(request);
+    if (!validationResult.IsValid)
+    {
+        var errores = validationResult.Errors
+            .Select(e => new ErrorDetalle(e.PropertyName, e.ErrorMessage))
+            .ToList();
+        return Results.BadRequest(new ErrorResponse("AUTH-400", "Credenciales inválidas.", errores));
+    }
 
-    var tienePedidos = await db.Pedidos.AnyAsync(p => p.ClienteId == id);
-    if (tienePedidos)
-        return Results.BadRequest(new ErrorResponse("CLIENTE-409", $"No se puede eliminar el cliente {id} porque tiene pedidos asociados."));
+    var usuario = await db.Usuarios
+        .Include(u => u.Cliente)
+        .FirstOrDefaultAsync(u => u.Username == request.Username);
 
-    db.Clientes.Remove(cliente);
+    if (usuario is null || !passwordHasher.VerifyPassword(request.Password, usuario.PasswordHash))
+    {
+        return Results.BadRequest(new ErrorResponse("AUTH-401", "Usuario o contraseña incorrectos."));
+    }
+
+    usuario.UltimoAcceso = DateTime.UtcNow;
     await db.SaveChangesAsync();
-    logger.LogInformation("Cliente eliminado: {Id}", id);
-    return Results.NoContent();
+
+    logger.LogInformation("Usuario autenticado: {Username} (Cliente ID {ClienteId})", usuario.Username, usuario.ClienteId);
+
+    var token = tokenService.GenerarToken(usuario.Cliente.Id, usuario.Username, usuario.Cliente.Email);
+
+    var response = new AuthResponse(
+        usuario.Cliente.Id,
+        usuario.Username,
+        usuario.Cliente.Nombre,
+        usuario.Cliente.Email,
+        usuario.Cliente.Direccion,
+        usuario.Cliente.Telefono,
+        token
+    );
+
+    return Results.Ok(response);
 });
+
+app.MapGet("/api/auth/me/{clienteId}", async (int clienteId, PedidoDbContext db, ITokenService tokenService) =>
+{
+    var usuario = await db.Usuarios
+        .Include(u => u.Cliente)
+        .FirstOrDefaultAsync(u => u.ClienteId == clienteId);
+
+    if (usuario is null)
+        return Results.NotFound(new ErrorResponse("AUTH-404", "Sesión de usuario no encontrada."));
+
+    var token = tokenService.GenerarToken(usuario.Cliente.Id, usuario.Username, usuario.Cliente.Email);
+
+    var response = new AuthResponse(
+        usuario.Cliente.Id,
+        usuario.Username,
+        usuario.Cliente.Nombre,
+        usuario.Cliente.Email,
+        usuario.Cliente.Direccion,
+        usuario.Cliente.Telefono,
+        token
+    );
+
+    return Results.Ok(response);
+});
+
+// ==========================================
+// 🛒 CARRITO DE COMPRAS (100% EN BASE DE DATOS)
+// ==========================================
+
+app.MapGet("/api/carrito/{clienteId}", async (int clienteId, PedidoDbContext db) =>
+{
+    var carrito = await db.Carritos
+        .Include(c => c.Items)
+            .ThenInclude(i => i.Pizza)
+        .FirstOrDefaultAsync(c => c.ClienteId == clienteId);
+
+    if (carrito is null)
+    {
+        var nuevoCarrito = new Carrito
+        {
+            ClienteId = clienteId,
+            FechaActualizacion = DateTime.UtcNow,
+            Total = 0.00m
+        };
+        db.Carritos.Add(nuevoCarrito);
+        await db.SaveChangesAsync();
+        return Results.Ok(nuevoCarrito.ToResponse());
+    }
+
+    return Results.Ok(carrito.ToResponse());
+});
+
+app.MapPost("/api/carrito/{clienteId}/items", async (int clienteId, AgregarCarritoItemRequest request, PedidoDbContext db) =>
+{
+    var pizza = await db.Pizzas.FindAsync(request.PizzaId);
+    if (pizza is null)
+        return Results.NotFound(new ErrorResponse("PIZZA-404", "Pizza no encontrada en el catálogo."));
+
+    if (!Enum.TryParse<TamanoPizza>(request.Tamano, ignoreCase: true, out var tamano))
+        tamano = TamanoPizza.Grande;
+
+    var cantidad = Math.Max(1, request.Cantidad);
+    var precioUnitario = CalcularPrecioPorTamano(pizza.Precio, tamano);
+    var subtotal = precioUnitario * cantidad;
+
+    var carrito = await db.Carritos
+        .Include(c => c.Items)
+        .FirstOrDefaultAsync(c => c.ClienteId == clienteId);
+
+    if (carrito is null)
+    {
+        carrito = new Carrito
+        {
+            ClienteId = clienteId,
+            FechaActualizacion = DateTime.UtcNow,
+            Total = 0.00m
+        };
+        db.Carritos.Add(carrito);
+        await db.SaveChangesAsync();
+    }
+
+    var itemExistente = carrito.Items.FirstOrDefault(i => i.PizzaId == request.PizzaId && i.Tamano == tamano);
+    if (itemExistente is not null)
+    {
+        itemExistente.Cantidad += cantidad;
+        itemExistente.Subtotal = itemExistente.Cantidad * itemExistente.PrecioUnitario;
+    }
+    else
+    {
+        var nuevoItem = new CarritoItem
+        {
+            CarritoId = carrito.Id,
+            PizzaId = pizza.Id,
+            Tamano = tamano,
+            Cantidad = cantidad,
+            PrecioUnitario = precioUnitario,
+            Subtotal = subtotal
+        };
+        db.CarritoItems.Add(nuevoItem);
+        carrito.Items.Add(nuevoItem);
+    }
+
+    carrito.FechaActualizacion = DateTime.UtcNow;
+    carrito.Total = carrito.Items.Sum(i => i.Subtotal);
+
+    await db.SaveChangesAsync();
+
+    var carritoActualizado = await db.Carritos
+        .Include(c => c.Items)
+            .ThenInclude(i => i.Pizza)
+        .FirstAsync(c => c.Id == carrito.Id);
+
+    logger.LogInformation("Item añadido al carrito del cliente {ClienteId}: {Pizza} ({Tamano}) x{Cantidad}",
+        clienteId, pizza.Nombre, tamano, cantidad);
+
+    return Results.Ok(carritoActualizado.ToResponse());
+});
+
+app.MapPut("/api/carrito/items/{itemId}", async (int itemId, ActualizarCarritoItemRequest request, PedidoDbContext db) =>
+{
+    var item = await db.CarritoItems
+        .Include(i => i.Carrito)
+        .Include(i => i.Pizza)
+        .FirstOrDefaultAsync(i => i.Id == itemId);
+
+    if (item is null)
+        return Results.NotFound(new ErrorResponse("CARRITO-404", "Item de carrito no encontrado."));
+
+    if (request.Cantidad <= 0)
+    {
+        db.CarritoItems.Remove(item);
+    }
+    else
+    {
+        item.Cantidad = request.Cantidad;
+        item.Subtotal = item.Cantidad * item.PrecioUnitario;
+    }
+
+    await db.SaveChangesAsync();
+
+    var carrito = await db.Carritos
+        .Include(c => c.Items)
+            .ThenInclude(i => i.Pizza)
+        .FirstAsync(c => c.Id == item.CarritoId);
+
+    carrito.FechaActualizacion = DateTime.UtcNow;
+    carrito.Total = carrito.Items.Sum(i => i.Subtotal);
+    await db.SaveChangesAsync();
+
+    return Results.Ok(carrito.ToResponse());
+});
+
+app.MapDelete("/api/carrito/items/{itemId}", async (int itemId, PedidoDbContext db) =>
+{
+    var item = await db.CarritoItems
+        .Include(i => i.Carrito)
+        .FirstOrDefaultAsync(i => i.Id == itemId);
+
+    if (item is null)
+        return Results.NotFound(new ErrorResponse("CARRITO-404", "Item no encontrado."));
+
+    var carritoId = item.CarritoId;
+    db.CarritoItems.Remove(item);
+    await db.SaveChangesAsync();
+
+    var carrito = await db.Carritos
+        .Include(c => c.Items)
+            .ThenInclude(i => i.Pizza)
+        .FirstAsync(c => c.Id == carritoId);
+
+    carrito.FechaActualizacion = DateTime.UtcNow;
+    carrito.Total = carrito.Items.Sum(i => i.Subtotal);
+    await db.SaveChangesAsync();
+
+    return Results.Ok(carrito.ToResponse());
+});
+
+app.MapDelete("/api/carrito/{clienteId}/vaciar", async (int clienteId, PedidoDbContext db) =>
+{
+    var carrito = await db.Carritos
+        .Include(c => c.Items)
+        .FirstOrDefaultAsync(c => c.ClienteId == clienteId);
+
+    if (carrito is null)
+        return Results.NotFound(new ErrorResponse("CARRITO-404", "Carrito no encontrado."));
+
+    db.CarritoItems.RemoveRange(carrito.Items);
+    carrito.Total = 0.00m;
+    carrito.FechaActualizacion = DateTime.UtcNow;
+
+    await db.SaveChangesAsync();
+    return Results.Ok(carrito.ToResponse());
+});
+
+app.MapPost("/api/carrito/{clienteId}/checkout", async (
+    int clienteId,
+    PedidoDbContext db,
+    SocketServerService socketServer) =>
+{
+    var carrito = await db.Carritos
+        .Include(c => c.Items)
+            .ThenInclude(i => i.Pizza)
+        .Include(c => c.Cliente)
+            .ThenInclude(cl => cl.Usuario)
+        .FirstOrDefaultAsync(c => c.ClienteId == clienteId);
+
+    if (carrito is null || carrito.Items.Count == 0)
+        return Results.BadRequest(new ErrorResponse("CHECKOUT-400", "El carrito está vacío. Agregá pizzas antes de confirmar."));
+
+    var cliente = carrito.Cliente;
+
+    using var transaction = await db.Database.BeginTransactionAsync();
+    try
+    {
+        // 1. Crear nuevo pedido
+        var pedido = new Pedido
+        {
+            ClienteId = cliente.Id,
+            FechaPedido = DateTime.UtcNow,
+            Estado = EstadoPedido.EnPreparacion,
+            Total = carrito.Total,
+            PedidoPizzas = carrito.Items.Select(item => new PedidoPizza
+            {
+                PizzaId = item.PizzaId,
+                Tamano = item.Tamano,
+                Cantidad = item.Cantidad,
+                PrecioUnitario = item.PrecioUnitario,
+                Subtotal = item.Subtotal
+            }).ToList()
+        };
+
+        db.Pedidos.Add(pedido);
+        await db.SaveChangesAsync();
+
+        // 2. Vaciar carrito en base de datos
+        db.CarritoItems.RemoveRange(carrito.Items);
+        carrito.Total = 0.00m;
+        carrito.FechaActualizacion = DateTime.UtcNow;
+        await db.SaveChangesAsync();
+
+        await transaction.CommitAsync();
+
+        var pedidoCompleto = await db.Pedidos
+            .Include(p => p.Cliente)
+                .ThenInclude(c => c.Usuario)
+            .Include(p => p.PedidoPizzas)
+                .ThenInclude(pp => pp.Pizza)
+            .FirstAsync(p => p.Id == pedido.Id);
+
+        logger.LogInformation("Checkout exitoso: Pedido #{PedidoId} para Cliente {Cliente} (Total: ${Total})",
+            pedido.Id, cliente.Nombre, pedido.Total);
+
+        // 3. Notificar a Cocina por socket TCP
+        await socketServer.NotificarNuevoPedidoAsync(pedidoCompleto);
+
+        return Results.Created($"/api/pedidos/{pedido.Id}", pedidoCompleto.ToResponse());
+    }
+    catch (Exception ex)
+    {
+        await transaction.RollbackAsync();
+        logger.LogError(ex, "Error al realizar checkout para cliente {ClienteId}", clienteId);
+        return Results.Problem("Ocurrió un error al procesar el pedido.");
+    }
+});
+
+// ==========================================
+// 🍕 CATÁLOGO DE PIZZAS
+// ==========================================
 
 app.MapGet("/api/pizzas", async (PedidoDbContext db) =>
 {
@@ -132,115 +488,78 @@ app.MapGet("/api/pizzas/{id}", async (int id, PedidoDbContext db) =>
         : Results.NotFound(new ErrorResponse("PIZZA-404", $"Pizza con ID {id} no encontrada"));
 });
 
-app.MapPost("/api/pizzas", async (CrearPizzaRequest request, PedidoDbContext db, IValidator<CrearPizzaRequest> validator) =>
+// ==========================================
+// 📦 PEDIDOS & TRACKING CON VALIDACIÓN DE TOKEN
+// ==========================================
+
+app.MapGet("/api/pedidos/mi-pedido-activo", async (
+    HttpContext httpContext,
+    PedidoDbContext db,
+    ITokenService tokenService) =>
 {
-    var validationResult = await validator.ValidateAsync(request);
-    if (!validationResult.IsValid)
-    {
-        var errores = validationResult.Errors
-            .Select(e => new ErrorDetalle(e.PropertyName, e.ErrorMessage))
-            .ToList();
-        return Results.BadRequest(new ErrorResponse("PIZZA-400", "No se pudo crear la pizza. Corregí los datos.", errores));
-    }
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    var (esValido, clienteId, _) = tokenService.ValidarToken(authHeader);
 
-    var pizza = new Pizza
-    {
-        Nombre = request.Nombre,
-        Descripcion = request.Descripcion,
-        Precio = request.Precio,
-        Tamano = Enum.Parse<TamanoPizza>(request.Tamano, ignoreCase: true)
-    };
+    if (!esValido || !clienteId.HasValue)
+        return Results.Unauthorized();
 
-    db.Pizzas.Add(pizza);
-    await db.SaveChangesAsync();
-    logger.LogInformation("Pizza creada: {Id} - {Nombre}", pizza.Id, pizza.Nombre);
-    return Results.Created($"/api/pizzas/{pizza.Id}", pizza.ToResponse());
-});
-
-app.MapDelete("/api/pizzas/{id}", async (int id, PedidoDbContext db) =>
-{
-    logger.LogInformation("Eliminando pizza {Id}", id);
-    var pizza = await db.Pizzas.FindAsync(id);
-    if (pizza is null)
-        return Results.NotFound(new ErrorResponse("PIZZA-404", $"Pizza con ID {id} no encontrada"));
-
-    var estaEnPedidos = await db.PedidoPizzas.AnyAsync(pp => pp.PizzaId == id);
-    if (estaEnPedidos)
-        return Results.BadRequest(new ErrorResponse("PIZZA-409", $"No se puede eliminar la pizza '{pizza.Nombre}' porque está en uno o más pedidos."));
-
-    db.Pizzas.Remove(pizza);
-    await db.SaveChangesAsync();
-    logger.LogInformation("Pizza eliminada: {Id}", id);
-    return Results.NoContent();
-});
-
-app.MapPost("/api/pedidos", async (CrearPedidoRequest request, PedidoDbContext db, SocketServerService socketServer, IValidator<CrearPedidoRequest> validator) =>
-{
-    var validationResult = await validator.ValidateAsync(request);
-    if (!validationResult.IsValid)
-    {
-        var errores = validationResult.Errors
-            .Select(e => new ErrorDetalle(e.PropertyName, e.ErrorMessage))
-            .ToList();
-        return Results.BadRequest(new ErrorResponse("PEDIDO-400", "No se pudo crear el pedido. Corregí los datos.", errores));
-    }
-
-    var cliente = await db.Clientes.FirstOrDefaultAsync(c => c.Usuario == request.ClienteUsuario);
-    if (cliente is null)
-        return Results.BadRequest(new ErrorResponse("PEDIDO-404", $"Cliente '{request.ClienteUsuario}' no encontrado. Registrate como cliente primero."));
-
-    var pizzas = await db.Pizzas.ToListAsync();
-
-    var itemsAgrupados = request.Items
-        .GroupBy(i => NormalizePizzaName(i.PizzaNombre))
-        .Select(g => new { NombreNormalizado = g.Key, Cantidad = g.Sum(i => i.Cantidad) })
-        .ToList();
-
-    var nombresPizzasUnicos = itemsAgrupados.Select(i => i.NombreNormalizado).ToList();
-    var pizzasCoincidentes = pizzas
-        .Where(p => nombresPizzasUnicos.Contains(NormalizePizzaName(p.Nombre)))
-        .ToList();
-
-    if (pizzasCoincidentes.Count != nombresPizzasUnicos.Count)
-    {
-        var nombresExistentes = pizzasCoincidentes.Select(p => NormalizePizzaName(p.Nombre)).ToHashSet();
-        var nombresInvalidos = nombresPizzasUnicos.Where(n => !nombresExistentes.Contains(n));
-        return Results.BadRequest(new ErrorResponse("PEDIDO-404", $"Las pizzas '{string.Join(", ", nombresInvalidos)}' no existen. Elegí pizzas del catálogo."));
-    }
-
-    var pedido = new Pedido
-    {
-        ClienteId = cliente.Id,
-        Estado = EstadoPedido.EnPreparacion,
-        PedidoPizzas = itemsAgrupados.Select(item =>
-        {
-            var pizza = pizzasCoincidentes.First(p => NormalizePizzaName(p.Nombre) == item.NombreNormalizado);
-            return new PedidoPizza
-            {
-                PizzaId = pizza.Id,
-                Cantidad = item.Cantidad,
-                PrecioUnitario = pizza.Precio
-            };
-        }).ToList()
-    };
-
-    pedido.Total = pedido.PedidoPizzas.Sum(pp => pp.Cantidad * pp.PrecioUnitario);
-
-    db.Pedidos.Add(pedido);
-    await db.SaveChangesAsync();
-
-    var pedidoCreado = await db.Pedidos
+    var pedidoActivo = await db.Pedidos
+        .AsNoTracking()
         .Include(p => p.Cliente)
+            .ThenInclude(c => c.Usuario)
         .Include(p => p.PedidoPizzas)
             .ThenInclude(pp => pp.Pizza)
-        .FirstAsync(p => p.Id == pedido.Id);
+        .Where(p => p.ClienteId == clienteId.Value && (p.Estado == EstadoPedido.EnPreparacion || p.Estado == EstadoPedido.EnViaje))
+        .OrderByDescending(p => p.FechaPedido)
+        .FirstOrDefaultAsync();
 
-    logger.LogInformation("Pedido creado: #{Id} - Cliente: {Cliente} - Total: {Total}",
-        pedido.Id, cliente.Usuario, pedido.Total);
+    if (pedidoActivo is null)
+    {
+        // Si no hay en preparacion o en viaje, devolver el más reciente
+        var ultimo = await db.Pedidos
+            .AsNoTracking()
+            .Include(p => p.Cliente)
+                .ThenInclude(c => c.Usuario)
+            .Include(p => p.PedidoPizzas)
+                .ThenInclude(pp => pp.Pizza)
+            .Where(p => p.ClienteId == clienteId.Value)
+            .OrderByDescending(p => p.FechaPedido)
+            .FirstOrDefaultAsync();
 
-    await socketServer.NotificarNuevoPedidoAsync(pedido);
+        return ultimo is not null ? Results.Ok(ultimo.ToResponse()) : Results.NotFound();
+    }
 
-    return Results.Created($"/api/pedidos/{pedido.Id}", pedidoCreado.ToResponse());
+    return Results.Ok(pedidoActivo.ToResponse());
+});
+
+app.MapGet("/api/pedidos/cliente/{clienteId}", async (
+    int clienteId,
+    HttpContext httpContext,
+    PedidoDbContext db,
+    ITokenService tokenService) =>
+{
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    if (!string.IsNullOrWhiteSpace(authHeader))
+    {
+        var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
+        if (esValido && tokenClienteId.HasValue && tokenClienteId.Value != clienteId)
+        {
+            return Results.Forbid();
+        }
+    }
+
+    logger.LogInformation("Consultando historial de pedidos para Cliente ID {ClienteId}", clienteId);
+    var pedidos = await db.Pedidos
+        .AsNoTracking()
+        .Include(p => p.Cliente)
+            .ThenInclude(c => c.Usuario)
+        .Include(p => p.PedidoPizzas)
+            .ThenInclude(pp => pp.Pizza)
+        .Where(p => p.ClienteId == clienteId)
+        .OrderByDescending(p => p.FechaPedido)
+        .ToListAsync();
+
+    return Results.Ok(pedidos.Select(p => p.ToResponse()).ToList());
 });
 
 app.MapGet("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
@@ -249,6 +568,7 @@ app.MapGet("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
     return await db.Pedidos
         .AsNoTracking()
         .Include(p => p.Cliente)
+            .ThenInclude(c => c.Usuario)
         .Include(p => p.PedidoPizzas)
             .ThenInclude(pp => pp.Pizza)
         .FirstOrDefaultAsync(p => p.Id == id) is Pedido pedido
@@ -256,7 +576,7 @@ app.MapGet("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
             : Results.NotFound(new ErrorResponse("PEDIDO-404", $"Pedido con ID {id} no encontrado"));
 });
 
-app.MapPatch("/api/pedidos/{id}/estado", async (int id, PedidoDbContext db) =>
+app.MapPatch("/api/pedidos/{id}/estado", async (int id, PedidoDbContext db, SocketServerService socketServer) =>
 {
     var pedido = await db.Pedidos.FindAsync(id);
     if (pedido is null)
@@ -277,8 +597,15 @@ app.MapPatch("/api/pedidos/{id}/estado", async (int id, PedidoDbContext db) =>
     pedido.Estado = siguienteEstado.Value;
     await db.SaveChangesAsync();
 
+    // Si avanzó a EnViaje, notificar al módulo de Reparto por sockets TCP
+    if (pedido.Estado == EstadoPedido.EnViaje)
+    {
+        await socketServer.NotificarPedidoEnViajeAsync(pedido.Id);
+    }
+
     var pedidoActualizado = await db.Pedidos
         .Include(p => p.Cliente)
+            .ThenInclude(c => c.Usuario)
         .Include(p => p.PedidoPizzas)
             .ThenInclude(pp => pp.Pizza)
         .FirstAsync(p => p.Id == id);
@@ -286,32 +613,38 @@ app.MapPatch("/api/pedidos/{id}/estado", async (int id, PedidoDbContext db) =>
     return Results.Ok(pedidoActualizado.ToResponse());
 });
 
-app.MapDelete("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
-{
-    logger.LogInformation("Eliminando pedido #{Id}", id);
-    var pedido = await db.Pedidos
-        .Include(p => p.PedidoPizzas)
-        .FirstOrDefaultAsync(p => p.Id == id);
-    if (pedido is null)
-        return Results.NotFound(new ErrorResponse("PEDIDO-404", $"Pedido con ID {id} no encontrado"));
+// ==========================================
+// 👥 CLIENTES
+// ==========================================
 
-    db.PedidoPizzas.RemoveRange(pedido.PedidoPizzas);
-    db.Pedidos.Remove(pedido);
-    await db.SaveChangesAsync();
-    logger.LogInformation("Pedido eliminado: #{Id}", id);
-    return Results.NoContent();
+app.MapGet("/api/clientes/{id}", async (int id, PedidoDbContext db) =>
+{
+    logger.LogInformation("Consultando cliente {Id}", id);
+    return await db.Clientes
+        .Include(c => c.Usuario)
+        .FirstOrDefaultAsync(c => c.Id == id) is Cliente cliente
+        ? Results.Ok(cliente.ToResponse())
+        : Results.NotFound(new ErrorResponse("CLIENTE-404", $"Cliente con ID {id} no encontrado"));
 });
 
 app.Run();
 
-static string NormalizePizzaName(string nombre)
-{
-    if (string.IsNullOrWhiteSpace(nombre))
-        return string.Empty;
+// ==========================================
+// 🛠️ MÉTODOS AUXILIARES Y MULTIPLICADORES
+// ==========================================
 
-    return string.Concat(nombre.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)))
-        .ToLowerInvariant()
-        .Trim();
+static decimal CalcularPrecioPorTamano(decimal precioBase, TamanoPizza tamano)
+{
+    var multiplicador = tamano switch
+    {
+        TamanoPizza.Personal => 0.70m,
+        TamanoPizza.Mediana => 0.85m,
+        TamanoPizza.Grande => 1.00m,
+        TamanoPizza.Familiar => 1.30m,
+        _ => 1.00m
+    };
+
+    return Math.Round(precioBase * multiplicador, 2);
 }
 
 public class ErrorResponse

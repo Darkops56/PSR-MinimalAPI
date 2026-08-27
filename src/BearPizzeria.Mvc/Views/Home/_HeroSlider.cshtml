@@ -1,0 +1,41 @@
+@model HomeViewModel
+
+@if (Model.FeaturedPizzas.Any())
+{
+    var featured = Model.FeaturedPizzas.First();
+    <section class="hero-slider-section">
+        <div class="hero-slider-container">
+            <div class="hero-slide">
+                <div class="hero-slide-content">
+                    <div class="hero-badge">
+                        <i class="bi bi-fire"></i>
+                        <span>¡Especial de la Casa!</span>
+                    </div>
+                    <h1 class="hero-title font-display">
+                        @featured.Nombre Artesanal
+                    </h1>
+                    <p class="hero-description">
+                        @featured.Descripcion
+                    </p>
+                    <div class="hero-actions">
+                        <div class="hero-price">
+                            $@featured.Precio.ToString("N2")
+                        </div>
+                        <button type="button" class="btn btn-brand-primary"
+                                data-open-customizer
+                                data-pizza-id="@featured.Id"
+                                data-pizza-name="@featured.Nombre"
+                                data-pizza-desc="@featured.Descripcion"
+                                data-pizza-price="@featured.Precio">
+                            <i class="bi bi-sliders me-1"></i>
+                            <span>Personalizar y Pedir</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-none d-md-block fs-1 display-1" style="font-size: 8rem !important; opacity: 0.9;">
+                    🍕
+                </div>
+            </div>
+        </div>
+    </section>
+}

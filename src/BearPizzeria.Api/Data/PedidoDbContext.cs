@@ -6,7 +6,10 @@ namespace BearPizzeria.Api.Data;
 public class PedidoDbContext(DbContextOptions<PedidoDbContext> options) : DbContext(options)
 {
     public DbSet<Cliente> Clientes => Set<Cliente>();
+    public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<Pizza> Pizzas => Set<Pizza>();
+    public DbSet<Carrito> Carritos => Set<Carrito>();
+    public DbSet<CarritoItem> CarritoItems => Set<CarritoItem>();
     public DbSet<Pedido> Pedidos => Set<Pedido>();
     public DbSet<PedidoPizza> PedidoPizzas => Set<PedidoPizza>();
 
@@ -21,8 +24,26 @@ public class PedidoDbContext(DbContextOptions<PedidoDbContext> options) : DbCont
             entity.Property(e => e.Telefono).HasMaxLength(20).IsRequired();
             entity.Property(e => e.Email).HasMaxLength(100).IsRequired();
             entity.HasIndex(e => e.Email).IsUnique();
-            entity.Property(e => e.Usuario).HasMaxLength(50).IsRequired();
-            entity.HasIndex(e => e.Usuario).IsUnique();
+
+            entity.HasOne(e => e.Usuario)
+                  .WithOne(u => u.Cliente)
+                  .HasForeignKey<Usuario>(u => u.ClienteId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Carrito)
+                  .WithOne(c => c.Cliente)
+                  .HasForeignKey<Carrito>(c => c.ClienteId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.ToTable("Usuarios");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Username).HasMaxLength(50).IsRequired();
+            entity.HasIndex(e => e.Username).IsUnique();
+            entity.Property(e => e.PasswordHash).HasMaxLength(255).IsRequired();
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
         });
 
         modelBuilder.Entity<Pizza>(entity =>
@@ -33,6 +54,34 @@ public class PedidoDbContext(DbContextOptions<PedidoDbContext> options) : DbCont
             entity.Property(e => e.Descripcion).HasColumnType("TEXT");
             entity.Property(e => e.Precio).HasColumnType("DECIMAL(10,2)").IsRequired();
             entity.Property(e => e.Tamano).HasConversion<string>().HasMaxLength(20);
+        });
+
+        modelBuilder.Entity<Carrito>(entity =>
+        {
+            entity.ToTable("Carritos");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.FechaActualizacion).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.Total).HasColumnType("DECIMAL(10,2)").HasDefaultValue(0.00m);
+
+            entity.HasMany(e => e.Items)
+                  .WithOne(i => i.Carrito)
+                  .HasForeignKey(i => i.CarritoId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<CarritoItem>(entity =>
+        {
+            entity.ToTable("CarritoItems");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Tamano).HasConversion<string>().HasMaxLength(20);
+            entity.Property(e => e.Cantidad).IsRequired().HasDefaultValue(1);
+            entity.Property(e => e.PrecioUnitario).HasColumnType("DECIMAL(10,2)").IsRequired();
+            entity.Property(e => e.Subtotal).HasColumnType("DECIMAL(10,2)").IsRequired();
+
+            entity.HasOne(e => e.Pizza)
+                  .WithMany()
+                  .HasForeignKey(e => e.PizzaId)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Pedido>(entity =>
@@ -52,9 +101,11 @@ public class PedidoDbContext(DbContextOptions<PedidoDbContext> options) : DbCont
         modelBuilder.Entity<PedidoPizza>(entity =>
         {
             entity.ToTable("PedidoPizzas");
-            entity.HasKey(e => new { e.PedidoId, e.PizzaId });
-            entity.Property(e => e.Cantidad).IsRequired();
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Tamano).HasConversion<string>().HasMaxLength(20);
+            entity.Property(e => e.Cantidad).IsRequired().HasDefaultValue(1);
             entity.Property(e => e.PrecioUnitario).HasColumnType("DECIMAL(10,2)");
+            entity.Property(e => e.Subtotal).HasColumnType("DECIMAL(10,2)");
 
             entity.HasOne(e => e.Pedido)
                   .WithMany(p => p.PedidoPizzas)
@@ -73,11 +124,11 @@ public class PedidoDbContext(DbContextOptions<PedidoDbContext> options) : DbCont
     private static void SeedData(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Pizza>().HasData(
-            new Pizza { Id = 1, Nombre = "Muzzarella", Descripcion = "Muzzarella, aceitunas y orégano", Precio = 4500.00m, Tamano = TamanoPizza.Grande },
-            new Pizza { Id = 2, Nombre = "Napolitana", Descripcion = "Muzzarella, tomate, ajo y aceitunas", Precio = 5000.00m, Tamano = TamanoPizza.Grande },
-            new Pizza { Id = 3, Nombre = "Fugazzeta", Descripcion = "Muzzarella, cebolla y aceitunas", Precio = 4800.00m, Tamano = TamanoPizza.Grande },
-            new Pizza { Id = 4, Nombre = "Especial", Descripcion = "Muzzarella, jamón, morrón y aceitunas", Precio = 5500.00m, Tamano = TamanoPizza.Grande },
-            new Pizza { Id = 5, Nombre = "Calabresa", Descripcion = "Muzzarella, longaniza calabresa y aceitunas", Precio = 5200.00m, Tamano = TamanoPizza.Grande }
+            new Pizza { Id = 1, Nombre = "Muzzarella", Descripcion = "Muzzarella artesanal, aceitunas verdes seleccionadas y orégano fresco", Precio = 4500.00m, Tamano = TamanoPizza.Grande },
+            new Pizza { Id = 2, Nombre = "Napolitana", Descripcion = "Muzzarella, rodajas de tomate natural, ajo picado y aceitunas negras", Precio = 5000.00m, Tamano = TamanoPizza.Grande },
+            new Pizza { Id = 3, Nombre = "Fugazzeta", Descripcion = "Abundante muzzarella, cebolla caramelizada crujiente y orégano", Precio = 4800.00m, Tamano = TamanoPizza.Grande },
+            new Pizza { Id = 4, Nombre = "Especial", Descripcion = "Muzzarella, jamón cocido premium, morrón asado y aceitunas", Precio = 5500.00m, Tamano = TamanoPizza.Grande },
+            new Pizza { Id = 5, Nombre = "Calabresa", Descripcion = "Muzzarella, longaniza calabresa picante y toque de ají molido", Precio = 5200.00m, Tamano = TamanoPizza.Grande }
         );
     }
 }

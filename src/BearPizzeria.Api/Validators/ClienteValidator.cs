@@ -7,11 +7,6 @@ public class ClienteValidator : AbstractValidator<Cliente>
 {
     public ClienteValidator()
     {
-        RuleFor(x => x.Usuario)
-            .NotEmpty().WithMessage("El usuario es obligatorio. Escribí un nombre de usuario.")
-            .MaximumLength(50).WithMessage("El usuario es demasiado largo. Usá máximo 50 caracteres.")
-            .Matches(@"^[a-zA-Z0-9_]+$").WithMessage("El usuario solo puede contener letras, números y guiones bajos.");
-
         RuleFor(x => x.Nombre)
             .NotEmpty().WithMessage("El nombre es obligatorio. Escribí tu nombre completo.")
             .MaximumLength(100).WithMessage("El nombre es demasiado largo. Usá máximo 100 caracteres.");
@@ -24,7 +19,7 @@ public class ClienteValidator : AbstractValidator<Cliente>
             .NotEmpty().WithMessage("El teléfono es obligatorio. Escribí un número de contacto.")
             .MaximumLength(20).WithMessage("El teléfono es demasiado largo. Usá máximo 20 caracteres.")
             .Matches(@"^\+?[\d\s\-\(\)]+$")
-            .WithMessage("El formato del teléfono no es válido. Usá solo números, espacios, guiones o paréntesis. Ej: +54 11 5555-1234");
+            .WithMessage("El formato del teléfono no es válido. Ej: +54 11 5555-1234");
 
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("El email es obligatorio. Escribí tu correo electrónico.")

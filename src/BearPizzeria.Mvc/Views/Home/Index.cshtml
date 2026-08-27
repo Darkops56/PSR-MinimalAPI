@@ -1,8 +1,24 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Pizzas Artesanales";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex flex-column gap-4">
+    <!-- Hero Slider destacado -->
+    <partial name="_HeroSlider" model="Model" />
+
+    <!-- Barra de Categorías / Chips -->
+    <partial name="_CategoryBar" model="Model" />
+
+    <!-- Catálogo de Pizzas -->
+    <section class="mt-2">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="font-display h4 text-light mb-0 d-flex align-items-center gap-2">
+                <span>🔥</span>
+                <span>Nuestro Menú de Pizzas</span>
+            </h2>
+            <span class="text-muted small">@Model.Pizzas.Count variedades disponibles</span>
+        </div>
+        <partial name="_ProductGrid" model="Model" />
+    </section>
 </div>

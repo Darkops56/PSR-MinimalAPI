@@ -1,0 +1,209 @@
+@model CartViewModel
+@{
+    ViewData["Title"] = "Mi Carrito de Compras";
+    var items = Model.Carrito?.Items ?? [];
+}
+
+<div class="container py-4">
+    <!-- Encabezado de Página -->
+    <div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom border-secondary border-opacity-25">
+        <div class="d-flex align-items-center gap-2">
+            <span class="fs-2">🛒</span>
+            <h1 class="font-display h3 text-light mb-0">Mi Carrito de Compras</h1>
+        </div>
+        @if (items.Any())
+        {
+            <button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1 rounded-pill px-3" id="btn-clear-cart">
+                <i class="bi bi-trash3-fill"></i>
+                <span>Vaciar Carrito</span>
+            </button>
+        }
+    </div>
+
+    @if (!Model.IsAuthenticated)
+    {
+        <div class="card card-dark p-5 text-center my-4">
+            <div class="display-4 text-warning mb-3">
+                <i class="bi bi-person-lock"></i>
+            </div>
+            <h2 class="font-display h4 text-light mb-2">Iniciá sesión para ver tu carrito</h2>
+            <p class="text-muted small mb-4">Tus pizzas se guardan de forma segura directamente en nuestra base de datos para que nunca las pierdas.</p>
+            <div>
+                <a asp-controller="Auth" asp-action="Login" class="btn btn-brand-primary px-4 py-2">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>
+                    <span>Ingresar a mi Cuenta</span>
+                </a>
+            </div>
+        </div>
+    }
+    else if (!items.Any())
+    {
+        <div class="card card-dark p-5 text-center my-4">
+            <div class="display-3 mb-3">🍕📦</div>
+            <h2 class="font-display h4 text-light mb-2">Tu carrito está vacío</h2>
+            <p class="text-muted small mb-4">Aún no has agregado ninguna pizza a tu orden. ¡Explorá nuestro menú artesanal!</p>
+            <div>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-brand-primary px-4 py-2">
+                    <i class="bi bi-arrow-left me-1"></i>
+                    <span>Explorar el Menú de Pizzas</span>
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4 align-items-start">
+            
+            <!-- Lista de Pizzas en BD (Columna Izquierda) -->
+            <div class="col-12 col-lg-7">
+                <div class="d-flex flex-column gap-3">
+                    @foreach (var item in items)
+                    {
+                        <div class="card card-dark p-3 p-md-4" data-item-id="@item.Id">
+                            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                                
+                                <!-- Info de Pizza -->
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="fs-1 p-2 rounded-3 bg-dark border border-secondary border-opacity-25 text-center" style="width: 54px; height: 54px; display: flex; align-items: center; justify-content: center;">
+                                        🍕
+                                    </div>
+                                    <div>
+                                        <h3 class="font-display h5 text-light mb-1">@item.PizzaNombre</h3>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-2 py-1">
+                                                @item.Tamano
+                                            </span>
+                                            <span class="text-muted small">
+                                                $@item.PrecioUnitario.ToString("N2") c/u
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Controles y Subtotal -->
+                                <div class="d-flex align-items-center justify-content-between justify-content-sm-end gap-3 pt-2 pt-sm-0 border-top border-sm-0 border-secondary border-opacity-10">
+                                    <!-- Botones Cantidad -->
+                                    <div class="d-flex align-items-center bg-dark border border-secondary border-opacity-50 rounded-pill px-2 py-1">
+                                        <button type="button" class="btn-cart-minus btn btn-sm text-light p-0 d-flex align-items-center justify-content-center"
+                                                style="width: 28px; height: 28px;" data-id="@item.Id" data-qty="@item.Cantidad" aria-label="Restar">−</button>
+                                        <span class="fw-bold text-light px-2 min-w-[20px] text-center">@item.Cantidad</span>
+                                        <button type="button" class="btn-cart-plus btn btn-sm text-light p-0 d-flex align-items-center justify-content-center"
+                                                style="width: 28px; height: 28px;" data-id="@item.Id" data-qty="@item.Cantidad" aria-label="Sumar">+</button>
+                                    </div>
+
+                                    <!-- Subtotal -->
+                                    <div class="text-end" style="min-width: 90px;">
+                                        <div class="font-display fw-bold text-warning fs-5">
+                                            $@item.Subtotal.ToString("N2")
+                                        </div>
+                                    </div>
+
+                                    <!-- Botón Eliminar -->
+                                    <button type="button" class="btn-cart-remove btn btn-link text-muted hover-danger p-1"
+                                            data-id="@item.Id" title="Eliminar del carrito" aria-label="Eliminar">
+                                        <i class="bi bi-trash3 fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Resumen de Pedido y Checkout (Columna Derecha) -->
+            <div class="col-12 col-lg-5">
+                <div class="card card-dark p-4 position-sticky" style="top: 90px;">
+                    <h2 class="font-display h5 text-light pb-3 border-bottom border-secondary border-opacity-25 d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-receipt text-danger"></i>
+                        <span>Resumen del Pedido</span>
+                    </h2>
+
+                    <!-- Desglose de Costos y Beneficios Resaltados -->
+                    <div class="d-flex flex-column gap-3 mb-4">
+                        <div class="d-flex justify-content-between text-muted small">
+                            <span>Subtotal (@items.Sum(i => i.Cantidad) pizzas):</span>
+                            <span class="fw-bold text-light fs-6">$@Model.Carrito?.Total.ToString("N2")</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center p-3 rounded-3 bg-success bg-opacity-10 border border-success border-opacity-25">
+                            <span class="text-success fw-bold d-flex align-items-center gap-2 small">
+                                <i class="bi bi-truck fs-5"></i>
+                                <span>Costo de Envío</span>
+                            </span>
+                            <span class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-1 rounded-pill fw-bold">
+                                ¡GRATIS!
+                            </span>
+                        </div>
+
+                        <!-- Dirección con Icono Proporcionado -->
+                        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+                            <div class="text-muted small d-flex align-items-center gap-1 fw-bold mb-1">
+                                <i class="bi bi-geo-alt-fill text-danger"></i>
+                                <span>Entregar en:</span>
+                            </div>
+                            <div class="text-light small ps-3">
+                                @Model.CurrentUser?.Direccion
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25 mb-4">
+                        <span class="font-display h6 text-light mb-0">Total a Pagar:</span>
+                        <span class="font-display fw-bold text-warning fs-3 mb-0">
+                            $@Model.TotalConEnvio.ToString("N2")
+                        </span>
+                    </div>
+
+                    <!-- Botón Checkout -->
+                    <form asp-controller="Cart" asp-action="Checkout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-brand-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-check2-circle fs-5"></i>
+                            <span>Confirmar Pedido</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script type="module">
+    import { CartManager } from '/js/modules/cart.js';
+
+    document.querySelectorAll('.btn-cart-minus').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id = parseInt(btn.dataset.id, 10);
+            const currentQty = parseInt(btn.dataset.qty, 10);
+            await CartManager.updateItemQty(id, currentQty - 1);
+            window.location.reload();
+        });
+    });
+
+    document.querySelectorAll('.btn-cart-plus').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id = parseInt(btn.dataset.id, 10);
+            const currentQty = parseInt(btn.dataset.qty, 10);
+            await CartManager.updateItemQty(id, currentQty + 1);
+            window.location.reload();
+        });
+    });
+
+    document.querySelectorAll('.btn-cart-remove').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id = parseInt(btn.dataset.id, 10);
+            await CartManager.removeItem(id);
+            window.location.reload();
+        });
+    });
+
+    document.getElementById('btn-clear-cart')?.addEventListener('click', async () => {
+        if (confirm('¿Estás seguro de que deseas vaciar tu carrito?')) {
+            await CartManager.clearCart();
+            window.location.reload();
+        }
+    });
+</script>
+}

@@ -1,0 +1,16 @@
+<div class="toast-container" id="toast-container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="toast-item success">
+            <i class="bi bi-check-circle-fill text-success fs-5"></i>
+            <span>@TempData["SuccessMessage"]</span>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="toast-item" style="border-left-color: var(--stock-red);">
+            <i class="bi bi-exclamation-triangle-fill text-danger fs-5"></i>
+            <span>@TempData["ErrorMessage"]</span>
+        </div>
+    }
+</div>

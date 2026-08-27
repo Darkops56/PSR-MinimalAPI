@@ -1,0 +1,50 @@
+<header class="site-header">
+    <div class="container header-container">
+        
+        <!-- Logo -->
+        <a asp-controller="Home" asp-action="Index" class="brand-logo">
+            <span class="brand-logo-icon">🐻🍕</span>
+            <span><span>BEAR</span>PIZZERIA</span>
+        </a>
+
+        <!-- Buscador con Debounce (Desktop) -->
+        <div class="header-search">
+            <div class="search-input-wrapper">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" id="global-search-input" class="search-input"
+                       placeholder="Buscar napolitana, muzzarella, especial..." autocomplete="off" />
+            </div>
+        </div>
+
+        <!-- Acciones Header (Desktop + Botón Hamburguesa a la Derecha en Mobile) -->
+        <div class="header-actions">
+            <!-- Desktop: Perfil / Login -->
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <a asp-controller="Profile" asp-action="Index" class="header-btn desktop-only">
+                    <i class="bi bi-person-circle text-danger"></i>
+                    <span>@User.Identity?.Name</span>
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Auth" asp-action="Login" class="header-btn desktop-only">
+                    <i class="bi bi-box-arrow-in-right text-danger"></i>
+                    <span>Ingresar</span>
+                </a>
+            }
+
+            <!-- Desktop: Carrito -->
+            <a asp-controller="Cart" asp-action="Index" class="header-btn desktop-only">
+                <i class="bi bi-bag-fill text-warning"></i>
+                <span>Mi Carrito</span>
+                <span class="cart-badge-pill cart-badge-count" style="display: none;">0</span>
+            </a>
+
+            <!-- Mobile: Botón Hamburguesa a la Derecha -->
+            <button type="button" id="hamburger-toggle-btn" class="hamburger-btn" aria-label="Abrir menú">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+    </div>
+</header>

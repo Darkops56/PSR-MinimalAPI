@@ -1,0 +1,159 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Mi Perfil y Pedidos";
+    var activeOrder = Model.ActiveOrder ?? Model.Pedidos.FirstOrDefault();
+}
+
+<div class="d-flex flex-column gap-4 py-2">
+    <!-- Encabezado de Usuario Autenticado -->
+    <div class="card card-dark p-4 p-md-5">
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-4 text-center text-md-start">
+            <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+                <div class="drawer-avatar fs-2" style="width: 72px; height: 72px;">
+                    @(Model.User?.Username?.Substring(0, 1).ToUpper() ?? "U")
+                </div>
+                <div>
+                    <h1 class="font-display h3 text-light mb-1">@Model.User?.Nombre</h1>
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-start gap-3 text-muted small">
+                        <span><i class="bi bi-person text-danger me-1"></i>@Model.User?.Username</span>
+                        <span><i class="bi bi-geo-alt-fill text-warning me-1"></i>@Model.User?.Direccion</span>
+                        <span><i class="bi bi-telephone-fill text-success me-1"></i>@Model.User?.Telefono</span>
+                        <span><i class="bi bi-envelope-fill text-info me-1"></i>@Model.User?.Email</span>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-controller="Auth" asp-action="Logout" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2">
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Widget de Tracking en Tiempo Real (Sin exponer IDs en la URL) -->
+    @if (activeOrder is not null)
+    {
+        var isPrep = activeOrder.Estado == "EnPreparacion";
+        var isTravel = activeOrder.Estado == "EnViaje";
+        var isDone = activeOrder.Estado == "Entregado";
+        var progressWidth = isPrep ? "20%" : isTravel ? "60%" : "100%";
+
+        <div class="tracker-card" id="live-status-tracker"
+             data-order-id="@activeOrder.Id"
+             data-initial-status="@activeOrder.Estado">
+            
+            <div class="d-flex align-items-center justify-content-between pb-3 border-bottom border-secondary border-opacity-25">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge @(isDone ? "bg-success" : "bg-danger") rounded-pill text-uppercase">
+                        @(isDone ? "FINALIZADO" : "EN VIVO")
+                    </span>
+                    <h2 class="font-display h5 text-light mb-0">Seguimiento de tu Pedido</h2>
+                </div>
+                <div class="text-end">
+                    <span class="text-muted small d-block">Estado:</span>
+                    <span class="font-display fw-bold text-warning fs-5" id="active-order-status-text">
+                        @(isPrep ? "🔥 En Preparación" : isTravel ? "🛵 En Camino" : "✅ Entregado")
+                    </span>
+                </div>
+            </div>
+
+            <!-- Stepper Visual -->
+            <div class="tracker-stepper">
+                <div class="tracker-track-line">
+                    <div class="tracker-track-progress" id="tracker-progress-bar" style="width: @progressWidth;"></div>
+                </div>
+
+                <!-- Paso 1: Cocina -->
+                <div class="tracker-step @(isPrep ? "active" : "completed")" id="step-prep">
+                    <div class="tracker-step-icon">
+                        <i class="bi bi-fire"></i>
+                    </div>
+                    <span class="tracker-step-label">1. Cocina</span>
+                </div>
+
+                <!-- Paso 2: Reparto -->
+                <div class="tracker-step @(isTravel ? "active" : isDone ? "completed" : "")" id="step-travel">
+                    <div class="tracker-step-icon">
+                        <i class="bi bi-bicycle"></i>
+                    </div>
+                    <span class="tracker-step-label">2. En Reparto</span>
+                </div>
+
+                <!-- Paso 3: Entregado -->
+                <div class="tracker-step @(isDone ? "completed active" : "")" id="step-done">
+                    <div class="tracker-step-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <span class="tracker-step-label">3. Entregado</span>
+                </div>
+            </div>
+
+            <!-- Detalle Rápido del Pedido -->
+            <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mt-3">
+                <div class="d-flex justify-content-between text-muted small fw-bold mb-2">
+                    <span>Items ordenados:</span>
+                    <span class="text-light fs-6">$@activeOrder.Total.ToString("N2")</span>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var item in activeOrder.Items)
+                    {
+                        <span class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25 px-2 py-1">
+                            🍕 @item.PizzaNombre (@item.Tamano) x@item.Cantidad
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Historial de Pedidos -->
+    <section class="mt-2">
+        <h2 class="font-display h5 text-light mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-clock-history text-warning"></i>
+            <span>Historial de Pedidos</span>
+        </h2>
+
+        @if (!Model.Pedidos.Any())
+        {
+            <div class="card card-dark p-4 text-center text-muted small">
+                <p class="mb-0">Todavía no has realizado ningún pedido.</p>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex flex-column gap-3">
+                @foreach (var pedido in Model.Pedidos)
+                {
+                    var isOrderDone = pedido.Estado == "Entregado";
+                    <div class="card card-dark p-3 p-md-4">
+                        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                            <div>
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="font-display fw-bold text-light">Pedido</span>
+                                    <span class="badge @(isOrderDone ? "bg-success" : "bg-warning") bg-opacity-25 @(isOrderDone ? "text-success border-success" : "text-warning border-warning") border rounded-pill">
+                                        @pedido.Estado
+                                    </span>
+                                </div>
+                                <div class="text-muted small mb-1">
+                                    <i class="bi bi-calendar3 me-1"></i>
+                                    @pedido.FechaPedido.ToLocalTime().ToString("dd/MM/yyyy HH:mm") hs
+                                </div>
+                                <div class="text-muted small">
+                                    @string.Join(" • ", pedido.Items.Select(i => $"{i.PizzaNombre} ({i.Tamano}) x{i.Cantidad}"))
+                                </div>
+                            </div>
+
+                            <div class="text-end">
+                                <div class="text-muted small">@pedido.Items.Sum(i => i.Cantidad) pizzas</div>
+                                <div class="font-display fw-bold text-warning fs-5">$@pedido.Total.ToString("N2")</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+</div>

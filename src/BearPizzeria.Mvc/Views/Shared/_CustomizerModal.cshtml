@@ -1,0 +1,70 @@
+<div class="modal-overlay" id="customizer-modal">
+    <div class="modal-card">
+        
+        <!-- Header Modal -->
+        <div class="modal-header">
+            <h3 class="font-display h5 text-light mb-0" id="customizer-pizza-name">Personalizar Pizza</h3>
+            <button type="button" class="modal-close-btn" data-close-modal aria-label="Cerrar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <!-- Body Modal -->
+        <div class="modal-body">
+            <p class="text-muted small mb-0" id="customizer-pizza-desc"></p>
+
+            <!-- Texto Dinámico de Porciones -->
+            <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 d-flex align-items-center gap-3">
+                <span class="fs-4">🍕</span>
+                <span class="text-warning small fw-bold" id="customizer-portions-text">
+                    Es una pizza Grande que tiene 8 porciones.
+                </span>
+            </div>
+
+            <!-- Selector de Tamaños (Sin porcentajes ni valores base) -->
+            <div>
+                <label class="form-label fw-bold text-light small mb-2">Elegí el Tamaño:</label>
+                <div class="size-selector-grid">
+                    <button type="button" class="size-option-btn" data-size="Personal">
+                        <span class="size-name">Personal</span>
+                        <span class="text-muted small">4 porciones</span>
+                    </button>
+                    <button type="button" class="size-option-btn" data-size="Mediana">
+                        <span class="size-name">Mediana</span>
+                        <span class="text-muted small">6 porciones</span>
+                    </button>
+                    <button type="button" class="size-option-btn active" data-size="Grande">
+                        <span class="size-name">Grande</span>
+                        <span class="text-muted small">8 porciones</span>
+                    </button>
+                    <button type="button" class="size-option-btn" data-size="Familiar">
+                        <span class="size-name">Familiar</span>
+                        <span class="text-muted small">12 porciones</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cantidad -->
+            <div class="d-flex align-items-center justify-content-between pt-3 border-top border-secondary border-opacity-25">
+                <span class="fw-bold text-light small">Cantidad:</span>
+                <div class="quantity-control">
+                    <button type="button" class="qty-btn" id="customizer-minus-btn" aria-label="Restar">−</button>
+                    <span class="fw-bold text-light px-2" id="customizer-qty">1</span>
+                    <button type="button" class="qty-btn" id="customizer-plus-btn" aria-label="Sumar">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="modal-footer bg-dark">
+            <div>
+                <span class="text-muted small d-block">Total:</span>
+                <div class="font-display fw-bold text-warning fs-4" id="customizer-total-price">$0.00</div>
+            </div>
+            <button type="button" class="btn btn-brand-primary d-flex align-items-center gap-2" id="customizer-add-btn">
+                <i class="bi bi-cart-plus"></i>
+                <span>Añadir al Carrito</span>
+            </button>
+        </div>
+    </div>
+</div>

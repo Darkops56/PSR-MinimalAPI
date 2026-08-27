@@ -1,0 +1,99 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Crear Cuenta";
+}
+
+<div class="row justify-content-center align-items-center py-5" style="min-height: 80vh;">
+    <div class="col-12 col-sm-11 col-md-9 col-lg-7">
+        <div class="card card-dark p-4 p-md-5">
+            
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <div class="display-4 mb-2">🐻📝</div>
+                <h1 class="font-display h3 text-light mb-2">Crear Cuenta</h1>
+                <p class="text-muted small">Registrate para guardar tus pizzas en tu carrito permanente y hacer pedidos.</p>
+            </div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger py-2 px-3 mb-4 rounded-3 small">
+                    @Html.ValidationSummary(true)
+                </div>
+            }
+
+            <form asp-action="Register" method="post">
+                @Html.AntiForgeryToken()
+
+                <!-- Grid: Usuario & Nombre -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Username" class="form-label fw-bold text-light small mb-2">Usuario</label>
+                        <input asp-for="Username" class="form-control form-control-custom w-100"
+                               placeholder="jaimito55" autocomplete="username" />
+                        <span asp-validation-for="Username" class="text-danger small mt-1 d-block"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Nombre" class="form-label fw-bold text-light small mb-2">Nombre Completo</label>
+                        <input asp-for="Nombre" class="form-control form-control-custom w-100"
+                               placeholder="Jaime Pérez" autocomplete="name" />
+                        <span asp-validation-for="Nombre" class="text-danger small mt-1 d-block"></span>
+                    </div>
+                </div>
+
+                <!-- Grid: Email & Teléfono -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Email" class="form-label fw-bold text-light small mb-2">Email</label>
+                        <input asp-for="Email" type="email" class="form-control form-control-custom w-100"
+                               placeholder="jaime@ejemplo.com" autocomplete="email" />
+                        <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Telefono" class="form-label fw-bold text-light small mb-2">Teléfono</label>
+                        <input asp-for="Telefono" class="form-control form-control-custom w-100"
+                               placeholder="+54 11 1234-5678" autocomplete="tel" />
+                        <span asp-validation-for="Telefono" class="text-danger small mt-1 d-block"></span>
+                    </div>
+                </div>
+
+                <!-- Dirección -->
+                <div class="mb-3">
+                    <label asp-for="Direccion" class="form-label fw-bold text-light small mb-2">Dirección de Entrega</label>
+                    <input asp-for="Direccion" class="form-control form-control-custom w-100"
+                           placeholder="Av. Corrientes 1234, 4to B" autocomplete="street-address" />
+                    <span asp-validation-for="Direccion" class="text-danger small mt-1 d-block"></span>
+                </div>
+
+                <!-- Grid: Contraseña & Confirmación -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Password" class="form-label fw-bold text-light small mb-2">Contraseña</label>
+                        <input asp-for="Password" type="password" class="form-control form-control-custom w-100"
+                               placeholder="••••••••" autocomplete="new-password" />
+                        <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="ConfirmPassword" class="form-label fw-bold text-light small mb-2">Confirmar Contraseña</label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control form-control-custom w-100"
+                               placeholder="••••••••" autocomplete="new-password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small mt-1 d-block"></span>
+                    </div>
+                </div>
+
+                <!-- Botón Submit -->
+                <button type="submit" class="btn btn-brand-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-check2-circle fs-5"></i>
+                    <span>Completar Registro</span>
+                </button>
+            </form>
+
+            <!-- Footer Enlace Login -->
+            <div class="mt-4 pt-4 border-top border-secondary border-opacity-25 text-center text-muted small">
+                ¿Ya tenés una cuenta?
+                <a asp-action="Login" class="auth-highlight-link ms-1">
+                    Iniciá sesión acá <i class="bi bi-arrow-right-short"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
