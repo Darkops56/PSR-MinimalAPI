@@ -53,6 +53,31 @@ public class PedidoApiService : IPedidoApiService
         }
     }
 
+    public async Task<List<PedidoDto>> GetMisPedidosActivosAsync(string? token = null)
+    {
+        try
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, "/api/pedidos/mis-pedidos-activos");
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+
+            var response = await _httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<List<PedidoDto>>();
+                return result ?? [];
+            }
+            return [];
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al consultar mis pedidos activos");
+            return [];
+        }
+    }
+
     public async Task<List<PedidoDto>> GetPedidosByClienteAsync(int clienteId, string? token = null)
     {
         try

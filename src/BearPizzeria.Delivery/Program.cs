@@ -81,7 +81,7 @@ static async Task ProcesarMensaje(string mensaje, NetworkStream stream)
 
                 Console.WriteLine($"\n[REPARTO] Pedido #{pedidoId} en camino a deliver...");
                 Console.WriteLine("[REPARTO] Conductor asignado. Viajando al domicilio...");
-                await Task.Delay(5000);
+                await Task.Delay(3000);
                 Console.WriteLine("[REPARTO] Pedido entregado al cliente!\n");
 
                 var respuesta = JsonSerializer.Serialize(new
