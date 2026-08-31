@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MySQL")
     ?? throw new InvalidOperationException("Connection string 'MySQL' not found");
 
-builder.Services.AddDbContext<PedidoDbContext>(options =>
+builder.Services.AddDbContext<PizzeriaDbContext>(options =>
     options.UseMySQL(connectionString));
 
 builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
@@ -73,7 +73,7 @@ app.MapScalarApiReference(options =>
 
 app.MapPost("/api/auth/register", async (
     RegisterRequest request,
-    PedidoDbContext db,
+    PizzeriaDbContext db,
     IPasswordHasherService passwordHasher,
     ITokenService tokenService,
     IValidator<RegisterRequest> validator) =>
@@ -162,7 +162,7 @@ app.MapPost("/api/auth/register", async (
 
 app.MapPost("/api/auth/login", async (
     LoginRequest request,
-    PedidoDbContext db,
+    PizzeriaDbContext db,
     IPasswordHasherService passwordHasher,
     ITokenService tokenService,
     IValidator<LoginRequest> validator) =>
@@ -205,7 +205,7 @@ app.MapPost("/api/auth/login", async (
     return Results.Ok(response);
 });
 
-app.MapGet("/api/auth/me/{clienteId}", async (int clienteId, PedidoDbContext db, ITokenService tokenService) =>
+app.MapGet("/api/auth/me/{clienteId}", async (int clienteId, PizzeriaDbContext db, ITokenService tokenService) =>
 {
     var usuario = await db.Usuarios
         .Include(u => u.Cliente)
@@ -233,7 +233,7 @@ app.MapGet("/api/auth/me/{clienteId}", async (int clienteId, PedidoDbContext db,
 // 🛒 CARRITO DE COMPRAS (100% EN BASE DE DATOS)
 // ==========================================
 
-app.MapGet("/api/carrito/{clienteId}", async (int clienteId, PedidoDbContext db) =>
+app.MapGet("/api/carrito/{clienteId}", async (int clienteId, PizzeriaDbContext db) =>
 {
     var carrito = await db.Carritos
         .Include(c => c.Items)
@@ -256,7 +256,7 @@ app.MapGet("/api/carrito/{clienteId}", async (int clienteId, PedidoDbContext db)
     return Results.Ok(carrito.ToResponse());
 });
 
-app.MapPost("/api/carrito/{clienteId}/items", async (int clienteId, AgregarCarritoItemRequest request, PedidoDbContext db) =>
+app.MapPost("/api/carrito/{clienteId}/items", async (int clienteId, AgregarCarritoItemRequest request, PizzeriaDbContext db) =>
 {
     var pizza = await db.Pizzas.FindAsync(request.PizzaId);
     if (pizza is null)
@@ -303,7 +303,6 @@ app.MapPost("/api/carrito/{clienteId}/items", async (int clienteId, AgregarCarri
             Subtotal = subtotal
         };
         db.CarritoItems.Add(nuevoItem);
-        carrito.Items.Add(nuevoItem);
     }
 
     carrito.FechaActualizacion = DateTime.UtcNow;
@@ -322,7 +321,7 @@ app.MapPost("/api/carrito/{clienteId}/items", async (int clienteId, AgregarCarri
     return Results.Ok(carritoActualizado.ToResponse());
 });
 
-app.MapPut("/api/carrito/items/{itemId}", async (int itemId, ActualizarCarritoItemRequest request, PedidoDbContext db) =>
+app.MapPut("/api/carrito/items/{itemId}", async (int itemId, ActualizarCarritoItemRequest request, PizzeriaDbContext db) =>
 {
     var item = await db.CarritoItems
         .Include(i => i.Carrito)
@@ -356,7 +355,7 @@ app.MapPut("/api/carrito/items/{itemId}", async (int itemId, ActualizarCarritoIt
     return Results.Ok(carrito.ToResponse());
 });
 
-app.MapDelete("/api/carrito/items/{itemId}", async (int itemId, PedidoDbContext db) =>
+app.MapDelete("/api/carrito/items/{itemId}", async (int itemId, PizzeriaDbContext db) =>
 {
     var item = await db.CarritoItems
         .Include(i => i.Carrito)
@@ -381,7 +380,7 @@ app.MapDelete("/api/carrito/items/{itemId}", async (int itemId, PedidoDbContext 
     return Results.Ok(carrito.ToResponse());
 });
 
-app.MapDelete("/api/carrito/{clienteId}/vaciar", async (int clienteId, PedidoDbContext db) =>
+app.MapDelete("/api/carrito/{clienteId}/vaciar", async (int clienteId, PizzeriaDbContext db) =>
 {
     var carrito = await db.Carritos
         .Include(c => c.Items)
@@ -400,7 +399,7 @@ app.MapDelete("/api/carrito/{clienteId}/vaciar", async (int clienteId, PedidoDbC
 
 app.MapPost("/api/carrito/{clienteId}/checkout", async (
     int clienteId,
-    PedidoDbContext db,
+    PizzeriaDbContext db,
     SocketServerService socketServer) =>
 {
     var carrito = await db.Carritos
@@ -473,14 +472,14 @@ app.MapPost("/api/carrito/{clienteId}/checkout", async (
 // 🍕 CATÁLOGO DE PIZZAS
 // ==========================================
 
-app.MapGet("/api/pizzas", async (PedidoDbContext db) =>
+app.MapGet("/api/pizzas", async (PizzeriaDbContext db) =>
 {
     logger.LogInformation("Consultando catálogo de pizzas");
     var pizzas = await db.Pizzas.ToListAsync();
     return Results.Ok(pizzas.Select(p => p.ToResponse()).ToList());
 });
 
-app.MapGet("/api/pizzas/{id}", async (int id, PedidoDbContext db) =>
+app.MapGet("/api/pizzas/{id}", async (int id, PizzeriaDbContext db) =>
 {
     logger.LogInformation("Consultando pizza {Id}", id);
     return await db.Pizzas.FindAsync(id) is Pizza pizza
@@ -494,7 +493,7 @@ app.MapGet("/api/pizzas/{id}", async (int id, PedidoDbContext db) =>
 
 app.MapGet("/api/pedidos/mi-pedido-activo", async (
     HttpContext httpContext,
-    PedidoDbContext db,
+    PizzeriaDbContext db,
     ITokenService tokenService) =>
 {
     var authHeader = httpContext.Request.Headers.Authorization.ToString();
@@ -532,10 +531,34 @@ app.MapGet("/api/pedidos/mi-pedido-activo", async (
     return Results.Ok(pedidoActivo.ToResponse());
 });
 
+app.MapGet("/api/pedidos/mis-pedidos-activos", async (
+    HttpContext httpContext,
+    PizzeriaDbContext db,
+    ITokenService tokenService) =>
+{
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    var (esValido, clienteId, _) = tokenService.ValidarToken(authHeader);
+
+    if (!esValido || !clienteId.HasValue)
+        return Results.Unauthorized();
+
+    var pedidosActivos = await db.Pedidos
+        .AsNoTracking()
+        .Include(p => p.Cliente)
+            .ThenInclude(c => c.Usuario)
+        .Include(p => p.PedidoPizzas)
+            .ThenInclude(pp => pp.Pizza)
+        .Where(p => p.ClienteId == clienteId.Value && (p.Estado == EstadoPedido.EnPreparacion || p.Estado == EstadoPedido.EnViaje))
+        .OrderByDescending(p => p.FechaPedido)
+        .ToListAsync();
+
+    return Results.Ok(pedidosActivos.Select(p => p.ToResponse()).ToList());
+});
+
 app.MapGet("/api/pedidos/cliente/{clienteId}", async (
     int clienteId,
     HttpContext httpContext,
-    PedidoDbContext db,
+    PizzeriaDbContext db,
     ITokenService tokenService) =>
 {
     var authHeader = httpContext.Request.Headers.Authorization.ToString();
@@ -562,7 +585,7 @@ app.MapGet("/api/pedidos/cliente/{clienteId}", async (
     return Results.Ok(pedidos.Select(p => p.ToResponse()).ToList());
 });
 
-app.MapGet("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
+app.MapGet("/api/pedidos/{id}", async (int id, PizzeriaDbContext db) =>
 {
     logger.LogInformation("Consultando pedido #{Id}", id);
     return await db.Pedidos
@@ -576,7 +599,7 @@ app.MapGet("/api/pedidos/{id}", async (int id, PedidoDbContext db) =>
             : Results.NotFound(new ErrorResponse("PEDIDO-404", $"Pedido con ID {id} no encontrado"));
 });
 
-app.MapPatch("/api/pedidos/{id}/estado", async (int id, PedidoDbContext db, SocketServerService socketServer) =>
+app.MapPatch("/api/pedidos/{id}/estado", async (int id, PizzeriaDbContext db, SocketServerService socketServer) =>
 {
     var pedido = await db.Pedidos.FindAsync(id);
     if (pedido is null)
@@ -617,7 +640,7 @@ app.MapPatch("/api/pedidos/{id}/estado", async (int id, PedidoDbContext db, Sock
 // 👥 CLIENTES
 // ==========================================
 
-app.MapGet("/api/clientes/{id}", async (int id, PedidoDbContext db) =>
+app.MapGet("/api/clientes/{id}", async (int id, PizzeriaDbContext db) =>
 {
     logger.LogInformation("Consultando cliente {Id}", id);
     return await db.Clientes
@@ -625,6 +648,47 @@ app.MapGet("/api/clientes/{id}", async (int id, PedidoDbContext db) =>
         .FirstOrDefaultAsync(c => c.Id == id) is Cliente cliente
         ? Results.Ok(cliente.ToResponse())
         : Results.NotFound(new ErrorResponse("CLIENTE-404", $"Cliente con ID {id} no encontrado"));
+});
+
+app.MapPut("/api/clientes/{id}", async (
+    int id,
+    ActualizarClienteRequest request,
+    PizzeriaDbContext db) =>
+{
+    logger.LogInformation("Actualizando cliente {Id}", id);
+
+    var cliente = await db.Clientes
+        .Include(c => c.Usuario)
+        .FirstOrDefaultAsync(c => c.Id == id);
+
+    if (cliente is null)
+        return Results.NotFound(new ErrorResponse("CLIENTE-404", $"Cliente con ID {id} no encontrado"));
+
+    if (!string.Equals(cliente.Email, request.Email, StringComparison.OrdinalIgnoreCase))
+    {
+        var emailExiste = await db.Clientes.AnyAsync(c => c.Id != id && c.Email.ToLower() == request.Email.ToLower());
+        if (emailExiste)
+            return Results.BadRequest(new ErrorResponse("CLIENTE-400", "El correo electrónico ya está registrado por otro usuario."));
+    }
+
+    if (cliente.Usuario is not null && !string.Equals(cliente.Usuario.Username, request.Username, StringComparison.OrdinalIgnoreCase))
+    {
+        var usernameExiste = await db.Usuarios.AnyAsync(u => u.ClienteId != id && u.Username.ToLower() == request.Username.ToLower());
+        if (usernameExiste)
+            return Results.BadRequest(new ErrorResponse("CLIENTE-400", "El nombre de usuario ya está registrado por otra cuenta."));
+
+        cliente.Usuario.Username = request.Username.Trim();
+    }
+
+    cliente.Nombre = request.Nombre.Trim();
+    cliente.Direccion = request.Direccion.Trim();
+    cliente.Telefono = request.Telefono.Trim();
+    cliente.Email = request.Email.Trim();
+
+    await db.SaveChangesAsync();
+
+    logger.LogInformation("Cliente {Id} actualizado con éxito: {Nombre}", id, cliente.Nombre);
+    return Results.Ok(cliente.ToResponse());
 });
 
 app.Run();

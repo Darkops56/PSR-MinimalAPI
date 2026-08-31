@@ -192,7 +192,7 @@ public class SocketServerService : BackgroundService
                     if (!string.IsNullOrEmpty(estadoStr) && Enum.TryParse<EstadoPedido>(estadoStr, true, out var nuevoEstado))
                     {
                         using var scope = _scopeFactory.CreateScope();
-                        var db = scope.ServiceProvider.GetRequiredService<PedidoDbContext>();
+                        var db = scope.ServiceProvider.GetRequiredService<PizzeriaDbContext>();
 
                         var pedido = await db.Pedidos.FindAsync(new object?[] { pedidoId }, stoppingToken);
                         if (pedido is not null)
@@ -232,7 +232,7 @@ public class SocketServerService : BackgroundService
         await foreach (var pedido in _pedidoChannel.Reader.ReadAllAsync(stoppingToken))
         {
             using var scope = _scopeFactory.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<PedidoDbContext>();
+            var db = scope.ServiceProvider.GetRequiredService<PizzeriaDbContext>();
 
             var pedidoCompleto = await db.Pedidos
                 .Include(p => p.Cliente)
@@ -269,7 +269,7 @@ public class SocketServerService : BackgroundService
     private async Task EnviarADeliveryAsync(int pedidoId, CancellationToken stoppingToken)
     {
         using var scope = _scopeFactory.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<PedidoDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<PizzeriaDbContext>();
 
         var pedido = await db.Pedidos
             .Include(p => p.Cliente)

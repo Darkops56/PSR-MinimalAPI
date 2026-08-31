@@ -1,120 +1,207 @@
 @model ProfileViewModel
 @{
     ViewData["Title"] = "Mi Perfil y Pedidos";
-    var activeOrder = Model.ActiveOrder ?? Model.Pedidos.FirstOrDefault();
+    var activeOrders = Model.ActiveOrders.Any() 
+        ? Model.ActiveOrders 
+        : (Model.ActiveOrder is not null ? new List<PedidoDto> { Model.ActiveOrder } : []);
 }
 
 <div class="d-flex flex-column gap-4 py-2">
-    <!-- Encabezado de Usuario Autenticado -->
+    <!-- Alertas Flash -->
+    @if (TempData["SuccessMessage"] is not null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-3 py-2 px-3 small" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] is not null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show rounded-3 py-2 px-3 small" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Encabezado de Usuario Autenticado con Previsualización en Vivo -->
     <div class="card card-dark p-4 p-md-5">
         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-4 text-center text-md-start">
             <div class="d-flex flex-column flex-md-row align-items-center gap-4">
-                <div class="drawer-avatar fs-2" style="width: 72px; height: 72px;">
-                    @(Model.User?.Username?.Substring(0, 1).ToUpper() ?? "U")
+                <div class="drawer-avatar fs-2" style="width: 72px; height: 72px;" id="preview-avatar">
+                    <span id="preview-avatar-letter">@(Model.User?.Username?.Substring(0, 1).ToUpper() ?? "U")</span>
                 </div>
                 <div>
-                    <h1 class="font-display h3 text-light mb-1">@Model.User?.Nombre</h1>
+                    <h1 class="font-display h3 text-light mb-1" id="preview-display-nombre">@Model.User?.Nombre</h1>
                     <div class="d-flex flex-wrap justify-content-center justify-content-md-start gap-3 text-muted small">
-                        <span><i class="bi bi-person text-danger me-1"></i>@Model.User?.Username</span>
-                        <span><i class="bi bi-geo-alt-fill text-warning me-1"></i>@Model.User?.Direccion</span>
-                        <span><i class="bi bi-telephone-fill text-success me-1"></i>@Model.User?.Telefono</span>
-                        <span><i class="bi bi-envelope-fill text-info me-1"></i>@Model.User?.Email</span>
+                        <span><i class="bi bi-person text-danger me-1"></i><span id="preview-display-username">@Model.User?.Username</span></span>
+                        <span><i class="bi bi-geo-alt-fill text-warning me-1"></i><span id="preview-display-direccion">@Model.User?.Direccion</span></span>
+                        <span><i class="bi bi-telephone-fill text-success me-1"></i><span id="preview-display-telefono">@Model.User?.Telefono</span></span>
+                        <span><i class="bi bi-envelope-fill text-info me-1"></i><span id="preview-display-email">@Model.User?.Email</span></span>
                     </div>
                 </div>
             </div>
 
-            <form asp-controller="Auth" asp-action="Logout" method="post">
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2">
-                    <i class="bi bi-box-arrow-left"></i>
-                    <span>Cerrar Sesión</span>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <!-- Botón Editar Perfil -->
+                <button type="button" class="btn btn-outline-warning btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2"
+                        data-bs-toggle="collapse" data-bs-target="#editProfileCollapse" aria-expanded="false" aria-controls="editProfileCollapse">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Editar Perfil</span>
                 </button>
+
+                <!-- Botón Cerrar Sesión -->
+                <form asp-controller="Auth" asp-action="Logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span>Cerrar Sesión</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Formulario Colapsable de Edición con Live Preview -->
+        <div class="collapse mt-4 pt-4 border-top border-secondary border-opacity-25" id="editProfileCollapse">
+            <h3 class="font-display h5 text-light mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-person-gear text-warning"></i>
+                <span>Editar mis Datos Personales</span>
+            </h3>
+
+            <form asp-controller="Profile" asp-action="UpdateProfile" method="post">
+                @Html.AntiForgeryToken()
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold text-light small">Nombre de Usuario</label>
+                        <input type="text" id="edit-input-username" name="Username" value="@Model.User?.Username" class="form-control form-control-custom w-100" required maxlength="50" />
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold text-light small">Nombre Completo</label>
+                        <input type="text" id="edit-input-nombre" name="Nombre" value="@Model.User?.Nombre" class="form-control form-control-custom w-100" required maxlength="100" />
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold text-light small">Correo Electrónico</label>
+                        <input type="email" id="edit-input-email" name="Email" value="@Model.User?.Email" class="form-control form-control-custom w-100" required maxlength="100" />
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold text-light small">Dirección de Entrega</label>
+                        <input type="text" id="edit-input-direccion" name="Direccion" value="@Model.User?.Direccion" class="form-control form-control-custom w-100" required maxlength="200" />
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold text-light small">Teléfono de Contacto</label>
+                        <input type="tel" id="edit-input-telefono" name="Telefono" value="@Model.User?.Telefono" class="form-control form-control-custom w-100" required maxlength="20" />
+                    </div>
+
+                    <div class="col-12 text-end mt-4">
+                        <button type="button" class="btn btn-outline-secondary btn-sm me-2 rounded-pill px-3" data-bs-toggle="collapse" data-bs-target="#editProfileCollapse">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-brand-primary btn-sm rounded-pill px-4">
+                            <i class="bi bi-check-lg me-1"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- Widget de Tracking en Tiempo Real (Sin exponer IDs en la URL) -->
-    @if (activeOrder is not null)
+    <!-- Widget de Tracking en Tiempo Real para Múltiples Pedidos Activos -->
+    @if (activeOrders.Any())
     {
-        var isPrep = activeOrder.Estado == "EnPreparacion";
-        var isTravel = activeOrder.Estado == "EnViaje";
-        var isDone = activeOrder.Estado == "Entregado";
-        var progressWidth = isPrep ? "20%" : isTravel ? "60%" : "100%";
-
-        <div class="tracker-card" id="live-status-tracker"
-             data-order-id="@activeOrder.Id"
-             data-initial-status="@activeOrder.Estado">
-            
-            <div class="d-flex align-items-center justify-content-between pb-3 border-bottom border-secondary border-opacity-25">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="badge @(isDone ? "bg-success" : "bg-danger") rounded-pill text-uppercase">
-                        @(isDone ? "FINALIZADO" : "EN VIVO")
-                    </span>
-                    <h2 class="font-display h5 text-light mb-0">Seguimiento de tu Pedido</h2>
-                </div>
-                <div class="text-end">
-                    <span class="text-muted small d-block">Estado:</span>
-                    <span class="font-display fw-bold text-warning fs-5" id="active-order-status-text">
-                        @(isPrep ? "🔥 En Preparación" : isTravel ? "🛵 En Camino" : "✅ Entregado")
-                    </span>
-                </div>
+        <div class="d-flex flex-column gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+                <h2 class="font-display h5 text-light mb-0 d-flex align-items-center gap-2">
+                    <span class="badge bg-danger rounded-pill">EN VIVO</span>
+                    <span>Seguimiento de Pedidos Activos (@activeOrders.Count)</span>
+                </h2>
             </div>
 
-            <!-- Stepper Visual -->
-            <div class="tracker-stepper">
-                <div class="tracker-track-line">
-                    <div class="tracker-track-progress" id="tracker-progress-bar" style="width: @progressWidth;"></div>
-                </div>
+            @foreach (var activeOrder in activeOrders)
+            {
+                var isPrep = activeOrder.Estado == "EnPreparacion";
+                var isTravel = activeOrder.Estado == "EnViaje";
+                var isDone = activeOrder.Estado == "Entregado";
 
-                <!-- Paso 1: Cocina -->
-                <div class="tracker-step @(isPrep ? "active" : "completed")" id="step-prep">
-                    <div class="tracker-step-icon">
-                        <i class="bi bi-fire"></i>
+                <div class="tracker-card position-relative border border-warning border-opacity-25" 
+                     data-tracker-order
+                     data-order-id="@activeOrder.Id"
+                     data-initial-status="@activeOrder.Estado">
+                    
+                    <div class="d-flex align-items-center justify-content-between pb-3 border-bottom border-secondary border-opacity-25">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-warning bg-opacity-25 text-warning border border-warning rounded-pill">
+                                PEDIDO #@activeOrder.Id
+                            </span>
+                            <span class="text-muted small">@activeOrder.FechaPedido.ToLocalTime().ToString("HH:mm") hs</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="text-muted small d-block">Estado:</span>
+                            <span class="font-display fw-bold text-warning fs-5 active-order-status-text">
+                                @(isPrep ? "🔥 En Preparación" : isTravel ? "🛵 En Camino" : "✅ Entregado")
+                            </span>
+                        </div>
                     </div>
-                    <span class="tracker-step-label">1. Cocina</span>
-                </div>
 
-                <!-- Paso 2: Reparto -->
-                <div class="tracker-step @(isTravel ? "active" : isDone ? "completed" : "")" id="step-travel">
-                    <div class="tracker-step-icon">
-                        <i class="bi bi-bicycle"></i>
+                    <!-- Stepper Visual Progresivo -->
+                    <div class="tracker-stepper mt-3">
+                        <div class="tracker-track-line">
+                            <div class="tracker-track-progress tracker-progress-bar" style="width: @(isPrep ? "15%" : isTravel ? "55%" : "100%"); transition: width 0.4s ease-out;"></div>
+                        </div>
+
+                        <div class="tracker-step step-prep @(isPrep ? "active" : "completed")">
+                            <div class="tracker-step-icon"><i class="bi bi-fire"></i></div>
+                            <span class="tracker-step-label">1. Cocina (5s)</span>
+                        </div>
+
+                        <div class="tracker-step step-travel @(isTravel ? "active" : isDone ? "completed" : "")">
+                            <div class="tracker-step-icon"><i class="bi bi-bicycle"></i></div>
+                            <span class="tracker-step-label">2. Reparto (3s)</span>
+                        </div>
+
+                        <div class="tracker-step step-done @(isDone ? "completed active" : "")">
+                            <div class="tracker-step-icon"><i class="bi bi-check-lg"></i></div>
+                            <span class="tracker-step-label">3. Entregado</span>
+                        </div>
                     </div>
-                    <span class="tracker-step-label">2. En Reparto</span>
-                </div>
 
-                <!-- Paso 3: Entregado -->
-                <div class="tracker-step @(isDone ? "completed active" : "")" id="step-done">
-                    <div class="tracker-step-icon">
-                        <i class="bi bi-check-lg"></i>
+                    <!-- Detalle Rápido del Pedido -->
+                    <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mt-3">
+                        <div class="d-flex justify-content-between text-muted small fw-bold mb-2">
+                            <span>Items en este pedido:</span>
+                            <span class="text-warning fs-6">$@activeOrder.Total.ToString("N2")</span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var item in activeOrder.Items)
+                            {
+                                <span class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25 px-2 py-1">
+                                    🍕 @item.PizzaNombre (@item.Tamano) x@item.Cantidad
+                                </span>
+                            }
+                        </div>
                     </div>
-                    <span class="tracker-step-label">3. Entregado</span>
                 </div>
-            </div>
-
-            <!-- Detalle Rápido del Pedido -->
-            <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mt-3">
-                <div class="d-flex justify-content-between text-muted small fw-bold mb-2">
-                    <span>Items ordenados:</span>
-                    <span class="text-light fs-6">$@activeOrder.Total.ToString("N2")</span>
-                </div>
-                <div class="d-flex flex-wrap gap-2">
-                    @foreach (var item in activeOrder.Items)
-                    {
-                        <span class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25 px-2 py-1">
-                            🍕 @item.PizzaNombre (@item.Tamano) x@item.Cantidad
-                        </span>
-                    }
-                </div>
-            </div>
+            }
         </div>
     }
 
-    <!-- Historial de Pedidos -->
+    <!-- Historial de Pedidos Estilo Recibo (Últimos 3) -->
     <section class="mt-2">
-        <h2 class="font-display h5 text-light mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-clock-history text-warning"></i>
-            <span>Historial de Pedidos</span>
-        </h2>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="font-display h5 text-light mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-clock-history text-warning"></i>
+                <span>Últimos Pedidos</span>
+            </h2>
+            @if (Model.Pedidos.Any())
+            {
+                <a asp-controller="Profile" asp-action="Orders" class="text-warning text-decoration-none small fw-bold d-flex align-items-center gap-1 hover-underline">
+                    <span>Ver todos los pedidos (@Model.Pedidos.Count)</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            }
+        </div>
 
         @if (!Model.Pedidos.Any())
         {
@@ -124,36 +211,141 @@
         }
         else
         {
-            <div class="d-flex flex-column gap-3">
-                @foreach (var pedido in Model.Pedidos)
+            <div class="d-flex flex-column gap-4">
+                @foreach (var pedido in Model.Pedidos.Take(3))
                 {
                     var isOrderDone = pedido.Estado == "Entregado";
-                    <div class="card card-dark p-3 p-md-4">
-                        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                    var isTravel = pedido.Estado == "EnViaje";
+
+                    <div class="card card-dark p-4 border border-secondary border-opacity-25 rounded-3">
+                        <!-- Cabecera del Recibo -->
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center pb-3 mb-3 border-bottom border-secondary border-opacity-25 gap-2">
                             <div>
-                                <div class="d-flex align-items-center gap-2 mb-1">
-                                    <span class="font-display fw-bold text-light">Pedido</span>
-                                    <span class="badge @(isOrderDone ? "bg-success" : "bg-warning") bg-opacity-25 @(isOrderDone ? "text-success border-success" : "text-warning border-warning") border rounded-pill">
-                                        @pedido.Estado
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="font-display h5 text-light mb-0">Pedido #@pedido.Id</span>
+                                    <span class="badge @(isOrderDone ? "bg-success text-success border-success" : isTravel ? "bg-info text-info border-info" : "bg-warning text-warning border-warning") bg-opacity-25 border rounded-pill px-3 py-1">
+                                        @(isOrderDone ? "✅ Entregado" : isTravel ? "🛵 En Camino" : "🔥 En Preparación")
                                     </span>
                                 </div>
-                                <div class="text-muted small mb-1">
+                                <div class="text-muted small mt-1">
                                     <i class="bi bi-calendar3 me-1"></i>
                                     @pedido.FechaPedido.ToLocalTime().ToString("dd/MM/yyyy HH:mm") hs
                                 </div>
-                                <div class="text-muted small">
-                                    @string.Join(" • ", pedido.Items.Select(i => $"{i.PizzaNombre} ({i.Tamano}) x{i.Cantidad}"))
-                                </div>
                             </div>
+                            <div class="text-sm-end">
+                                <span class="badge bg-dark border border-secondary border-opacity-25 text-muted px-2 py-1">
+                                    @pedido.Items.Sum(i => i.Cantidad) @(pedido.Items.Sum(i => i.Cantidad) == 1 ? "pizza" : "pizzas")
+                                </span>
+                            </div>
+                        </div>
 
-                            <div class="text-end">
-                                <div class="text-muted small">@pedido.Items.Sum(i => i.Cantidad) pizzas</div>
-                                <div class="font-display fw-bold text-warning fs-5">$@pedido.Total.ToString("N2")</div>
-                            </div>
+                        <!-- Desglose Tipo Recibo de Compra (Fila por Fila) -->
+                        <div class="table-responsive mb-3">
+                            <table class="table table-dark table-borderless align-middle mb-0 small">
+                                <thead>
+                                    <tr class="text-muted border-bottom border-secondary border-opacity-10">
+                                        <th scope="col" style="min-width: 140px;">Variedad / Item</th>
+                                        <th scope="col" class="text-center">Tamaño</th>
+                                        <th scope="col" class="text-center">Cant.</th>
+                                        <th scope="col" class="text-end">P. Unitario</th>
+                                        <th scope="col" class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in pedido.Items)
+                                    {
+                                        <tr class="border-bottom border-secondary border-opacity-10">
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span>🍕</span>
+                                                    <span class="fw-bold text-light">@item.PizzaNombre</span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-secondary bg-opacity-25 text-warning border border-secondary border-opacity-25 px-2 py-1">
+                                                    @item.Tamano
+                                                </span>
+                                            </td>
+                                            <td class="text-center fw-bold text-light">@item.Cantidad</td>
+                                            <td class="text-end text-muted">$@item.PrecioUnitario.ToString("N2")</td>
+                                            <td class="text-end fw-bold text-light">$@item.Subtotal.ToString("N2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pie del Recibo con Total -->
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top border-secondary border-opacity-25">
+                            <span class="text-muted small fw-bold">Total del Pedido:</span>
+                            <span class="font-display fw-bold text-warning fs-4">$@pedido.Total.ToString("N2")</span>
                         </div>
                     </div>
                 }
             </div>
+
+            @if (Model.Pedidos.Count > 3)
+            {
+                <div class="text-center mt-4">
+                    <a asp-controller="Profile" asp-action="Orders" class="btn btn-outline-secondary btn-sm rounded-pill px-4 py-2 text-light">
+                        <i class="bi bi-three-dots me-1"></i>
+                        <span>Ver los @(Model.Pedidos.Count - 3) pedidos restantes</span>
+                    </a>
+                </div>
+            }
         }
     </section>
 </div>
+
+@section Scripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputUsername = document.getElementById('edit-input-username');
+        const inputNombre = document.getElementById('edit-input-nombre');
+        const inputEmail = document.getElementById('edit-input-email');
+        const inputDireccion = document.getElementById('edit-input-direccion');
+        const inputTelefono = document.getElementById('edit-input-telefono');
+
+        const previewUsername = document.getElementById('preview-display-username');
+        const previewNombre = document.getElementById('preview-display-nombre');
+        const previewEmail = document.getElementById('preview-display-email');
+        const previewDireccion = document.getElementById('preview-display-direccion');
+        const previewTelefono = document.getElementById('preview-display-telefono');
+        const previewAvatarLetter = document.getElementById('preview-avatar-letter');
+
+        if (inputUsername && previewUsername) {
+            inputUsername.addEventListener('input', function () {
+                const val = this.value.trim();
+                previewUsername.textContent = val || 'Usuario';
+                if (previewAvatarLetter) {
+                    previewAvatarLetter.textContent = val ? val.charAt(0).toUpperCase() : 'U';
+                }
+            });
+        }
+
+        if (inputNombre && previewNombre) {
+            inputNombre.addEventListener('input', function () {
+                previewNombre.textContent = this.value.trim() || 'Nombre Completo';
+            });
+        }
+
+        if (inputEmail && previewEmail) {
+            inputEmail.addEventListener('input', function () {
+                previewEmail.textContent = this.value.trim() || 'email@ejemplo.com';
+            });
+        }
+
+        if (inputDireccion && previewDireccion) {
+            inputDireccion.addEventListener('input', function () {
+                previewDireccion.textContent = this.value.trim() || 'Dirección';
+            });
+        }
+
+        if (inputTelefono && previewTelefono) {
+            inputTelefono.addEventListener('input', function () {
+                previewTelefono.textContent = this.value.trim() || 'Teléfono';
+            });
+        }
+    });
+</script>
+}

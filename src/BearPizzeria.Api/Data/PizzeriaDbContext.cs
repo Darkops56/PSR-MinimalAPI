@@ -3,7 +3,7 @@ using BearPizzeria.Api.Models;
 
 namespace BearPizzeria.Api.Data;
 
-public class PedidoDbContext(DbContextOptions<PedidoDbContext> options) : DbContext(options)
+public class PizzeriaDbContext(DbContextOptions<PizzeriaDbContext> options) : DbContext(options)
 {
     public DbSet<Cliente> Clientes => Set<Cliente>();
     public DbSet<Usuario> Usuarios => Set<Usuario>();

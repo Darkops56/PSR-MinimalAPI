@@ -67,4 +67,33 @@ public class UsuarioApiService : IUsuarioApiService
             return null;
         }
     }
+
+    public async Task<ClienteDto?> UpdateClienteAsync(int clienteId, ActualizarClienteDto request, string? token = null)
+    {
+        try
+        {
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Put, $"/api/clientes/{clienteId}");
+            reqMsg.Content = JsonContent.Create(request);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
+
+            var response = await _httpClient.SendAsync(reqMsg);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<ClienteDto>();
+            }
+
+            var error = await response.Content.ReadAsStringAsync();
+            _logger.LogWarning("Error al actualizar cliente {ClienteId}: {Error}", clienteId, error);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Excepción al actualizar datos del cliente {ClienteId}", clienteId);
+            return null;
+        }
+    }
 }
