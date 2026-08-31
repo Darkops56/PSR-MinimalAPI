@@ -18,6 +18,12 @@
 
         <!-- Acciones Header (Desktop + Botón Hamburguesa a la Derecha en Mobile) -->
         <div class="header-actions">
+            <!-- Indicador en Vivo de Pedido Activo (Desktop / Mobile) -->
+            <a asp-controller="Profile" asp-action="Trackers" id="header-live-order-pill" class="badge bg-warning bg-opacity-25 text-warning border border-warning rounded-pill text-decoration-none px-3 py-2 d-none align-items-center gap-1 shadow-sm" style="transition: all 0.3s ease;">
+                <span class="live-order-icon">🔥</span>
+                <span class="live-order-label small fw-bold">Pedido en curso</span>
+            </a>
+
             <!-- Desktop: Perfil / Login -->
             @if (User.Identity?.IsAuthenticated ?? false)
             {

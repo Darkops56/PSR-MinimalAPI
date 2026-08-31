@@ -22,6 +22,7 @@ export class CustomizerModal {
 
     this.pizzaId = 0;
     this.basePrice = 0;
+    this.stock = 10;
     this.selectedSize = 'Grande';
     this.quantity = 1;
 
@@ -60,8 +61,17 @@ export class CustomizerModal {
     });
 
     btnPlus?.addEventListener('click', () => {
-      this.quantity++;
-      this.updateView();
+      if (this.quantity < this.stock) {
+        this.quantity++;
+        this.updateView();
+      } else {
+        const enCarrito = CartManager.getPizzaQuantityInCart(this.pizzaId);
+        if (enCarrito > 0) {
+          window.showToast?.(`Ya tenés ${enCarrito} en tu carrito y el stock total es ${this.totalStock}. Máximo disponible adicional: ${this.stock}.`, 'warning');
+        } else {
+          window.showToast?.(`No podés agregar más de ${this.stock} unidades (stock máximo disponible).`, 'warning');
+        }
+      }
     });
 
     // Botón agregar al carrito
@@ -70,6 +80,11 @@ export class CustomizerModal {
       if (!AuthManager.isAuthenticated()) {
         this.close();
         window.dispatchEvent(new CustomEvent('auth:required', { detail: { action: 'customizer-add' } }));
+        return;
+      }
+
+      if (this.quantity > this.stock) {
+        window.showToast?.(`No hay suficiente stock disponible. Máximo a agregar: ${this.stock}`, 'error');
         return;
       }
 
@@ -97,16 +112,23 @@ export class CustomizerModal {
       const name = trigger.dataset.pizzaName;
       const desc = trigger.dataset.pizzaDesc;
       const price = parseFloat(trigger.dataset.pizzaPrice);
+      const stock = parseInt(trigger.dataset.pizzaStock || '10', 10);
 
-      this.open(id, name, desc, price);
+      this.open(id, name, desc, price, stock);
     });
   }
 
-  open(id, name, desc, price) {
+  open(id, name, desc, price, totalStock = 10) {
     this.pizzaId = id;
     this.basePrice = price;
+    this.totalStock = totalStock;
+
+    // Restar del stock total la cantidad que el cliente ya tiene en su carrito
+    const enCarrito = CartManager.getPizzaQuantityInCart(id);
+    this.stock = Math.max(0, totalStock - enCarrito);
+
     this.selectedSize = 'Grande';
-    this.quantity = 1;
+    this.quantity = Math.min(1, this.stock);
 
     if (this.titleEl) this.titleEl.textContent = name;
     if (this.descEl) this.descEl.textContent = desc || '';
@@ -143,6 +165,28 @@ export class CustomizerModal {
     }
     if (this.qtyDisplayEl) {
       this.qtyDisplayEl.textContent = this.quantity;
+    }
+
+    const btnMinus = document.getElementById('customizer-minus-btn');
+    const btnPlus = document.getElementById('customizer-plus-btn');
+    const btnAdd = document.getElementById('customizer-add-btn');
+
+    const enCarrito = CartManager.getPizzaQuantityInCart(this.pizzaId);
+
+    if (btnMinus) btnMinus.disabled = this.quantity <= 1;
+    if (btnPlus) btnPlus.disabled = this.quantity >= this.stock;
+    if (btnAdd) {
+      if (this.stock === 0) {
+        btnAdd.disabled = true;
+        if (enCarrito > 0) {
+          btnAdd.innerHTML = `<i class="bi bi-cart-check me-1"></i> <span>Máximo en carrito (${enCarrito}/${this.totalStock})</span>`;
+        } else {
+          btnAdd.innerHTML = '<i class="bi bi-x-circle me-1"></i> <span>Sin Stock Disponible</span>';
+        }
+      } else {
+        btnAdd.disabled = false;
+        btnAdd.innerHTML = '<i class="bi bi-cart-plus me-1"></i> <span>Añadir al Carrito</span>';
+      }
     }
   }
 }

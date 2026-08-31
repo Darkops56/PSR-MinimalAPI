@@ -64,6 +64,36 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> Trackers()
+    {
+        var clienteIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(clienteIdClaim, out var clienteId))
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+
+        var token = User.FindFirst("Token")?.Value;
+        var activeOrders = await _pedidoApiService.GetMisPedidosActivosAsync(token);
+
+        var viewModel = new ProfileViewModel
+        {
+            User = new AuthResponseDto(
+                clienteId,
+                User.Identity?.Name ?? "",
+                User.FindFirst("Nombre")?.Value ?? "",
+                User.FindFirst(ClaimTypes.Email)?.Value ?? "",
+                User.FindFirst("Direccion")?.Value ?? "",
+                User.FindFirst("Telefono")?.Value ?? "",
+                token ?? ""
+            ),
+            ActiveOrders = activeOrders,
+            ActiveOrderId = activeOrders.FirstOrDefault()?.Id
+        };
+
+        return View("Trackers", viewModel);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Orders(int page = 1, string? fecha = null)
     {
         var clienteIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -122,6 +152,39 @@ public class ProfileController : Controller
         };
 
         return View("Orders", ordersVm);
+    }
+
+    [HttpGet("/Profile/ActiveOrdersJson")]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+    public async Task<IActionResult> ActiveOrdersJson()
+    {
+        var token = User.FindFirst("Token")?.Value;
+        var activeOrders = await _pedidoApiService.GetMisPedidosActivosAsync(token);
+        return Json(activeOrders);
+    }
+
+    [HttpGet("/Profile/ActiveOrderJson")]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+    public async Task<IActionResult> ActiveOrderJson()
+    {
+        var token = User.FindFirst("Token")?.Value;
+        var activeOrder = await _pedidoApiService.GetMiPedidoActivoAsync(token);
+        return Json(activeOrder);
+    }
+
+    [HttpGet("/Profile/AllOrdersJson")]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+    public async Task<IActionResult> AllOrdersJson()
+    {
+        var clienteIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(clienteIdClaim, out var clienteId))
+        {
+            return Unauthorized();
+        }
+
+        var token = User.FindFirst("Token")?.Value;
+        var allOrders = await _pedidoApiService.GetPedidosByClienteAsync(clienteId, token);
+        return Json(allOrders);
     }
 
     [HttpPost]

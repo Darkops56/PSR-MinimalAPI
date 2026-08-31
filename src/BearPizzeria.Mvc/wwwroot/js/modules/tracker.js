@@ -2,44 +2,29 @@ import { apiFetch } from './api.js';
 
 export class OrderTracker {
   constructor() {
-    this.trackerElements = document.querySelectorAll('[data-tracker-order]');
-    if (!this.trackerElements.length) return;
-
-    this.ordersMap = new Map();
+    this.ordersMap = new Map(); // orderId -> estadoActual
     this.pollingInterval = null;
-    this.animationInterval = null;
 
-    this.initTrackers();
-    this.startPolling();
-    this.startAnimationLoop();
-  }
+    // Inicializar estados iniciales desde los atributos HTML data-order-id
+    const cards = document.querySelectorAll('[data-tracker-order]');
+    if (cards.length === 0) return;
 
-  initTrackers() {
-    this.trackerElements.forEach(el => {
-      const orderId = parseInt(el.dataset.orderId || '0', 10);
-      const status = el.dataset.initialStatus || 'EnPreparacion';
-      const progressBar = el.querySelector('.tracker-progress-bar');
-      const statusText = el.querySelector('.active-order-status-text');
-
-      const initialProgress = status === 'EnPreparacion' ? 10 : status === 'EnViaje' ? 50 : 100;
-
-      this.ordersMap.set(orderId, {
-        element: el,
-        status: status,
-        progress: initialProgress,
-        targetCap: status === 'EnPreparacion' ? 45 : status === 'EnViaje' ? 90 : 100,
-        progressBar: progressBar,
-        statusText: statusText,
-        isCompleted: status === 'Entregado'
-      });
-
-      this.updateUI(orderId, status, initialProgress);
+    cards.forEach(card => {
+      const orderId = card.dataset.orderId;
+      const initialStatus = card.dataset.initialStatus || 'EnPreparacion';
+      if (orderId) {
+        this.ordersMap.set(String(orderId), initialStatus);
+        this.updateCardUI(orderId, initialStatus);
+      }
     });
+
+    this.startPolling();
   }
 
   startPolling() {
     this.stopPolling();
-    this.pollingInterval = setInterval(() => this.checkStatus(), 2000);
+    this.checkStatus();
+    this.pollingInterval = setInterval(() => this.checkStatus(), 3000);
   }
 
   stopPolling() {
@@ -49,85 +34,70 @@ export class OrderTracker {
     }
   }
 
-  startAnimationLoop() {
-    if (this.animationInterval) clearInterval(this.animationInterval);
-    
-    // Bucle suave a 50 FPS (cada 20ms)
-    this.animationInterval = setInterval(() => {
-      let activeCount = 0;
-
-      this.ordersMap.forEach((item, orderId) => {
-        if (item.isCompleted) return;
-        activeCount++;
-
-        // Velocidad: 45% en 5s = +0.18% por tick (20ms). 40% en 3s = +0.26% por tick.
-        const speed = item.status === 'EnPreparacion' ? 0.18 : 0.26;
-
-        if (item.progress < item.targetCap) {
-          item.progress = Math.min(item.targetCap, item.progress + speed);
-          if (item.progressBar) {
-            item.progressBar.style.width = `${item.progress.toFixed(1)}%`;
-          }
-        }
-      });
-
-      if (activeCount === 0 && this.animationInterval) {
-        clearInterval(this.animationInterval);
-      }
-    }, 20);
-  }
-
   async checkStatus() {
     try {
-      // Consulta todos los pedidos activos del cliente autenticado
-      const activos = await apiFetch('/api/pedidos/mis-pedidos-activos');
-      if (!activos || !Array.isArray(activos)) return;
+      // Consulta TODOS los pedidos activos del usuario autenticado
+      const pedidos = await apiFetch('/api/pedidos/mis-pedidos-activos');
+      if (!Array.isArray(pedidos)) return;
 
-      activos.forEach(pedido => {
-        const item = this.ordersMap.get(pedido.id);
-        if (item && item.status !== pedido.estado) {
-          item.status = pedido.estado;
-          item.targetCap = pedido.estado === 'EnPreparacion' ? 45 : pedido.estado === 'EnViaje' ? 90 : 100;
+      let pedidosEnCurso = 0;
 
-          if (pedido.estado === 'EnViaje' && item.progress < 50) {
-            item.progress = 50; // Salta al inicio de la etapa de viaje
-          } else if (pedido.estado === 'Entregado') {
-            item.progress = 100;
-            item.isCompleted = true;
+      pedidos.forEach(pedido => {
+        const idStr = String(pedido.id ?? pedido.Id);
+        const nuevoEstado = pedido.estado ?? pedido.Estado;
+
+        if (nuevoEstado && (nuevoEstado === 'EnPreparacion' || nuevoEstado === 'EnViaje')) {
+          pedidosEnCurso++;
+        }
+
+        const estadoAnterior = this.ordersMap.get(idStr);
+
+        if (nuevoEstado) {
+          if (estadoAnterior !== nuevoEstado) {
+            this.ordersMap.set(idStr, nuevoEstado);
+            window.showToast?.(`¡El pedido #${idStr} ahora está: ${this.formatStatus(nuevoEstado)}!`, 'info');
           }
-
-          this.updateUI(pedido.id, pedido.estado, item.progress);
-          window.showToast?.(`¡Tu Pedido #${pedido.id} ahora está: ${this.formatStatus(pedido.estado)}!`, 'info');
+          this.updateCardUI(idStr, nuevoEstado);
         }
       });
+
+      // Si ya no quedan pedidos en preparación o viaje, detener polling
+      if (pedidosEnCurso === 0 && pedidos.length > 0) {
+        this.stopPolling();
+      }
     } catch (err) {
-      console.warn('Error al verificar pedidos activos por polling:', err);
+      console.warn('Error al verificar estado de pedidos:', err);
     }
   }
 
-  updateUI(orderId, estado, progressPercent) {
-    const item = this.ordersMap.get(orderId);
-    if (!item) return;
+  updateCardUI(orderIdStr, estado) {
+    // Buscar la tarjeta específica de este pedido por data-order-id
+    const card = document.querySelector(`[data-tracker-order][data-order-id="${orderIdStr}"]`);
+    if (!card) return;
 
-    const el = item.element;
-    const stepPrep = el.querySelector('.step-prep');
-    const stepTravel = el.querySelector('.step-travel');
-    const stepDone = el.querySelector('.step-done');
+    const stepPrep = card.querySelector('.step-prep');
+    const stepTravel = card.querySelector('.step-travel');
+    const stepDone = card.querySelector('.step-done');
+    const progressBar = card.querySelector('.tracker-progress-bar');
+    const statusText = card.querySelector('.active-order-status-text');
 
-    if (item.statusText) item.statusText.textContent = this.formatStatus(estado);
-    if (item.progressBar) item.progressBar.style.width = `${progressPercent.toFixed(1)}%`;
+    if (statusText) statusText.textContent = this.formatStatus(estado);
 
+    // Resetear clases dentro de ESTA tarjeta
     [stepPrep, stepTravel, stepDone].forEach(s => s?.classList.remove('active', 'completed'));
 
     if (estado === 'EnPreparacion') {
       stepPrep?.classList.add('active');
+      if (progressBar) progressBar.style.width = '0%';
     } else if (estado === 'EnViaje') {
       stepPrep?.classList.add('completed');
       stepTravel?.classList.add('active');
+      if (progressBar) progressBar.style.width = '50%';
     } else if (estado === 'Entregado') {
       stepPrep?.classList.add('completed');
       stepTravel?.classList.add('completed');
       stepDone?.classList.add('completed', 'active');
+      if (progressBar) progressBar.style.width = '100%';
     }
   }
 

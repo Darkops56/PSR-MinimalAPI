@@ -6,7 +6,9 @@ export async function apiFetch(endpoint, options = {}) {
 
   const defaultHeaders = {
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache'
   };
 
   if (token) {
@@ -14,6 +16,7 @@ export async function apiFetch(endpoint, options = {}) {
   }
 
   const config = {
+    cache: 'no-store',
     ...options,
     headers: {
       ...defaultHeaders,

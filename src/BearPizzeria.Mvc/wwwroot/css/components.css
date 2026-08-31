@@ -503,8 +503,8 @@
 .tracker-track-line {
   position: absolute;
   top: 24px;
-  left: 30px;
-  right: 30px;
+  left: 60px;
+  right: 60px;
   height: 4px;
   background: var(--bg-surface-elevated);
   z-index: 1;

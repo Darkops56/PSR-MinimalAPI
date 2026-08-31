@@ -5,7 +5,8 @@ public record PizzaDto(
     string Nombre,
     string? Descripcion,
     decimal Precio,
-    string Tamano
+    string Tamano,
+    int Stock = 10
 );
 
 public record CarritoItemDto(

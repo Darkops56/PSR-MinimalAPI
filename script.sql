@@ -31,7 +31,8 @@ CREATE TABLE Pizzas (
     Nombre VARCHAR(100) NOT NULL,
     Descripcion TEXT,
     Precio DECIMAL(10,2) NOT NULL,
-    Tamano ENUM('Personal', 'Mediana', 'Grande', 'Familiar') NOT NULL DEFAULT 'Grande'
+    Tamano ENUM('Personal', 'Mediana', 'Grande', 'Familiar') NOT NULL DEFAULT 'Grande',
+    Stock INT NOT NULL DEFAULT 10
 );
 
 -- 4. Tabla de Carritos (Persistencia 1:1 por Cliente en BD)
@@ -81,9 +82,9 @@ CREATE TABLE PedidoPizzas (
 );
 
 -- Datos iniciales de pizzas
-INSERT INTO Pizzas (Nombre, Descripcion, Precio, Tamano) VALUES
-    ('Muzzarella', 'Muzzarella artesanal, aceitunas verdes seleccionadas y orégano fresco', 4500.00, 'Grande'),
-    ('Napolitana', 'Muzzarella, rodajas de tomate natural, ajo picado y aceitunas negras', 5000.00, 'Grande'),
-    ('Fugazzeta', 'Abundante muzzarella, cebolla caramelizada crujiente y orégano', 4800.00, 'Grande'),
-    ('Especial', 'Muzzarella, jamón cocido premium, morrón asado y aceitunas', 5500.00, 'Grande'),
-    ('Calabresa', 'Muzzarella, longaniza calabresa picante y toque de ají molido', 5200.00, 'Grande');
+INSERT INTO Pizzas (Nombre, Descripcion, Precio, Tamano, Stock) VALUES
+    ('Muzzarella', 'Muzzarella artesanal, aceitunas verdes seleccionadas y orégano fresco', 4500.00, 'Grande', 12),
+    ('Napolitana', 'Muzzarella, rodajas de tomate natural, ajo picado y aceitunas negras', 5000.00, 'Grande', 4),
+    ('Fugazzeta', 'Abundante muzzarella, cebolla caramelizada crujiente y orégano', 4800.00, 'Grande', 10),
+    ('Especial', 'Muzzarella, jamón cocido premium, morrón asado y aceitunas', 5500.00, 'Grande', 10),
+    ('Calabresa', 'Muzzarella, longaniza calabresa picante y toque de ají molido', 5200.00, 'Grande', 2);

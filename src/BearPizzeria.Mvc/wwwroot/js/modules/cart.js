@@ -2,9 +2,12 @@ import { apiFetch } from './api.js';
 import { AuthManager } from './auth.js';
 
 export class CartManager {
+  static currentCart = null;
+
   static async loadCart() {
     const clienteId = AuthManager.getClienteId();
     if (!clienteId) {
+      this.currentCart = null;
       this.updateBadges(0);
       return null;
     }
@@ -12,6 +15,7 @@ export class CartManager {
     try {
       const cart = await apiFetch(`/api/carrito/${clienteId}`);
       if (cart) {
+        this.currentCart = cart;
         this.updateBadges(cart.cantidadTotalItems || 0);
       }
       return cart;
@@ -34,6 +38,7 @@ export class CartManager {
     });
 
     if (updatedCart) {
+      this.currentCart = updatedCart;
       this.updateBadges(updatedCart.cantidadTotalItems || 0);
       window.dispatchEvent(new CustomEvent('cart:updated', { detail: updatedCart }));
     }
@@ -48,6 +53,7 @@ export class CartManager {
     });
 
     if (updatedCart) {
+      this.currentCart = updatedCart;
       this.updateBadges(updatedCart.cantidadTotalItems || 0);
       window.dispatchEvent(new CustomEvent('cart:updated', { detail: updatedCart }));
     }
@@ -61,6 +67,7 @@ export class CartManager {
     });
 
     if (updatedCart) {
+      this.currentCart = updatedCart;
       this.updateBadges(updatedCart.cantidadTotalItems || 0);
       window.dispatchEvent(new CustomEvent('cart:updated', { detail: updatedCart }));
     }
@@ -77,6 +84,7 @@ export class CartManager {
     });
 
     if (clearedCart) {
+      this.currentCart = clearedCart;
       this.updateBadges(0);
       window.dispatchEvent(new CustomEvent('cart:updated', { detail: clearedCart }));
     }
@@ -96,11 +104,21 @@ export class CartManager {
     });
 
     if (pedido) {
+      this.currentCart = null;
       this.updateBadges(0);
       window.dispatchEvent(new CustomEvent('cart:cleared'));
+      window.dispatchEvent(new CustomEvent('orders:refresh'));
     }
 
     return pedido;
+  }
+
+  static getPizzaQuantityInCart(pizzaId) {
+    if (!this.currentCart || !Array.isArray(this.currentCart.items)) return 0;
+    const targetId = parseInt(pizzaId, 10);
+    return this.currentCart.items
+      .filter(item => (item.pizzaId ?? item.PizzaId) === targetId)
+      .reduce((sum, item) => sum + (item.cantidad ?? item.Cantidad ?? 0), 0);
   }
 
   static updateBadges(count) {

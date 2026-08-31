@@ -1,0 +1,109 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Seguimiento en Vivo de Pedidos";
+}
+
+<div class="d-flex flex-column gap-4 py-2">
+    <!-- Encabezado con Botón de Regreso -->
+    <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 pb-3 border-bottom border-secondary border-opacity-25">
+        <div class="d-flex align-items-center gap-3">
+            <div class="fs-2">🛵</div>
+            <div>
+                <h1 class="font-display h3 text-light mb-0">Seguimiento en Vivo de Pedidos</h1>
+                <p class="text-muted small mb-0">Monitoreá en tiempo real el progreso de la cocina y el viaje de tus repartos.</p>
+            </div>
+        </div>
+        <div>
+            <a asp-controller="Profile" asp-action="Index" class="btn btn-outline-light btn-sm rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2">
+                <i class="bi bi-arrow-left"></i>
+                <span>Volver a mi Perfil</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Lista de Contenedores de Seguimiento Activos -->
+    <div id="active-trackers-container" class="d-flex flex-column gap-4">
+        @if (!Model.ActiveOrders.Any())
+        {
+            <div class="card card-dark p-5 text-center my-3" id="no-active-trackers-msg">
+                <div class="display-3 mb-3">🍕🛵</div>
+                <h2 class="font-display h4 text-light mb-2">No hay pedidos en seguimiento en este momento</h2>
+                <p class="text-muted small mb-4">Cuando realices una compra, podrás ver aquí su progreso en vivo desde la cocina hasta tu domicilio.</p>
+                <div>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-brand-primary px-4 py-2">
+                        <i class="bi bi-cart-plus me-1"></i> Ir a Pedir Pizzas
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            @foreach (var activeOrder in Model.ActiveOrders)
+            {
+                var isPrep = activeOrder.Estado == "EnPreparacion";
+                var isTravel = activeOrder.Estado == "EnViaje";
+                var isDone = activeOrder.Estado == "Entregado";
+
+                <div class="tracker-card card card-dark p-4 position-relative border border-warning border-opacity-25 rounded-3"
+                     id="live-status-tracker"
+                     data-tracker-order
+                     data-order-id="@activeOrder.Id"
+                     data-initial-status="@activeOrder.Estado">
+                    
+                    <div class="d-flex align-items-center justify-content-between pb-3 border-bottom border-secondary border-opacity-25">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-warning bg-opacity-25 text-warning border border-warning rounded-pill px-3 py-1 fw-bold">
+                                PEDIDO #@activeOrder.Id
+                            </span>
+                            <span class="text-muted small">@activeOrder.FechaPedido.ToLocalTime().ToString("dd/MM/yyyy HH:mm") hs</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="text-muted small d-block">Estado Actual:</span>
+                            <span class="font-display fw-bold text-warning fs-5 active-order-status-text" id="active-order-status-text">
+                                @(isPrep ? "🔥 En Preparación" : isTravel ? "🛵 En Camino" : "✅ Entregado")
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Stepper Visual con Animación Automática por Sockets -->
+                    <div class="tracker-stepper mt-4">
+                        <div class="tracker-track-line">
+                            <div class="tracker-track-progress tracker-progress-bar" id="tracker-progress-bar" style="width: @(isPrep ? "0%" : isTravel ? "50%" : "100%"); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                        </div>
+
+                        <div class="tracker-step step-prep @(isPrep ? "active" : "completed")" id="step-prep">
+                            <div class="tracker-step-icon"><i class="bi bi-fire"></i></div>
+                            <span class="tracker-step-label">1. Cocina</span>
+                        </div>
+
+                        <div class="tracker-step step-travel @(isTravel ? "active" : isDone ? "completed" : "")" id="step-travel">
+                            <div class="tracker-step-icon"><i class="bi bi-bicycle"></i></div>
+                            <span class="tracker-step-label">2. Reparto</span>
+                        </div>
+
+                        <div class="tracker-step step-done @(isDone ? "completed active" : "")" id="step-done">
+                            <div class="tracker-step-icon"><i class="bi bi-check-lg"></i></div>
+                            <span class="tracker-step-label">3. Entregado</span>
+                        </div>
+                    </div>
+
+                    <!-- Detalle Rápido del Pedido -->
+                    <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mt-4">
+                        <div class="d-flex justify-content-between text-muted small fw-bold mb-2">
+                            <span>Items en este pedido:</span>
+                            <span class="text-warning fs-6">$@activeOrder.Total.ToString("N2")</span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var item in activeOrder.Items)
+                            {
+                                <span class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25 px-2 py-1">
+                                    🍕 @item.PizzaNombre (@item.Tamano) @item.Cantidad
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

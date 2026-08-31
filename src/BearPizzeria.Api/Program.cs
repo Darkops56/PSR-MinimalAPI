@@ -266,8 +266,6 @@ app.MapPost("/api/carrito/{clienteId}/items", async (int clienteId, AgregarCarri
         tamano = TamanoPizza.Grande;
 
     var cantidad = Math.Max(1, request.Cantidad);
-    var precioUnitario = CalcularPrecioPorTamano(pizza.Precio, tamano);
-    var subtotal = precioUnitario * cantidad;
 
     var carrito = await db.Carritos
         .Include(c => c.Items)
@@ -286,6 +284,17 @@ app.MapPost("/api/carrito/{clienteId}/items", async (int clienteId, AgregarCarri
     }
 
     var itemExistente = carrito.Items.FirstOrDefault(i => i.PizzaId == request.PizzaId && i.Tamano == tamano);
+    var cantidadTotalFormulada = (itemExistente?.Cantidad ?? 0) + cantidad;
+
+    if (cantidadTotalFormulada > pizza.Stock)
+    {
+        return Results.BadRequest(new ErrorResponse("STOCK-400",
+            $"Stock insuficiente para {pizza.Nombre}. Tenés {itemExistente?.Cantidad ?? 0} en el carrito y solo hay {pizza.Stock} unidades en stock."));
+    }
+
+    var precioUnitario = CalcularPrecioPorTamano(pizza.Precio, tamano);
+    var subtotal = precioUnitario * cantidad;
+
     if (itemExistente is not null)
     {
         itemExistente.Cantidad += cantidad;
@@ -330,6 +339,12 @@ app.MapPut("/api/carrito/items/{itemId}", async (int itemId, ActualizarCarritoIt
 
     if (item is null)
         return Results.NotFound(new ErrorResponse("CARRITO-404", "Item de carrito no encontrado."));
+
+    if (request.Cantidad > item.Pizza.Stock)
+    {
+        return Results.BadRequest(new ErrorResponse("STOCK-400",
+            $"Stock insuficiente para {item.Pizza.Nombre}. El stock máximo disponible es de {item.Pizza.Stock} unidades."));
+    }
 
     if (request.Cantidad <= 0)
     {
@@ -417,6 +432,22 @@ app.MapPost("/api/carrito/{clienteId}/checkout", async (
     using var transaction = await db.Database.BeginTransactionAsync();
     try
     {
+        // 0. Validar stock disponible de cada pizza y descontar stock en BD
+        foreach (var item in carrito.Items)
+        {
+            var pizza = await db.Pizzas.FindAsync(item.PizzaId);
+            if (pizza is null || pizza.Stock < item.Cantidad)
+            {
+                await transaction.RollbackAsync();
+                var disp = pizza?.Stock ?? 0;
+                var nombre = pizza?.Nombre ?? "Pizza";
+                return Results.BadRequest(new ErrorResponse("STOCK-400",
+                    $"Stock insuficiente para la pizza '{nombre}'. Solicitaste {item.Cantidad} unidades pero solo quedan {disp} en stock."));
+            }
+
+            pizza.Stock -= item.Cantidad;
+        }
+
         // 1. Crear nuevo pedido
         var pedido = new Pedido
         {
@@ -492,14 +523,17 @@ app.MapGet("/api/pizzas/{id}", async (int id, PizzeriaDbContext db) =>
 // ==========================================
 
 app.MapGet("/api/pedidos/mi-pedido-activo", async (
+    int? clienteId,
     HttpContext httpContext,
     PizzeriaDbContext db,
     ITokenService tokenService) =>
 {
     var authHeader = httpContext.Request.Headers.Authorization.ToString();
-    var (esValido, clienteId, _) = tokenService.ValidarToken(authHeader);
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
 
-    if (!esValido || !clienteId.HasValue)
+    var targetClienteId = (esValido && tokenClienteId.HasValue) ? tokenClienteId.Value : clienteId;
+
+    if (!targetClienteId.HasValue || targetClienteId.Value <= 0)
         return Results.Unauthorized();
 
     var pedidoActivo = await db.Pedidos
@@ -508,7 +542,7 @@ app.MapGet("/api/pedidos/mi-pedido-activo", async (
             .ThenInclude(c => c.Usuario)
         .Include(p => p.PedidoPizzas)
             .ThenInclude(pp => pp.Pizza)
-        .Where(p => p.ClienteId == clienteId.Value && (p.Estado == EstadoPedido.EnPreparacion || p.Estado == EstadoPedido.EnViaje))
+        .Where(p => p.ClienteId == targetClienteId.Value && (p.Estado == EstadoPedido.EnPreparacion || p.Estado == EstadoPedido.EnViaje))
         .OrderByDescending(p => p.FechaPedido)
         .FirstOrDefaultAsync();
 
@@ -521,37 +555,48 @@ app.MapGet("/api/pedidos/mi-pedido-activo", async (
                 .ThenInclude(c => c.Usuario)
             .Include(p => p.PedidoPizzas)
                 .ThenInclude(pp => pp.Pizza)
-            .Where(p => p.ClienteId == clienteId.Value)
+            .Where(p => p.ClienteId == targetClienteId.Value)
             .OrderByDescending(p => p.FechaPedido)
             .FirstOrDefaultAsync();
 
-        return ultimo is not null ? Results.Ok(ultimo.ToResponse()) : Results.NotFound();
+        if (ultimo is null) return Results.NotFound();
+        httpContext.Response.Headers.CacheControl = "no-cache, no-store, must-revalidate";
+        return Results.Ok(ultimo.ToResponse());
     }
 
+    httpContext.Response.Headers.CacheControl = "no-cache, no-store, must-revalidate";
     return Results.Ok(pedidoActivo.ToResponse());
 });
 
 app.MapGet("/api/pedidos/mis-pedidos-activos", async (
+    int? clienteId,
     HttpContext httpContext,
     PizzeriaDbContext db,
     ITokenService tokenService) =>
 {
     var authHeader = httpContext.Request.Headers.Authorization.ToString();
-    var (esValido, clienteId, _) = tokenService.ValidarToken(authHeader);
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
 
-    if (!esValido || !clienteId.HasValue)
+    var targetClienteId = (esValido && tokenClienteId.HasValue) ? tokenClienteId.Value : clienteId;
+
+    if (!targetClienteId.HasValue || targetClienteId.Value <= 0)
         return Results.Unauthorized();
 
+    var limiteTiempoLocal = DateTime.UtcNow.AddMinutes(-60);
     var pedidosActivos = await db.Pedidos
         .AsNoTracking()
         .Include(p => p.Cliente)
             .ThenInclude(c => c.Usuario)
         .Include(p => p.PedidoPizzas)
             .ThenInclude(pp => pp.Pizza)
-        .Where(p => p.ClienteId == clienteId.Value && (p.Estado == EstadoPedido.EnPreparacion || p.Estado == EstadoPedido.EnViaje))
+        .Where(p => p.ClienteId == targetClienteId.Value && 
+                   (p.Estado == EstadoPedido.EnPreparacion || 
+                    p.Estado == EstadoPedido.EnViaje || 
+                    (p.Estado == EstadoPedido.Entregado && p.FechaPedido >= limiteTiempoLocal)))
         .OrderByDescending(p => p.FechaPedido)
         .ToListAsync();
 
+    httpContext.Response.Headers.CacheControl = "no-cache, no-store, must-revalidate";
     return Results.Ok(pedidosActivos.Select(p => p.ToResponse()).ToList());
 });
 

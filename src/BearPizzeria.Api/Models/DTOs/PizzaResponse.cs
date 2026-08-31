@@ -7,4 +7,5 @@ public class PizzaResponse
     public string? Descripcion { get; set; }
     public decimal Precio { get; set; }
     public string Tamano { get; set; } = string.Empty;
+    public int Stock { get; set; }
 }

@@ -54,6 +54,7 @@ public class PizzeriaDbContext(DbContextOptions<PizzeriaDbContext> options) : Db
             entity.Property(e => e.Descripcion).HasColumnType("TEXT");
             entity.Property(e => e.Precio).HasColumnType("DECIMAL(10,2)").IsRequired();
             entity.Property(e => e.Tamano).HasConversion<string>().HasMaxLength(20);
+            entity.Property(e => e.Stock).IsRequired().HasDefaultValue(10);
         });
 
         modelBuilder.Entity<Carrito>(entity =>
@@ -124,11 +125,11 @@ public class PizzeriaDbContext(DbContextOptions<PizzeriaDbContext> options) : Db
     private static void SeedData(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Pizza>().HasData(
-            new Pizza { Id = 1, Nombre = "Muzzarella", Descripcion = "Muzzarella artesanal, aceitunas verdes seleccionadas y orégano fresco", Precio = 4500.00m, Tamano = TamanoPizza.Grande },
-            new Pizza { Id = 2, Nombre = "Napolitana", Descripcion = "Muzzarella, rodajas de tomate natural, ajo picado y aceitunas negras", Precio = 5000.00m, Tamano = TamanoPizza.Grande },
-            new Pizza { Id = 3, Nombre = "Fugazzeta", Descripcion = "Abundante muzzarella, cebolla caramelizada crujiente y orégano", Precio = 4800.00m, Tamano = TamanoPizza.Grande },
-            new Pizza { Id = 4, Nombre = "Especial", Descripcion = "Muzzarella, jamón cocido premium, morrón asado y aceitunas", Precio = 5500.00m, Tamano = TamanoPizza.Grande },
-            new Pizza { Id = 5, Nombre = "Calabresa", Descripcion = "Muzzarella, longaniza calabresa picante y toque de ají molido", Precio = 5200.00m, Tamano = TamanoPizza.Grande }
+            new Pizza { Id = 1, Nombre = "Muzzarella", Descripcion = "Muzzarella artesanal, aceitunas verdes seleccionadas y orégano fresco", Precio = 4500.00m, Tamano = TamanoPizza.Grande, Stock = 12 },
+            new Pizza { Id = 2, Nombre = "Napolitana", Descripcion = "Muzzarella, rodajas de tomate natural, ajo picado y aceitunas negras", Precio = 5000.00m, Tamano = TamanoPizza.Grande, Stock = 4 },
+            new Pizza { Id = 3, Nombre = "Fugazzeta", Descripcion = "Abundante muzzarella, cebolla caramelizada crujiente y orégano", Precio = 4800.00m, Tamano = TamanoPizza.Grande, Stock = 10 },
+            new Pizza { Id = 4, Nombre = "Especial", Descripcion = "Muzzarella, jamón cocido premium, morrón asado y aceitunas", Precio = 5500.00m, Tamano = TamanoPizza.Grande, Stock = 10 },
+            new Pizza { Id = 5, Nombre = "Calabresa", Descripcion = "Muzzarella, longaniza calabresa picante y toque de ají molido", Precio = 5200.00m, Tamano = TamanoPizza.Grande, Stock = 2 }
         );
     }
 }

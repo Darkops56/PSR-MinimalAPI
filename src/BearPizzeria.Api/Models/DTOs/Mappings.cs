@@ -20,7 +20,8 @@ public static class Mappings
             Nombre = pizza.Nombre,
             Descripcion = pizza.Descripcion,
             Precio = pizza.Precio,
-            Tamano = pizza.Tamano.ToString()
+            Tamano = pizza.Tamano.ToString(),
+            Stock = pizza.Stock
         };
 
     public static PedidoResponse ToResponse(this Pedido pedido)

@@ -7,6 +7,7 @@ public class Pizza
     public string? Descripcion { get; set; }
     public decimal Precio { get; set; }
     public TamanoPizza Tamano { get; set; }
+    public int Stock { get; set; } = 10;
 
     public ICollection<PedidoPizza> PedidoPizzas { get; set; } = new List<PedidoPizza>();
 }

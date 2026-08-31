@@ -6,7 +6,7 @@
         var category = pizza.Nombre.Contains("Napolitana") || pizza.Nombre.Contains("Calabresa") ? "Especiales"
                      : pizza.Nombre.Contains("Especial") ? "Gourmet" : "Clásicas";
         
-        var stock = pizza.Id == 1 ? 12 : pizza.Id == 2 ? 4 : pizza.Id == 5 ? 2 : 10;
+        var stock = pizza.Stock;
         var stockBadgeClass = stock == 0 ? "stock-red" : stock < 6 ? "stock-yellow" : "stock-green";
         var stockText = stock == 0 ? "Agotado" : stock < 6 ? $"¡Últimas {stock} un.!" : "En Stock";
 
@@ -46,14 +46,16 @@
                         </span>
                     </div>
 
-                    <button type="button" class="btn btn-card-action"
+                    <button type="button" class="btn btn-card-action @(stock == 0 ? "disabled" : "")"
                             data-open-customizer
                             data-pizza-id="@pizza.Id"
                             data-pizza-name="@pizza.Nombre"
                             data-pizza-desc="@pizza.Descripcion"
-                            data-pizza-price="@pizza.Precio">
+                            data-pizza-price="@pizza.Precio"
+                            data-pizza-stock="@stock"
+                            @(stock == 0 ? "disabled" : "")>
                         <i class="bi bi-sliders me-1"></i>
-                        <span>Personalizar</span>
+                        <span>@(stock == 0 ? "Agotado" : "Personalizar")</span>
                     </button>
                 </div>
             </div>
