@@ -100,11 +100,11 @@ public class CarritoApiService : ICarritoApiService
         }
     }
 
-    public async Task<PedidoDto?> CheckoutCarritoAsync(int clienteId)
+    public async Task<PedidoDto?> CheckoutCarritoAsync(int clienteId, int? direccionId = null)
     {
         try
         {
-            var response = await _httpClient.PostAsync($"/api/carrito/{clienteId}/checkout", null);
+            var response = await _httpClient.PostAsJsonAsync($"/api/carrito/{clienteId}/checkout", new { direccionId });
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<PedidoDto>();

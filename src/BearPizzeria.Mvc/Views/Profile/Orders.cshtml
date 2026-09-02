@@ -162,10 +162,22 @@
                         </table>
                     </div>
 
-                    <!-- Pie del Recibo con Total -->
-                    <div class="d-flex justify-content-between align-items-center pt-2 border-top border-secondary border-opacity-25">
-                        <span class="text-muted small fw-bold">Total del Pedido:</span>
-                        <span class="font-display fw-bold text-warning fs-4">$@pedido.Total.ToString("N2")</span>
+                    <!-- Pie del Recibo con Total y Botón Repetir Pedido -->
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center pt-2 border-top border-secondary border-opacity-25 gap-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <button type="button" class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1 btn-repeat-order" data-order-id="@pedido.Id">
+                                <i class="bi bi-arrow-repeat"></i>
+                                <span>Repetir Pedido</span>
+                            </button>
+                            @if (!string.IsNullOrEmpty(pedido.DireccionEntrega))
+                            {
+                                <span class="text-muted small"><i class="bi bi-geo-alt me-1"></i>@pedido.DireccionEntrega</span>
+                            }
+                        </div>
+                        <div class="text-sm-end">
+                            <span class="text-muted small fw-bold me-2">Total del Pedido:</span>
+                            <span class="font-display fw-bold text-warning fs-4">$@pedido.Total.ToString("N2")</span>
+                        </div>
                     </div>
                 </div>
             }
@@ -207,3 +219,36 @@
         }
     }
 </div>
+
+@section Scripts {
+<script type="module">
+    import { CartManager } from '/js/modules/cart.js';
+    import { showRepeatOrderStockModal } from '/js/modules/repeatOrderModal.js';
+
+    document.querySelectorAll('.btn-repeat-order').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const orderId = parseInt(btn.dataset.orderId, 10);
+            if (!orderId) return;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Agregando...';
+
+            try {
+                const res = await CartManager.repeatOrder(orderId);
+                if (res) {
+                    if (res.totalmenteAgregado) {
+                        window.showToast?.(res.mensaje || '¡Pedido agregado al carrito!', 'success');
+                    } else {
+                        showRepeatOrderStockModal(res);
+                    }
+                }
+            } catch (err) {
+                window.showToast?.(err.message || 'Error al repetir el pedido', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> <span>Repetir Pedido</span>';
+            }
+        });
+    });
+</script>
+}

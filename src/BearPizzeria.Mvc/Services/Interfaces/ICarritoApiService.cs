@@ -9,5 +9,5 @@ public interface ICarritoApiService
     Task<CarritoDto?> ActualizarItemCarritoAsync(int itemId, ActualizarItemCarritoDto request);
     Task<CarritoDto?> EliminarItemCarritoAsync(int itemId);
     Task<CarritoDto?> VaciarCarritoAsync(int clienteId);
-    Task<PedidoDto?> CheckoutCarritoAsync(int clienteId);
+    Task<PedidoDto?> CheckoutCarritoAsync(int clienteId, int? direccionId = null);
 }

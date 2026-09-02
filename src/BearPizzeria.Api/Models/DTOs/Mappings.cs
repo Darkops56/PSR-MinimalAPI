@@ -33,8 +33,19 @@ public static class Mappings
             FechaPedido = pedido.FechaPedido,
             Estado = pedido.Estado.ToString(),
             Total = pedido.Total,
+            DireccionEntrega = pedido.DireccionEntrega,
             Items = pedido.PedidoPizzas?.Select(pp => pp.ToResponse()).ToList() ?? []
         };
+
+    public static DireccionResponse ToResponse(this DireccionCliente d)
+        => new(
+            d.Id,
+            d.ClienteId,
+            d.Nombre,
+            d.DireccionCompleta,
+            d.Notas,
+            d.EsPrincipal
+        );
 
     public static PedidoPizzaResponse ToResponse(this PedidoPizza pp)
         => new()

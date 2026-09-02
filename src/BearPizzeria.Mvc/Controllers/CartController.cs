@@ -50,7 +50,7 @@ public class CartController : Controller
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Checkout()
+    public async Task<IActionResult> Checkout([FromForm] int? direccionId)
     {
         var clienteIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!int.TryParse(clienteIdClaim, out var clienteId))
@@ -58,7 +58,7 @@ public class CartController : Controller
             return RedirectToAction("Login", "Auth");
         }
 
-        var pedido = await _carritoApiService.CheckoutCarritoAsync(clienteId);
+        var pedido = await _carritoApiService.CheckoutCarritoAsync(clienteId, direccionId);
         if (pedido is not null)
         {
             TempData["SuccessMessage"] = $"¡Pedido #{pedido.Id} confirmado con éxito!";

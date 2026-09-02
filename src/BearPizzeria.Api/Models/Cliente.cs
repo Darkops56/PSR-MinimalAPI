@@ -10,5 +10,6 @@ public class Cliente
 
     public Usuario? Usuario { get; set; }
     public Carrito? Carrito { get; set; }
+    public ICollection<DireccionCliente> Direcciones { get; set; } = new List<DireccionCliente>();
     public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 }
