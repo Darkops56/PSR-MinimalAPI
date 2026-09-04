@@ -127,11 +127,14 @@ public class CarritoApiService : ICarritoApiService
         }
     }
 
-    public async Task<PedidoDto?> CheckoutCarritoAsync(int clienteId, string? token = null)
+public async Task<PedidoDto?> CheckoutCarritoAsync(int clienteId, int? direccionId = null, string? token = null)
     {
         try
         {
-            using var reqMsg = new HttpRequestMessage(HttpMethod.Post, $"/api/carrito/{clienteId}/checkout");
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Post, $"/api/carrito/{clienteId}/checkout")
+            {
+                Content = JsonContent.Create(new { direccionId })
+            };
             if (!string.IsNullOrEmpty(token))
                 reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 

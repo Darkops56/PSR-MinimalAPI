@@ -135,14 +135,24 @@
                             </span>
                         </div>
 
-                        <!-- Dirección con Icono Proporcionado -->
+                        <!-- Dirección de Entrega Seleccionable con Sidebar -->
                         <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
-                            <div class="text-muted small d-flex align-items-center gap-1 fw-bold mb-1">
-                                <i class="bi bi-geo-alt-fill text-danger"></i>
-                                <span>Entregar en:</span>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div class="text-muted small d-flex align-items-center gap-1 fw-bold">
+                                    <i class="bi bi-geo-alt-fill text-warning"></i>
+                                    <span>Entregar en:</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-warning py-0 px-2 small" data-bs-toggle="offcanvas" data-bs-target="#address-sidebar">
+                                    <i class="bi bi-pencil-square me-1"></i>Cambiar
+                                </button>
                             </div>
-                            <div class="text-light small ps-3">
-                                @Model.CurrentUser?.Direccion
+                            <div class="ps-2">
+                                <span class="badge bg-warning text-dark fw-bold mb-1" id="cart-active-address-label">
+                                    Cargando...
+                                </span>
+                                <div class="text-light small text-truncate" id="cart-active-address-full">
+                                    @Model.CurrentUser?.Direccion
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -156,8 +166,9 @@
                     </div>
 
                     <!-- Botón Checkout -->
-                    <form asp-controller="Cart" asp-action="Checkout" method="post">
+                    <form id="cart-checkout-form" asp-controller="Cart" asp-action="Checkout" method="post">
                         @Html.AntiForgeryToken()
+                        <input type="hidden" id="selected-address-id-input" name="DireccionId" value="" />
                         <button type="submit" class="btn btn-brand-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2">
                             <i class="bi bi-check2-circle fs-5"></i>
                             <span>Confirmar Pedido</span>

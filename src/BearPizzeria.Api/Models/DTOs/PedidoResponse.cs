@@ -8,5 +8,6 @@ public class PedidoResponse
     public DateTime FechaPedido { get; set; }
     public string Estado { get; set; } = string.Empty;
     public decimal Total { get; set; }
+    public string DireccionEntrega { get; set; } = string.Empty;
     public List<PedidoPizzaResponse> Items { get; set; } = [];
 }

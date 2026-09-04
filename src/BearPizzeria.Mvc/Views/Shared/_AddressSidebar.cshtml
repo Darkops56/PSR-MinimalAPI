@@ -1,0 +1,61 @@
+<!-- Sidebar / Offcanvas de Selección y Gestión de Direcciones de Entrega -->
+<div class="offcanvas offcanvas-end bg-dark text-light border-start border-secondary border-opacity-25" tabindex="-1" id="address-sidebar" aria-labelledby="addressSidebarLabel" style="max-width: 420px; width: 100%;">
+    <div class="offcanvas-header border-bottom border-secondary border-opacity-25">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-geo-alt-fill text-warning fs-5"></i>
+            <h5 class="offcanvas-title font-display text-light mb-0" id="addressSidebarLabel">Direcciones de Entrega</h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+
+    <div class="offcanvas-body d-flex flex-column gap-3 p-3">
+        <p class="text-muted small mb-0">Seleccioná dónde querés recibir tu pedido o agregá una nueva dirección personalizada.</p>
+
+        <!-- Lista de Direcciones Guardadas -->
+        <div id="address-list-container" class="d-flex flex-column gap-2">
+            <div class="text-center text-muted py-3">
+                <span class="spinner-border spinner-border-sm me-2"></span> Cargando direcciones...
+            </div>
+        </div>
+
+        <hr class="border-secondary border-opacity-25 my-1" />
+
+        <!-- Botón Desplegar Formulario de Nueva Dirección -->
+        <button type="button" class="btn btn-outline-warning w-100 py-2 d-flex align-items-center justify-content-center gap-2 small" id="btn-toggle-add-address-form">
+            <i class="bi bi-plus-lg"></i>
+            <span>Agregar Nueva Dirección</span>
+        </button>
+
+        <!-- Formulario Oculto para Crear Dirección -->
+        <form id="add-address-form" class="card card-dark p-3 border border-secondary border-opacity-25 rounded-3 d-none mt-2">
+            <h6 class="font-display text-warning mb-3">Nueva Dirección de Entrega</h6>
+
+            <div class="mb-3">
+                <label for="address-label-input" class="form-label small text-muted">Nombre de la Dirección (ej: "Mi casa", "Casa Papá"):</label>
+                <input type="text" class="form-control form-control-dark small" id="address-label-input" placeholder="Ej: Casa Papá, Oficina, Depto..." required maxLength="50" />
+            </div>
+
+            <div class="mb-3">
+                <label for="address-full-input" class="form-label small text-muted">Calle, Número y Depto:</label>
+                <input type="text" class="form-control form-control-dark small" id="address-full-input" placeholder="Ej: Av. Corrientes 1234, 4º B" required maxLength="150" />
+            </div>
+
+            <div class="mb-3">
+                <label for="address-notes-input" class="form-label small text-muted">Notas / Indicaciones (Opcional):</label>
+                <input type="text" class="form-control form-control-dark small" id="address-notes-input" placeholder="Ej: Timbre no anda, golpear puerta" maxLength="150" />
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="address-principal-check" />
+                <label class="form-check-label small text-light" for="address-principal-check">
+                    Establecer como dirección principal
+                </label>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-outline-light flex-grow-1" id="btn-cancel-add-address">Cancelar</button>
+                <button type="submit" class="btn btn-sm btn-brand-primary flex-grow-1" id="btn-save-address">Guardar Dirección</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -12,9 +12,24 @@ public class PizzeriaDbContext(DbContextOptions<PizzeriaDbContext> options) : Db
     public DbSet<CarritoItem> CarritoItems => Set<CarritoItem>();
     public DbSet<Pedido> Pedidos => Set<Pedido>();
     public DbSet<PedidoPizza> PedidoPizzas => Set<PedidoPizza>();
+    public DbSet<DireccionCliente> DireccionesCliente => Set<DireccionCliente>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<DireccionCliente>(entity =>
+        {
+            entity.ToTable("DireccionesCliente");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Nombre).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.DireccionCompleta).HasMaxLength(200).IsRequired();
+            entity.Property(e => e.Notas).HasMaxLength(200);
+
+            entity.HasOne(e => e.Cliente)
+                  .WithMany(c => c.Direcciones)
+                  .HasForeignKey(e => e.ClienteId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
         modelBuilder.Entity<Cliente>(entity =>
         {
             entity.ToTable("Clientes");
@@ -92,6 +107,7 @@ public class PizzeriaDbContext(DbContextOptions<PizzeriaDbContext> options) : Db
             entity.Property(e => e.FechaPedido).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Estado).HasConversion<string>().HasMaxLength(30);
             entity.Property(e => e.Total).HasColumnType("DECIMAL(10,2)");
+            entity.Property(e => e.DireccionEntrega).HasMaxLength(200);
 
             entity.HasOne(e => e.Cliente)
                   .WithMany(c => c.Pedidos)

@@ -2,6 +2,7 @@ import { initUI } from './modules/ui.js';
 import { CartManager } from './modules/cart.js';
 import { CustomizerModal } from './modules/customizer.js';
 import { OrderTracker } from './modules/tracker.js';
+import { initAddressSidebar } from './modules/addressDrawer.js';
 
 async function initApp() {
   console.log('[BearPizzeria] Inicializando módulos de cliente...');
@@ -9,8 +10,9 @@ async function initApp() {
   // 1. Inicializar UI general (drawer, busqueda, modales, toasts)
   initUI();
 
-  // 2. Inicializar modal de personalización
+  // 2. Inicializar modal de personalización y sidebar de direcciones
   new CustomizerModal();
+  initAddressSidebar();
 
   // 3. Inicializar tracker de actualización automática de pedidos
   new OrderTracker();

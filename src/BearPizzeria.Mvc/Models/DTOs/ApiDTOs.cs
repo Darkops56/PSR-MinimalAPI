@@ -55,6 +55,7 @@ public record PedidoDto(
     DateTime FechaPedido,
     string Estado,
     decimal Total,
+    string DireccionEntrega,
     List<PedidoPizzaDto> Items
 );
 

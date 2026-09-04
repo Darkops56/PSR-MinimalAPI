@@ -92,15 +92,20 @@ export class CartManager {
     return clearedCart;
   }
 
-  static async checkout() {
+  static async checkout(direccionId = null, direccionEntrega = null) {
     const clienteId = AuthManager.getClienteId();
     if (!clienteId) {
       window.dispatchEvent(new CustomEvent('auth:required', { detail: { action: 'checkout' } }));
       return null;
     }
 
+    const payload = {};
+    if (direccionId) payload.direccionId = parseInt(direccionId, 10);
+    if (direccionEntrega) payload.direccionEntrega = direccionEntrega;
+
     const pedido = await apiFetch(`/api/carrito/${clienteId}/checkout`, {
-      method: 'POST'
+      method: 'POST',
+      body: JSON.stringify(payload)
     });
 
     if (pedido) {
@@ -111,6 +116,26 @@ export class CartManager {
     }
 
     return pedido;
+  }
+
+  static async repeatOrder(pedidoId) {
+    const clienteId = AuthManager.getClienteId();
+    if (!clienteId) {
+      window.dispatchEvent(new CustomEvent('auth:required', { detail: { action: 'repeat-order' } }));
+      return null;
+    }
+
+    const result = await apiFetch(`/api/pedidos/${pedidoId}/repetir?clienteId=${clienteId}`, {
+      method: 'POST'
+    });
+
+    if (result && result.carritoActualizado) {
+      this.currentCart = result.carritoActualizado;
+      this.updateBadges(result.carritoActualizado.cantidadTotalItems || 0);
+      window.dispatchEvent(new CustomEvent('cart:updated', { detail: result.carritoActualizado }));
+    }
+
+    return result;
   }
 
   static getPizzaQuantityInCart(pizzaId) {

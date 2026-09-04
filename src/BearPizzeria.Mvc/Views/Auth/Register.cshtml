@@ -16,8 +16,7 @@
 
             @if (!ViewData.ModelState.IsValid)
             {
-                <div class="alert alert-danger py-2 px-3 mb-4 rounded-3 small">
-                    @Html.ValidationSummary(true)
+                <div class="alert alert-danger py-2 px-3 mb-4 rounded-3 small"> Completa o corrige los campos faltantes.
                 </div>
             }
 
@@ -29,13 +28,13 @@
                     <div class="col-12 col-md-6">
                         <label asp-for="Username" class="form-label fw-bold text-light small mb-2">Usuario</label>
                         <input asp-for="Username" class="form-control form-control-custom w-100"
-                               placeholder="jaimito55" autocomplete="username" />
+                            placeholder="jaimito55" autocomplete="username" />
                         <span asp-validation-for="Username" class="text-danger small mt-1 d-block"></span>
                     </div>
                     <div class="col-12 col-md-6">
                         <label asp-for="Nombre" class="form-label fw-bold text-light small mb-2">Nombre Completo</label>
                         <input asp-for="Nombre" class="form-control form-control-custom w-100"
-                               placeholder="Jaime Pérez" autocomplete="name" />
+                            placeholder="Jaime Pérez" autocomplete="name" />
                         <span asp-validation-for="Nombre" class="text-danger small mt-1 d-block"></span>
                     </div>
                 </div>
