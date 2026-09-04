@@ -15,11 +15,20 @@ public class CarritoApiService : ICarritoApiService
         _logger = logger;
     }
 
-    public async Task<CarritoDto?> GetCarritoAsync(int clienteId)
+    public async Task<CarritoDto?> GetCarritoAsync(int clienteId, string? token = null)
     {
         try
         {
-            return await _httpClient.GetFromJsonAsync<CarritoDto>($"/api/carrito/{clienteId}");
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Get, $"/api/carrito/{clienteId}");
+            if (!string.IsNullOrEmpty(token))
+                reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(reqMsg);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<CarritoDto>();
+            }
+            return null;
         }
         catch (Exception ex)
         {
@@ -28,11 +37,16 @@ public class CarritoApiService : ICarritoApiService
         }
     }
 
-    public async Task<CarritoDto?> AgregarItemCarritoAsync(int clienteId, AgregarItemCarritoDto request)
+    public async Task<CarritoDto?> AgregarItemCarritoAsync(int clienteId, AgregarItemCarritoDto request, string? token = null)
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync($"/api/carrito/{clienteId}/items", request);
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Post, $"/api/carrito/{clienteId}/items");
+            reqMsg.Content = JsonContent.Create(request);
+            if (!string.IsNullOrEmpty(token))
+                reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(reqMsg);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<CarritoDto>();
@@ -46,11 +60,16 @@ public class CarritoApiService : ICarritoApiService
         }
     }
 
-    public async Task<CarritoDto?> ActualizarItemCarritoAsync(int itemId, ActualizarItemCarritoDto request)
+    public async Task<CarritoDto?> ActualizarItemCarritoAsync(int itemId, ActualizarItemCarritoDto request, string? token = null)
     {
         try
         {
-            var response = await _httpClient.PutAsJsonAsync($"/api/carrito/items/{itemId}", request);
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Put, $"/api/carrito/items/{itemId}");
+            reqMsg.Content = JsonContent.Create(request);
+            if (!string.IsNullOrEmpty(token))
+                reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(reqMsg);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<CarritoDto>();
@@ -64,11 +83,15 @@ public class CarritoApiService : ICarritoApiService
         }
     }
 
-    public async Task<CarritoDto?> EliminarItemCarritoAsync(int itemId)
+    public async Task<CarritoDto?> EliminarItemCarritoAsync(int itemId, string? token = null)
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"/api/carrito/items/{itemId}");
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Delete, $"/api/carrito/items/{itemId}");
+            if (!string.IsNullOrEmpty(token))
+                reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(reqMsg);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<CarritoDto>();
@@ -82,11 +105,15 @@ public class CarritoApiService : ICarritoApiService
         }
     }
 
-    public async Task<CarritoDto?> VaciarCarritoAsync(int clienteId)
+    public async Task<CarritoDto?> VaciarCarritoAsync(int clienteId, string? token = null)
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"/api/carrito/{clienteId}/vaciar");
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Delete, $"/api/carrito/{clienteId}/vaciar");
+            if (!string.IsNullOrEmpty(token))
+                reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(reqMsg);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<CarritoDto>();
@@ -100,11 +127,15 @@ public class CarritoApiService : ICarritoApiService
         }
     }
 
-    public async Task<PedidoDto?> CheckoutCarritoAsync(int clienteId)
+    public async Task<PedidoDto?> CheckoutCarritoAsync(int clienteId, string? token = null)
     {
         try
         {
-            var response = await _httpClient.PostAsync($"/api/carrito/{clienteId}/checkout", null);
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Post, $"/api/carrito/{clienteId}/checkout");
+            if (!string.IsNullOrEmpty(token))
+                reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(reqMsg);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<PedidoDto>();

@@ -4,10 +4,10 @@ namespace BearPizzeria.Mvc.Services.Interfaces;
 
 public interface ICarritoApiService
 {
-    Task<CarritoDto?> GetCarritoAsync(int clienteId);
-    Task<CarritoDto?> AgregarItemCarritoAsync(int clienteId, AgregarItemCarritoDto request);
-    Task<CarritoDto?> ActualizarItemCarritoAsync(int itemId, ActualizarItemCarritoDto request);
-    Task<CarritoDto?> EliminarItemCarritoAsync(int itemId);
-    Task<CarritoDto?> VaciarCarritoAsync(int clienteId);
-    Task<PedidoDto?> CheckoutCarritoAsync(int clienteId);
+    Task<CarritoDto?> GetCarritoAsync(int clienteId, string? token = null);
+    Task<CarritoDto?> AgregarItemCarritoAsync(int clienteId, AgregarItemCarritoDto request, string? token = null);
+    Task<CarritoDto?> ActualizarItemCarritoAsync(int itemId, ActualizarItemCarritoDto request, string? token = null);
+    Task<CarritoDto?> EliminarItemCarritoAsync(int itemId, string? token = null);
+    Task<CarritoDto?> VaciarCarritoAsync(int clienteId, string? token = null);
+    Task<PedidoDto?> CheckoutCarritoAsync(int clienteId, string? token = null);
 }

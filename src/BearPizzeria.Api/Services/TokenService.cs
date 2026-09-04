@@ -16,7 +16,11 @@ public class TokenService : ITokenService
 
     public TokenService(IConfiguration configuration)
     {
-        var secret = configuration["Jwt:Key"] ?? "BearPizzeria_Super_Secret_Key_For_Jwt_Token_2026_Signing_Key_999!";
+        var secret = configuration["Jwt:Key"];
+        if (string.IsNullOrWhiteSpace(secret) || secret.Length < 32)
+        {
+            throw new InvalidOperationException("Configuración 'Jwt:Key' es requerida y debe contener al menos 32 caracteres.");
+        }
         _secretKeyBytes = Encoding.UTF8.GetBytes(secret);
     }
 

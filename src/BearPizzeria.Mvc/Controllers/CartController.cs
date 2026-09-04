@@ -40,7 +40,8 @@ public class CartController : Controller
                     User.FindFirst("Telefono")?.Value ?? ""
                 );
 
-                viewModel.Carrito = await _carritoApiService.GetCarritoAsync(clienteId);
+                var token = User.FindFirst("Token")?.Value;
+                viewModel.Carrito = await _carritoApiService.GetCarritoAsync(clienteId, token);
             }
         }
 
@@ -58,7 +59,8 @@ public class CartController : Controller
             return RedirectToAction("Login", "Auth");
         }
 
-        var pedido = await _carritoApiService.CheckoutCarritoAsync(clienteId);
+        var token = User.FindFirst("Token")?.Value;
+        var pedido = await _carritoApiService.CheckoutCarritoAsync(clienteId, token);
         if (pedido is not null)
         {
             TempData["SuccessMessage"] = $"¡Pedido #{pedido.Id} confirmado con éxito!";

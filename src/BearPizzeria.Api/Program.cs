@@ -205,8 +205,18 @@ app.MapPost("/api/auth/login", async (
     return Results.Ok(response);
 });
 
-app.MapGet("/api/auth/me/{clienteId}", async (int clienteId, PizzeriaDbContext db, ITokenService tokenService) =>
+app.MapGet("/api/auth/me/{clienteId}", async (
+    int clienteId,
+    HttpContext httpContext,
+    PizzeriaDbContext db,
+    ITokenService tokenService) =>
 {
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
+
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value != clienteId)
+        return Results.Unauthorized();
+
     var usuario = await db.Usuarios
         .Include(u => u.Cliente)
         .FirstOrDefaultAsync(u => u.ClienteId == clienteId);
@@ -233,8 +243,18 @@ app.MapGet("/api/auth/me/{clienteId}", async (int clienteId, PizzeriaDbContext d
 // 🛒 CARRITO DE COMPRAS (100% EN BASE DE DATOS)
 // ==========================================
 
-app.MapGet("/api/carrito/{clienteId}", async (int clienteId, PizzeriaDbContext db) =>
+app.MapGet("/api/carrito/{clienteId}", async (
+    int clienteId,
+    HttpContext httpContext,
+    ITokenService tokenService,
+    PizzeriaDbContext db) =>
 {
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
+
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value != clienteId)
+        return Results.Unauthorized();
+
     var carrito = await db.Carritos
         .Include(c => c.Items)
             .ThenInclude(i => i.Pizza)
@@ -256,8 +276,19 @@ app.MapGet("/api/carrito/{clienteId}", async (int clienteId, PizzeriaDbContext d
     return Results.Ok(carrito.ToResponse());
 });
 
-app.MapPost("/api/carrito/{clienteId}/items", async (int clienteId, AgregarCarritoItemRequest request, PizzeriaDbContext db) =>
+app.MapPost("/api/carrito/{clienteId}/items", async (
+    int clienteId,
+    AgregarCarritoItemRequest request,
+    HttpContext httpContext,
+    ITokenService tokenService,
+    PizzeriaDbContext db) =>
 {
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
+
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value != clienteId)
+        return Results.Unauthorized();
+
     var pizza = await db.Pizzas.FindAsync(request.PizzaId);
     if (pizza is null)
         return Results.NotFound(new ErrorResponse("PIZZA-404", "Pizza no encontrada en el catálogo."));
@@ -395,8 +426,18 @@ app.MapDelete("/api/carrito/items/{itemId}", async (int itemId, PizzeriaDbContex
     return Results.Ok(carrito.ToResponse());
 });
 
-app.MapDelete("/api/carrito/{clienteId}/vaciar", async (int clienteId, PizzeriaDbContext db) =>
+app.MapDelete("/api/carrito/{clienteId}/vaciar", async (
+    int clienteId,
+    HttpContext httpContext,
+    ITokenService tokenService,
+    PizzeriaDbContext db) =>
 {
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
+
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value != clienteId)
+        return Results.Unauthorized();
+
     var carrito = await db.Carritos
         .Include(c => c.Items)
         .FirstOrDefaultAsync(c => c.ClienteId == clienteId);
@@ -414,9 +455,17 @@ app.MapDelete("/api/carrito/{clienteId}/vaciar", async (int clienteId, PizzeriaD
 
 app.MapPost("/api/carrito/{clienteId}/checkout", async (
     int clienteId,
+    HttpContext httpContext,
+    ITokenService tokenService,
     PizzeriaDbContext db,
     SocketServerService socketServer) =>
 {
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
+
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value != clienteId)
+        return Results.Unauthorized();
+
     var carrito = await db.Carritos
         .Include(c => c.Items)
             .ThenInclude(i => i.Pizza)
@@ -523,7 +572,6 @@ app.MapGet("/api/pizzas/{id}", async (int id, PizzeriaDbContext db) =>
 // ==========================================
 
 app.MapGet("/api/pedidos/mi-pedido-activo", async (
-    int? clienteId,
     HttpContext httpContext,
     PizzeriaDbContext db,
     ITokenService tokenService) =>
@@ -531,10 +579,10 @@ app.MapGet("/api/pedidos/mi-pedido-activo", async (
     var authHeader = httpContext.Request.Headers.Authorization.ToString();
     var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
 
-    var targetClienteId = (esValido && tokenClienteId.HasValue) ? tokenClienteId.Value : clienteId;
-
-    if (!targetClienteId.HasValue || targetClienteId.Value <= 0)
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value <= 0)
         return Results.Unauthorized();
+
+    var targetClienteId = tokenClienteId.Value;
 
     var pedidoActivo = await db.Pedidos
         .AsNoTracking()
@@ -542,7 +590,7 @@ app.MapGet("/api/pedidos/mi-pedido-activo", async (
             .ThenInclude(c => c.Usuario)
         .Include(p => p.PedidoPizzas)
             .ThenInclude(pp => pp.Pizza)
-        .Where(p => p.ClienteId == targetClienteId.Value && (p.Estado == EstadoPedido.EnPreparacion || p.Estado == EstadoPedido.EnViaje))
+        .Where(p => p.ClienteId == targetClienteId && (p.Estado == EstadoPedido.EnPreparacion || p.Estado == EstadoPedido.EnViaje))
         .OrderByDescending(p => p.FechaPedido)
         .FirstOrDefaultAsync();
 
@@ -555,7 +603,7 @@ app.MapGet("/api/pedidos/mi-pedido-activo", async (
                 .ThenInclude(c => c.Usuario)
             .Include(p => p.PedidoPizzas)
                 .ThenInclude(pp => pp.Pizza)
-            .Where(p => p.ClienteId == targetClienteId.Value)
+            .Where(p => p.ClienteId == targetClienteId)
             .OrderByDescending(p => p.FechaPedido)
             .FirstOrDefaultAsync();
 
@@ -569,7 +617,6 @@ app.MapGet("/api/pedidos/mi-pedido-activo", async (
 });
 
 app.MapGet("/api/pedidos/mis-pedidos-activos", async (
-    int? clienteId,
     HttpContext httpContext,
     PizzeriaDbContext db,
     ITokenService tokenService) =>
@@ -577,10 +624,10 @@ app.MapGet("/api/pedidos/mis-pedidos-activos", async (
     var authHeader = httpContext.Request.Headers.Authorization.ToString();
     var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
 
-    var targetClienteId = (esValido && tokenClienteId.HasValue) ? tokenClienteId.Value : clienteId;
-
-    if (!targetClienteId.HasValue || targetClienteId.Value <= 0)
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value <= 0)
         return Results.Unauthorized();
+
+    var targetClienteId = tokenClienteId.Value;
 
     var limiteTiempoLocal = DateTime.UtcNow.AddMinutes(-60);
     var pedidosActivos = await db.Pedidos
@@ -589,7 +636,7 @@ app.MapGet("/api/pedidos/mis-pedidos-activos", async (
             .ThenInclude(c => c.Usuario)
         .Include(p => p.PedidoPizzas)
             .ThenInclude(pp => pp.Pizza)
-        .Where(p => p.ClienteId == targetClienteId.Value && 
+        .Where(p => p.ClienteId == targetClienteId && 
                    (p.Estado == EstadoPedido.EnPreparacion || 
                     p.Estado == EstadoPedido.EnViaje || 
                     (p.Estado == EstadoPedido.Entregado && p.FechaPedido >= limiteTiempoLocal)))
@@ -607,13 +654,11 @@ app.MapGet("/api/pedidos/cliente/{clienteId}", async (
     ITokenService tokenService) =>
 {
     var authHeader = httpContext.Request.Headers.Authorization.ToString();
-    if (!string.IsNullOrWhiteSpace(authHeader))
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
+
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value != clienteId)
     {
-        var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
-        if (esValido && tokenClienteId.HasValue && tokenClienteId.Value != clienteId)
-        {
-            return Results.Forbid();
-        }
+        return Results.Unauthorized();
     }
 
     logger.LogInformation("Consultando historial de pedidos para Cliente ID {ClienteId}", clienteId);
@@ -698,8 +743,26 @@ app.MapGet("/api/clientes/{id}", async (int id, PizzeriaDbContext db) =>
 app.MapPut("/api/clientes/{id}", async (
     int id,
     ActualizarClienteRequest request,
+    HttpContext httpContext,
+    ITokenService tokenService,
+    IValidator<ActualizarClienteRequest> validator,
     PizzeriaDbContext db) =>
 {
+    var authHeader = httpContext.Request.Headers.Authorization.ToString();
+    var (esValido, tokenClienteId, _) = tokenService.ValidarToken(authHeader);
+
+    if (!esValido || !tokenClienteId.HasValue || tokenClienteId.Value != id)
+        return Results.Unauthorized();
+
+    var validationResult = await validator.ValidateAsync(request);
+    if (!validationResult.IsValid)
+    {
+        var errores = validationResult.Errors
+            .Select(e => new ErrorDetalle(e.PropertyName, e.ErrorMessage))
+            .ToList();
+        return Results.BadRequest(new ErrorResponse("CLIENTE-400", "Datos de actualización inválidos.", errores));
+    }
+
     logger.LogInformation("Actualizando cliente {Id}", id);
 
     var cliente = await db.Clientes

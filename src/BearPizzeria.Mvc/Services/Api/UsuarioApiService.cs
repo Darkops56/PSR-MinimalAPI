@@ -55,11 +55,21 @@ public class UsuarioApiService : IUsuarioApiService
         }
     }
 
-    public async Task<AuthResponseDto?> GetUserSessionAsync(int clienteId)
+    public async Task<AuthResponseDto?> GetUserSessionAsync(int clienteId, string? token = null)
     {
         try
         {
-            return await _httpClient.GetFromJsonAsync<AuthResponseDto>($"/api/auth/me/{clienteId}");
+            using var reqMsg = new HttpRequestMessage(HttpMethod.Get, $"/api/auth/me/{clienteId}");
+            if (!string.IsNullOrEmpty(token))
+            {
+                reqMsg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
+            var response = await _httpClient.SendAsync(reqMsg);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<AuthResponseDto>();
+            }
+            return null;
         }
         catch (Exception ex)
         {

@@ -123,35 +123,24 @@ public class SocketServerService : BackgroundService
     {
         try
         {
-            var endPoint = client.Client.RemoteEndPoint?.ToString();
-
-            if (endPoint is null)
+            var itemCocina = _kitchenClients.FirstOrDefault(x => ReferenceEquals(x.Value, client));
+            if (itemCocina.Key is not null)
             {
-                _kitchenClients.Clear();
-                _deliveryClients.Clear();
+                _kitchenClients.TryRemove(itemCocina.Key, out _);
+                _logger.LogInformation("Cocina desconectada y removida: {Key}", itemCocina.Key);
                 return;
             }
 
-            var keyK = _kitchenClients.FirstOrDefault(x =>
-                x.Value.Client.RemoteEndPoint?.ToString() == endPoint).Key;
-            if (keyK is not null)
+            var itemReparto = _deliveryClients.FirstOrDefault(x => ReferenceEquals(x.Value, client));
+            if (itemReparto.Key is not null)
             {
-                _kitchenClients.TryRemove(keyK, out _);
-                _logger.LogInformation("Cocina removida: {EndPoint}", endPoint);
-                return;
-            }
-
-            var keyD = _deliveryClients.FirstOrDefault(x =>
-                x.Value.Client.RemoteEndPoint?.ToString() == endPoint).Key;
-            if (keyD is not null)
-            {
-                _deliveryClients.TryRemove(keyD, out _);
-                _logger.LogInformation("Reparto removido: {EndPoint}", endPoint);
+                _deliveryClients.TryRemove(itemReparto.Key, out _);
+                _logger.LogInformation("Reparto desconectado y removido: {Key}", itemReparto.Key);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Error al remover cliente");
+            _logger.LogWarning(ex, "Error al remover cliente de los sockets registrados");
         }
     }
 
