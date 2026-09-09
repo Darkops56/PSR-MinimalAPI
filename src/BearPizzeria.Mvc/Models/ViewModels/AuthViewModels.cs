@@ -45,10 +45,9 @@ public class RegisterViewModel
     [Display(Name = "Email")]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "La dirección de entrega es obligatoria")]
     [StringLength(200, ErrorMessage = "Máximo 200 caracteres")]
     [Display(Name = "Dirección")]
-    public string Direccion { get; set; } = string.Empty;
+    public string? Direccion { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "El teléfono de contacto es obligatorio")]
     [Phone(ErrorMessage = "Formato de teléfono no válido")]

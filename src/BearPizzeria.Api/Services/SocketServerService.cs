@@ -238,7 +238,7 @@ public class SocketServerService : BackgroundService
                 Detalle = new
                 {
                     Cliente = pedidoCompleto.Cliente.Nombre,
-                    Direccion = pedidoCompleto.Cliente.Direccion,
+                    Direccion = !string.IsNullOrWhiteSpace(pedidoCompleto.DireccionEntrega) ? pedidoCompleto.DireccionEntrega : pedidoCompleto.Cliente.Direccion,
                     Items = pedidoCompleto.PedidoPizzas.Select(pp => new
                     {
                         Pizza = pp.Pizza.Nombre,
@@ -273,7 +273,7 @@ public class SocketServerService : BackgroundService
             Detalle = new
             {
                 Cliente = pedido.Cliente.Nombre,
-                Direccion = pedido.Cliente.Direccion
+                Direccion = !string.IsNullOrWhiteSpace(pedido.DireccionEntrega) ? pedido.DireccionEntrega : pedido.Cliente.Direccion
             }
         });
 

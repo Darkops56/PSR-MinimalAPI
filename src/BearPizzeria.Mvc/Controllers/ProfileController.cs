@@ -204,7 +204,7 @@ public class ProfileController : Controller
         }
 
         var token = User.FindFirst("Token")?.Value;
-        var request = new ActualizarClienteDto(model.Username, model.Nombre, model.Direccion, model.Telefono, model.Email);
+        var request = new ActualizarClienteDto(model.Username, model.Nombre, model.Direccion ?? "", model.Telefono, model.Email);
 
         var clienteUpdated = await _usuarioApiService.UpdateClienteAsync(clienteId, request, token);
         if (clienteUpdated is null)

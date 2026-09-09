@@ -59,7 +59,13 @@ public class CartController : Controller
             return RedirectToAction("Login", "Auth");
         }
 
-var token = User.FindFirst("Token")?.Value;
+        if (!direccionId.HasValue || direccionId.Value <= 0)
+        {
+            TempData["ErrorMessage"] = "Debés seleccionar o agregar una dirección de entrega antes de confirmar tu pedido.";
+            return RedirectToAction("Index");
+        }
+
+        var token = User.FindFirst("Token")?.Value;
         var pedido = await _carritoApiService.CheckoutCarritoAsync(clienteId, direccionId, token);
         if (pedido is not null)
         {
@@ -67,7 +73,7 @@ var token = User.FindFirst("Token")?.Value;
             return RedirectToAction("Index", "Profile");
         }
 
-        TempData["ErrorMessage"] = "No se pudo procesar el pedido. Asegurate de tener pizzas en el carrito.";
+        TempData["ErrorMessage"] = "No se pudo procesar el pedido. Asegurate de tener pizzas en el carrito y una dirección de entrega válida.";
         return RedirectToAction("Index");
     }
 }

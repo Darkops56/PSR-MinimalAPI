@@ -6,7 +6,7 @@ USE 5to_Todos;
 CREATE TABLE Clientes (
     Id INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(100) NOT NULL,
-    Direccion VARCHAR(200) NOT NULL,
+    Direccion VARCHAR(200) NOT NULL DEFAULT '',
     Telefono VARCHAR(20) NOT NULL,
     Email VARCHAR(100) NOT NULL,
     UNIQUE (Email)
@@ -65,6 +65,7 @@ CREATE TABLE Pedidos (
     FechaPedido DATETIME DEFAULT CURRENT_TIMESTAMP,
     Estado ENUM('EnPreparacion', 'EnViaje', 'Entregado') NOT NULL DEFAULT 'EnPreparacion',
     Total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    DireccionEntrega VARCHAR(200) NOT NULL DEFAULT '',
     FOREIGN KEY (ClienteId) REFERENCES Clientes(Id)
 );
 
@@ -79,6 +80,17 @@ CREATE TABLE PedidoPizzas (
     Subtotal DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (PedidoId) REFERENCES Pedidos(Id) ON DELETE CASCADE,
     FOREIGN KEY (PizzaId) REFERENCES Pizzas(Id)
+);
+
+-- 8. Tabla de Direcciones de Clientes
+CREATE TABLE DireccionesCliente (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    ClienteId INT NOT NULL,
+    Nombre VARCHAR(100) NOT NULL,
+    DireccionCompleta VARCHAR(200) NOT NULL,
+    Notas VARCHAR(200) NULL,
+    EsPrincipal TINYINT(1) NOT NULL DEFAULT 0,
+    FOREIGN KEY (ClienteId) REFERENCES Clientes(Id) ON DELETE CASCADE
 );
 
 -- Datos iniciales de pizzas

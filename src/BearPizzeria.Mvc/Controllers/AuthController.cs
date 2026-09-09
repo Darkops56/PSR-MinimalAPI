@@ -68,11 +68,11 @@ public class AuthController : Controller
 
         var registerDto = new RegisterDto(
             model.Nombre,
-            model.Direccion,
             model.Telefono,
             model.Email,
             model.Username,
-            model.Password
+            model.Password,
+            model.Direccion ?? ""
         );
 
         var authResult = await _usuarioApiService.RegisterAsync(registerDto);

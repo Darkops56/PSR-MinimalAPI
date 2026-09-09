@@ -18,7 +18,6 @@ public class ActualizarClienteRequestValidator : AbstractValidator<ActualizarCli
             .MaximumLength(100).WithMessage("El nombre es demasiado largo. Usá máximo 100 caracteres.");
 
         RuleFor(x => x.Direccion)
-            .NotEmpty().WithMessage("La dirección es obligatoria. Escribí calle y número.")
             .MaximumLength(200).WithMessage("La dirección es demasiado larga. Usá máximo 200 caracteres.");
 
         RuleFor(x => x.Telefono)

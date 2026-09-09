@@ -2,11 +2,11 @@ namespace BearPizzeria.Api.Models.DTOs;
 
 public record RegisterRequest(
     string Nombre,
-    string Direccion,
     string Telefono,
     string Email,
     string Username,
-    string Password
+    string Password,
+    string? Direccion = null
 );
 
 public record LoginRequest(

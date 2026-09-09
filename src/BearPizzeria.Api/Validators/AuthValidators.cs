@@ -21,9 +21,6 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
             .NotEmpty().WithMessage("El nombre es obligatorio. Escribí tu nombre completo.")
             .MaximumLength(100).WithMessage("El nombre es demasiado largo. Usá máximo 100 caracteres.");
 
-        RuleFor(x => x.Direccion)
-            .NotEmpty().WithMessage("La dirección es obligatoria. Escribí calle y número.")
-            .MaximumLength(200).WithMessage("La dirección es demasiado larga. Usá máximo 200 caracteres.");
 
         RuleFor(x => x.Telefono)
             .NotEmpty().WithMessage("El teléfono es obligatorio. Escribí un número de contacto.")

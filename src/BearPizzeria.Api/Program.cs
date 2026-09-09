@@ -58,6 +58,8 @@ builder.Services.AddOpenApi(options =>
 var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
+await EnsureDatabaseSchemaAsync(app.Services, logger);
+
 app.UseCors("AllowMvcClient");
 
 app.MapOpenApi();
@@ -105,7 +107,7 @@ app.MapPost("/api/auth/register", async (
         var cliente = new Cliente
         {
             Nombre = request.Nombre.Trim(),
-            Direccion = request.Direccion.Trim(),
+            Direccion = request.Direccion?.Trim() ?? "",
             Telefono = request.Telefono.Trim(),
             Email = request.Email.Trim().ToLowerInvariant()
         };
@@ -132,16 +134,6 @@ app.MapPost("/api/auth/register", async (
             Total = 0.00m
         };
         db.Carritos.Add(carrito);
-
-        // 4. Crear Dirección de entrega por defecto "Mi casa"
-        var direccionPrincipal = new DireccionCliente
-        {
-            ClienteId = cliente.Id,
-            Nombre = "Mi casa",
-            DireccionCompleta = cliente.Direccion,
-            EsPrincipal = true
-        };
-        db.DireccionesCliente.Add(direccionPrincipal);
 
         await db.SaveChangesAsync();
         await transaction.CommitAsync();
@@ -531,10 +523,16 @@ CheckoutRequest? request,
             {
                 direccionEntrega = $"{dirPrincipal.Nombre}: {dirPrincipal.DireccionCompleta}";
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(cliente.Direccion))
             {
                 direccionEntrega = cliente.Direccion;
             }
+        }
+
+        if (string.IsNullOrWhiteSpace(direccionEntrega))
+        {
+            await transaction.RollbackAsync();
+            return Results.BadRequest(new ErrorResponse("DIRECCION-400", "Debés seleccionar o ingresar una dirección de entrega antes de confirmar tu pedido."));
         }
 
         // 1. Crear nuevo pedido
@@ -906,6 +904,10 @@ app.MapPost("/api/clientes/{clienteId}/direcciones", async (int clienteId, Crear
     };
 
     db.DireccionesCliente.Add(nuevaDireccion);
+    if (nuevaDireccion.EsPrincipal || string.IsNullOrWhiteSpace(cliente.Direccion))
+    {
+        cliente.Direccion = nuevaDireccion.DireccionCompleta;
+    }
     await db.SaveChangesAsync();
 
     return Results.Created($"/api/clientes/{clienteId}/direcciones/{nuevaDireccion.Id}", nuevaDireccion.ToResponse());
@@ -1101,6 +1103,52 @@ static decimal CalcularPrecioPorTamano(decimal precioBase, TamanoPizza tamano)
     };
 
     return Math.Round(precioBase * multiplicador, 2);
+}
+
+static async Task EnsureDatabaseSchemaAsync(IServiceProvider services, ILogger logger)
+{
+    try
+    {
+        using var scope = services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<PizzeriaDbContext>();
+
+        var connection = db.Database.GetDbConnection();
+        if (connection.State != System.Data.ConnectionState.Open)
+        {
+            await connection.OpenAsync();
+        }
+
+        using var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS DireccionesCliente (
+                Id INT PRIMARY KEY AUTO_INCREMENT,
+                ClienteId INT NOT NULL,
+                Nombre VARCHAR(100) NOT NULL,
+                DireccionCompleta VARCHAR(200) NOT NULL,
+                Notas VARCHAR(200) NULL,
+                EsPrincipal TINYINT(1) NOT NULL DEFAULT 0,
+                FOREIGN KEY (ClienteId) REFERENCES Clientes(Id) ON DELETE CASCADE
+            );
+        ";
+        await cmd.ExecuteNonQueryAsync();
+
+        cmd.CommandText = "ALTER TABLE Clientes MODIFY COLUMN Direccion VARCHAR(200) NOT NULL DEFAULT '';";
+        await cmd.ExecuteNonQueryAsync();
+
+        cmd.CommandText = "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'Pedidos' AND column_name = 'DireccionEntrega'";
+        var count = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+        if (count == 0)
+        {
+            cmd.CommandText = "ALTER TABLE Pedidos ADD COLUMN DireccionEntrega VARCHAR(200) NOT NULL DEFAULT ''";
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        logger.LogInformation("Verificación y actualización del esquema de base de datos completada.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogWarning(ex, "Error durante la verificación del esquema de base de datos");
+    }
 }
 
 public class ErrorResponse

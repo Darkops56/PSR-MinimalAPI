@@ -80,11 +80,11 @@ public record AuthResponseDto(
 
 public record RegisterDto(
     string Nombre,
-    string Direccion,
     string Telefono,
     string Email,
     string Username,
-    string Password
+    string Password,
+    string Direccion = ""
 );
 
 public record LoginDto(

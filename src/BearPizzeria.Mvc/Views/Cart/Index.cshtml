@@ -136,23 +136,33 @@
                         </div>
 
                         <!-- Dirección de Entrega Seleccionable con Sidebar -->
-                        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+                        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25" id="cart-address-box">
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <div class="text-muted small d-flex align-items-center gap-1 fw-bold">
                                     <i class="bi bi-geo-alt-fill text-warning"></i>
                                     <span>Entregar en:</span>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-warning py-0 px-2 small" data-bs-toggle="offcanvas" data-bs-target="#address-sidebar">
+                                <button type="button" class="btn btn-sm btn-outline-warning py-0 px-2 small" data-bs-toggle="offcanvas" data-bs-target="#address-sidebar" id="btn-change-address">
                                     <i class="bi bi-pencil-square me-1"></i>Cambiar
                                 </button>
                             </div>
-                            <div class="ps-2">
+                            <div class="ps-2" id="cart-active-address-wrapper">
                                 <span class="badge bg-warning text-dark fw-bold mb-1" id="cart-active-address-label">
                                     Cargando...
                                 </span>
                                 <div class="text-light small text-truncate" id="cart-active-address-full">
                                     @Model.CurrentUser?.Direccion
                                 </div>
+                            </div>
+                            <!-- Alerta cuando no hay dirección -->
+                            <div id="cart-no-address-alert" class="alert alert-warning py-2 px-3 mt-2 mb-0 d-none small">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="bi bi-exclamation-triangle-fill text-warning fs-5"></i>
+                                    <span>No tenés una dirección seleccionada.</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-warning w-100 fw-bold" data-bs-toggle="offcanvas" data-bs-target="#address-sidebar">
+                                    <i class="bi bi-plus-circle me-1"></i>Agregar Dirección de Entrega
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -214,6 +224,24 @@
         if (confirm('¿Estás seguro de que deseas vaciar tu carrito?')) {
             await CartManager.clearCart();
             window.location.reload();
+        }
+    });
+
+    const checkoutForm = document.getElementById('cart-checkout-form');
+    checkoutForm?.addEventListener('submit', (e) => {
+        const addressId = document.getElementById('selected-address-id-input')?.value;
+        if (!addressId) {
+            e.preventDefault();
+            if (window.showToast) {
+                window.showToast('Por favor agregá o seleccioná una dirección de entrega antes de confirmar tu pedido.', 'warning');
+            } else {
+                alert('Por favor agregá o seleccioná una dirección de entrega antes de confirmar tu pedido.');
+            }
+            const offcanvasEl = document.getElementById('address-sidebar');
+            if (offcanvasEl && window.bootstrap) {
+                const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+                bsOffcanvas.show();
+            }
         }
     });
 </script>

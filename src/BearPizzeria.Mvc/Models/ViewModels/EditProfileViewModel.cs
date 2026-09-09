@@ -12,9 +12,8 @@ public class EditProfileViewModel
     [StringLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres.")]
     public string Nombre { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "La dirección de entrega es obligatoria.")]
     [StringLength(200, ErrorMessage = "La dirección no puede superar los 200 caracteres.")]
-    public string Direccion { get; set; } = string.Empty;
+    public string? Direccion { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "El número de teléfono es obligatorio.")]
     [StringLength(20, ErrorMessage = "El teléfono no puede superar los 20 caracteres.")]
