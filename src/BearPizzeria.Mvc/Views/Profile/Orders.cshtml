@@ -144,7 +144,9 @@
                                     <tr class="border-bottom border-secondary border-opacity-10">
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
-                                                <span>🍕</span>
+                                                <img src="@Url.Content(PizzaImageHelper.GetImagePath(item.PizzaNombre))" alt="@item.PizzaNombre"
+                                                     class="rounded-circle border border-secondary border-opacity-25"
+                                                     style="width: 28px; height: 28px; object-fit: cover;" />
                                                 <span class="fw-bold text-light">@item.PizzaNombre</span>
                                             </div>
                                         </td>

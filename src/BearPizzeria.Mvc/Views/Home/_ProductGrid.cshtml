@@ -13,9 +13,7 @@
         <div class="product-card" data-category="@category">
             <!-- Imagen / Preview -->
             <div class="product-card-img-wrapper">
-                <div class="display-3">
-                    🍕
-                </div>
+                <img src="@Url.Content(PizzaImageHelper.GetImagePath(pizza.Nombre))" alt="@pizza.Nombre" class="product-card-img" loading="lazy" />
                 <div class="position-absolute top-0 end-0 m-3">
                     <div class="stock-badge @stockBadgeClass">
                         <span class="stock-dot"></span>
@@ -53,6 +51,7 @@
                             data-pizza-desc="@pizza.Descripcion"
                             data-pizza-price="@pizza.Precio"
                             data-pizza-stock="@stock"
+                            data-pizza-img="@Url.Content(PizzaImageHelper.GetImagePath(pizza.Nombre))"
                             @(stock == 0 ? "disabled" : "")>
                         <i class="bi bi-sliders me-1"></i>
                         <span>@(stock == 0 ? "Agotado" : "Personalizar")</span>

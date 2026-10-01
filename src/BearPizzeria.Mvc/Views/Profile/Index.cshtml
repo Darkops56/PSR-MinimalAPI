@@ -211,8 +211,9 @@
                     <div class="d-flex flex-wrap gap-2">
                         @foreach (var item in primaryOrder.Items)
                         {
-                            <span class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25 px-2 py-1">
-                                🍕 @item.PizzaNombre (@item.Tamano) @item.Cantidad
+                            <span class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25 px-2 py-1 d-inline-flex align-items-center gap-1">
+                                <img src="@Url.Content(PizzaImageHelper.GetImagePath(item.PizzaNombre))" alt="@item.PizzaNombre" class="rounded-circle" style="width: 18px; height: 18px; object-fit: cover;" />
+                                <span>@item.PizzaNombre (@item.Tamano) @item.Cantidad</span>
                             </span>
                         }
                     </div>
@@ -292,7 +293,9 @@
                                         <tr class="border-bottom border-secondary border-opacity-10">
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <span>🍕</span>
+                                                    <img src="@Url.Content(PizzaImageHelper.GetImagePath(item.PizzaNombre))" alt="@item.PizzaNombre"
+                                                         class="rounded-circle border border-secondary border-opacity-25"
+                                                         style="width: 28px; height: 28px; object-fit: cover;" />
                                                     <span class="fw-bold text-light">@item.PizzaNombre</span>
                                                 </div>
                                             </td>

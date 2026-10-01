@@ -31,6 +31,7 @@ CREATE TABLE Pizzas (
     Nombre VARCHAR(100) NOT NULL,
     Descripcion TEXT,
     Precio DECIMAL(10,2) NOT NULL,
+    Imagen TEXT NOT NULL,
     Tamano ENUM('Personal', 'Mediana', 'Grande', 'Familiar') NOT NULL DEFAULT 'Grande',
     Stock INT NOT NULL DEFAULT 10
 );
@@ -94,9 +95,10 @@ CREATE TABLE DireccionesCliente (
 );
 
 -- Datos iniciales de pizzas
-INSERT INTO Pizzas (Nombre, Descripcion, Precio, Tamano, Stock) VALUES
-    ('Muzzarella', 'Muzzarella artesanal, aceitunas verdes seleccionadas y orégano fresco', 4500.00, 'Grande', 12),
-    ('Napolitana', 'Muzzarella, rodajas de tomate natural, ajo picado y aceitunas negras', 5000.00, 'Grande', 4),
-    ('Fugazzeta', 'Abundante muzzarella, cebolla caramelizada crujiente y orégano', 4800.00, 'Grande', 10),
-    ('Especial', 'Muzzarella, jamón cocido premium, morrón asado y aceitunas', 5500.00, 'Grande', 10),
-    ('Calabresa', 'Muzzarella, longaniza calabresa picante y toque de ají molido', 5200.00, 'Grande', 2);
+INSERT INTO Pizzas (Nombre, Descripcion, Precio, Tamano, Stock, imagen) VALUES
+    ('Muzzarella', 'Muzzarella artesanal, aceitunas verdes seleccionadas y orégano fresco', 4500.00, 'Grande', 12,'/mnt/Datos/Repos/PSR-MinimalAPI/img/pisademuzzarella.jpg'),
+    ('Napolitana', 'Muzzarella, rodajas de tomate natural, ajo picado y aceitunas negras', 5000.00, 'Grande', 4,'/mnt/Datos/Repos/PSR-MinimalAPI/img/pisanapolitana.jpg'),
+    ('Fugazzeta', 'Abundante muzzarella, cebolla caramelizada crujiente y orégano', 4800.00, 'Grande', 10,'/mnt/Datos/Repos/PSR-MinimalAPI/img/pisadefugazzeta.webp'),
+    ('Especial', 'Muzzarella, jamón cocido premium, morrón asado y aceitunas', 5500.00, 'Grande', 10,
+    '/mnt/Datos/Repos/PSR-MinimalAPI/img/pisaespecial.jpeg'),
+    ('Calabresa', 'Muzzarella, longaniza calabresa picante y toque de ají molido', 5200.00, 'Grande', 2, '/mnt/Datos/Repos/PSR-MinimalAPI/img/pisadecalabresa.webp');

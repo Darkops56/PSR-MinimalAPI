@@ -68,8 +68,8 @@ erDiagram
     }
 
     PedidoPizza {
-        int PedidoId PK FK
-        int PizzaId PK FK
+        int PedidoId PK, FK
+        int PizzaId PK, FK
         int Cantidad
         decimal PrecioUnitario
     }

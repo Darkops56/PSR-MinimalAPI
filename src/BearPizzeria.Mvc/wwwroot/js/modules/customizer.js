@@ -31,6 +31,7 @@ export class CustomizerModal {
     this.priceEl = document.getElementById('customizer-total-price');
     this.qtyDisplayEl = document.getElementById('customizer-qty');
     this.portionsTextEl = document.getElementById('customizer-portions-text');
+    this.imgEl = document.getElementById('customizer-pizza-img');
 
     this.initEvents();
   }
@@ -113,15 +114,21 @@ export class CustomizerModal {
       const desc = trigger.dataset.pizzaDesc;
       const price = parseFloat(trigger.dataset.pizzaPrice);
       const stock = parseInt(trigger.dataset.pizzaStock || '10', 10);
+      const img = trigger.dataset.pizzaImg;
 
-      this.open(id, name, desc, price, stock);
+      this.open(id, name, desc, price, stock, img);
     });
   }
 
-  open(id, name, desc, price, totalStock = 10) {
+  open(id, name, desc, price, totalStock = 10, img = null) {
     this.pizzaId = id;
     this.basePrice = price;
     this.totalStock = totalStock;
+
+    if (this.imgEl && img) {
+      this.imgEl.src = img;
+      this.imgEl.alt = name;
+    }
 
     // Restar del stock total la cantidad que el cliente ya tiene en su carrito
     const enCarrito = CartManager.getPizzaQuantityInCart(id);

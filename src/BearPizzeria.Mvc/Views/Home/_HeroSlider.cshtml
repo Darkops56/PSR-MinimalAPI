@@ -26,14 +26,17 @@
                                 data-pizza-id="@featured.Id"
                                 data-pizza-name="@featured.Nombre"
                                 data-pizza-desc="@featured.Descripcion"
-                                data-pizza-price="@featured.Precio">
+                                data-pizza-price="@featured.Precio"
+                                data-pizza-img="@Url.Content(PizzaImageHelper.GetImagePath(featured.Nombre))">
                             <i class="bi bi-sliders me-1"></i>
                             <span>Personalizar y Pedir</span>
                         </button>
                     </div>
                 </div>
-                <div class="d-none d-md-block fs-1 display-1" style="font-size: 8rem !important; opacity: 0.9;">
-                    🍕
+                <div class="d-none d-md-block text-center position-relative">
+                    <img src="@Url.Content(PizzaImageHelper.GetImagePath(featured.Nombre))" alt="@featured.Nombre"
+                         class="img-fluid rounded-circle border border-warning border-opacity-50"
+                         style="width: 240px; height: 240px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.6);" />
                 </div>
             </div>
         </div>

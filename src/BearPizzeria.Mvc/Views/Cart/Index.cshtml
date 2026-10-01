@@ -64,9 +64,9 @@
                                 
                                 <!-- Info de Pizza -->
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="fs-1 p-2 rounded-3 bg-dark border border-secondary border-opacity-25 text-center" style="width: 54px; height: 54px; display: flex; align-items: center; justify-content: center;">
-                                        🍕
-                                    </div>
+                                    <img src="@Url.Content(PizzaImageHelper.GetImagePath(item.PizzaNombre))" alt="@item.PizzaNombre"
+                                         class="rounded-3 border border-secondary border-opacity-25"
+                                         style="width: 58px; height: 58px; object-fit: cover;" />
                                     <div>
                                         <h3 class="font-display h5 text-light mb-1">@item.PizzaNombre</h3>
                                         <div class="d-flex align-items-center gap-2">
