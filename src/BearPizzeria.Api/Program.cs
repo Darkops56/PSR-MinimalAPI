@@ -10,11 +10,14 @@ using BearPizzeria.Api.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("MySQL")
-    ?? throw new InvalidOperationException("Connection string 'MySQL' not found");
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    var connectionString = builder.Configuration.GetConnectionString("MySQL")
+        ?? throw new InvalidOperationException("Connection string 'MySQL' not found");
 
-builder.Services.AddDbContext<PizzeriaDbContext>(options =>
-    options.UseMySQL(connectionString));
+    builder.Services.AddDbContext<PizzeriaDbContext>(options =>
+        options.UseMySQL(connectionString));
+}
 
 builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
 builder.Services.AddSingleton<ITokenService, TokenService>();
@@ -58,7 +61,10 @@ builder.Services.AddOpenApi(options =>
 var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
-await EnsureDatabaseSchemaAsync(app.Services, logger);
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    await EnsureDatabaseSchemaAsync(app.Services, logger);
+}
 
 app.UseCors("AllowMvcClient");
 
@@ -1091,19 +1097,8 @@ app.Run();
 // 🛠️ MÉTODOS AUXILIARES Y MULTIPLICADORES
 // ==========================================
 
-static decimal CalcularPrecioPorTamano(decimal precioBase, TamanoPizza tamano)
-{
-    var multiplicador = tamano switch
-    {
-        TamanoPizza.Personal => 0.70m,
-        TamanoPizza.Mediana => 0.85m,
-        TamanoPizza.Grande => 1.00m,
-        TamanoPizza.Familiar => 1.30m,
-        _ => 1.00m
-    };
-
-    return Math.Round(precioBase * multiplicador, 2);
-}
+static decimal CalcularPrecioPorTamano(decimal precioBase, TamanoPizza tamano) =>
+    BearPizzeria.Api.CalculosPizzeria.CalcularPrecioPorTamano(precioBase, tamano);
 
 static async Task EnsureDatabaseSchemaAsync(IServiceProvider services, ILogger logger)
 {
@@ -1174,5 +1169,27 @@ public class ErrorDetalle
     {
         Campo = campo;
         Mensaje = mensaje;
+    }
+}
+
+public partial class Program { }
+
+namespace BearPizzeria.Api
+{
+    public static class CalculosPizzeria
+    {
+        public static decimal CalcularPrecioPorTamano(decimal precioBase, TamanoPizza tamano)
+        {
+            var multiplicador = tamano switch
+            {
+                TamanoPizza.Personal => 0.70m,
+                TamanoPizza.Mediana => 0.85m,
+                TamanoPizza.Grande => 1.00m,
+                TamanoPizza.Familiar => 1.30m,
+                _ => 1.00m
+            };
+
+            return Math.Round(precioBase * multiplicador, 2);
+        }
     }
 }

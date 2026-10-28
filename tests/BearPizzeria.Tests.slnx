@@ -1,0 +1,9 @@
+<Solution>
+    <Project Path="BearPizzeria.Common.Testing/BearPizzeria.Common.Testing.csproj" />
+    <Project Path="BearPizzeria.Api.Tests/BearPizzeria.Api.Tests.csproj" />
+    <Project Path="BearPizzeria.Mvc.Tests/BearPizzeria.Mvc.Tests.csproj" />
+    <Project Path="BearPizzeria.Kitchen.Tests/BearPizzeria.Kitchen.Tests.csproj" />
+    <Project Path="BearPizzeria.Delivery.Tests/BearPizzeria.Delivery.Tests.csproj" />
+    <Project Path="BearPizzeria.Sockets.Tests/BearPizzeria.Sockets.Tests.csproj" />
+</Solution>
+

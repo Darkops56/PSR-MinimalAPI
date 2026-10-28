@@ -1,6 +1,6 @@
 using System.Net.Sockets;
 using System.Text;
-using System.Text.Json;
+using BearPizzeria.Delivery;
 
 const string Host = "localhost";
 const int Puerto = 5050;
@@ -18,7 +18,7 @@ while (true)
 
         using var stream = client.GetStream();
 
-        var identificacion = JsonSerializer.Serialize(new { Tipo = "REPARTO" }) + "\n";
+        var identificacion = DeliveryMessageProcessor.CreateHandshake();
         var idBytes = Encoding.UTF8.GetBytes(identificacion);
         await stream.WriteAsync(idBytes);
 
@@ -41,7 +41,13 @@ while (true)
 
                 if (!string.IsNullOrWhiteSpace(linea))
                 {
-                    await ProcesarMensaje(linea, stream);
+                    var respuesta = await DeliveryMessageProcessor.ProcesarMensajeAsync(linea);
+                    if (respuesta is not null)
+                    {
+                        var data = Encoding.UTF8.GetBytes(respuesta);
+                        await stream.WriteAsync(data);
+                        Console.WriteLine($"[REPARTO] Respuesta enviada al backend.\n");
+                    }
                 }
             }
 
@@ -56,50 +62,4 @@ while (true)
 
     Console.WriteLine("Reconectando en 5 segundos...");
     await Task.Delay(5000);
-}
-
-static async Task ProcesarMensaje(string mensaje, NetworkStream stream)
-{
-    try
-    {
-        using var doc = JsonDocument.Parse(mensaje);
-        var root = doc.RootElement;
-
-        if (root.TryGetProperty("TipoMensaje", out var tipoMsg))
-        {
-            var tipo = tipoMsg.GetString();
-            if (tipo == "PedidoEnViaje")
-            {
-                var pedidoId = root.GetProperty("Id").GetInt32();
-                Console.WriteLine($"========================================");
-                Console.WriteLine($"PEDIDO EN VIAJE #{pedidoId}");
-                Console.WriteLine($"========================================");
-
-                var detalle = root.GetProperty("Detalle");
-                Console.WriteLine($"Cliente: {detalle.GetProperty("Cliente").GetString()}");
-                Console.WriteLine($"Dirección: {detalle.GetProperty("Direccion").GetString()}");
-
-                Console.WriteLine($"\n[REPARTO] Pedido #{pedidoId} en camino a deliver...");
-                Console.WriteLine("[REPARTO] Conductor asignado. Viajando al domicilio...");
-                await Task.Delay(5000);
-                Console.WriteLine("[REPARTO] Pedido entregado al cliente!\n");
-
-                var respuesta = JsonSerializer.Serialize(new
-                {
-                    TipoMensaje = "ActualizarEstado",
-                    PedidoId = pedidoId,
-                    Estado = "Entregado"
-                }) + "\n";
-
-                var data = Encoding.UTF8.GetBytes(respuesta);
-                await stream.WriteAsync(data);
-
-                Console.WriteLine($"[REPARTO] Pedido #{pedidoId} marcado como 'Entregado'\n");
-            }
-        }
-    }
-    catch (JsonException ex)
-    {
-        Console.WriteLine($"Error decodificando mensaje: {ex.Message}");
-    }
 }

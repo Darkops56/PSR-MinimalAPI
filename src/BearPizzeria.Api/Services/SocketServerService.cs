@@ -12,6 +12,8 @@ namespace BearPizzeria.Api.Services;
 
 public class SocketServerService : BackgroundService
 {
+    public static Action<string>? DebugLog { get; set; }
+
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<SocketServerService> _logger;
     private readonly Channel<Pedido> _pedidoChannel = Channel.CreateUnbounded<Pedido>();
@@ -19,12 +21,23 @@ public class SocketServerService : BackgroundService
     private readonly ConcurrentDictionary<string, TcpClient> _kitchenClients = new();
     private readonly ConcurrentDictionary<string, TcpClient> _deliveryClients = new();
 
-    private const int Puerto = 5050;
+    private int _puerto = 5050;
+    private int _puertoActual = 0;
+
+    public int PuertoActual => _puertoActual > 0 ? _puertoActual : _puerto;
+    public int KitchenClientsCount => _kitchenClients.Count;
+    public int DeliveryClientsCount => _deliveryClients.Count;
 
     public SocketServerService(IServiceScopeFactory scopeFactory, ILogger<SocketServerService> logger)
+        : this(scopeFactory, logger, 5050)
+    {
+    }
+
+    public SocketServerService(IServiceScopeFactory scopeFactory, ILogger<SocketServerService> logger, int puerto)
     {
         _scopeFactory = scopeFactory;
         _logger = logger;
+        _puerto = puerto;
     }
 
     public async Task NotificarNuevoPedidoAsync(Pedido pedido)
@@ -39,14 +52,38 @@ public class SocketServerService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("SocketServer iniciado en puerto {Puerto}", Puerto);
-
-        var listener = new TcpListener(IPAddress.Any, Puerto);
-        listener.Start();
+        TcpListener? listener = null;
+        try
+        {
+            listener = new TcpListener(IPAddress.Any, _puerto);
+            listener.Start();
+            _puertoActual = ((IPEndPoint)listener.LocalEndpoint).Port;
+            _logger.LogInformation("SocketServer iniciado en puerto {Puerto}", _puertoActual);
+        }
+        catch (SocketException ex)
+        {
+            _logger.LogWarning(ex, "No se pudo iniciar el SocketServer en el puerto {Puerto}. Las notificaciones por socket continuarán en cola.", _puerto);
+        }
 
         var procesarPedidos = ProcesarPedidosChannelAsync(stoppingToken);
 
-        await AcceptClientsAsync(listener, stoppingToken);
+        if (listener is not null)
+        {
+            try
+            {
+                await AcceptClientsAsync(listener, stoppingToken);
+            }
+            finally
+            {
+                try
+                {
+                    listener.Stop();
+                }
+                catch
+                {
+                }
+            }
+        }
 
         await procesarPedidos;
     }
@@ -64,6 +101,10 @@ public class SocketServerService : BackgroundService
             {
                 break;
             }
+            catch (SocketException) when (stoppingToken.IsCancellationRequested)
+            {
+                break;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error aceptando conexión");
@@ -76,6 +117,7 @@ public class SocketServerService : BackgroundService
         var remoteEndPoint = client.Client.RemoteEndPoint?.ToString() ?? "desconocido";
         var clientId = $"{remoteEndPoint}";
         _logger.LogInformation("Cliente conectado: {ClientId}", clientId);
+        DebugLog?.Invoke($"Cliente conectado: {clientId}");
 
         try
         {
@@ -87,6 +129,7 @@ public class SocketServerService : BackgroundService
             while (!stoppingToken.IsCancellationRequested)
             {
                 var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, stoppingToken);
+                DebugLog?.Invoke($"Bytes leidos de {clientId}: {bytesRead}");
                 if (bytesRead == 0) break;
 
                 mensajeParcial.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
@@ -95,11 +138,12 @@ public class SocketServerService : BackgroundService
                 while (mensajeCompleto.Contains('\n'))
                 {
                     var idx = mensajeCompleto.IndexOf('\n');
-                    var linea = mensajeCompleto[..idx];
+                    var linea = mensajeCompleto[..idx].Trim().Trim('\uFEFF');
                     mensajeCompleto = mensajeCompleto[(idx + 1)..];
 
                     if (!string.IsNullOrWhiteSpace(linea))
                     {
+                        DebugLog?.Invoke($"Procesando linea: '{linea}'");
                         registrado = await ProcesarMensajeAsync(linea, client, stream, stoppingToken) || registrado;
                     }
                 }
@@ -111,15 +155,17 @@ public class SocketServerService : BackgroundService
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
             _logger.LogWarning(ex, "Cliente desconectado: {ClientId}", clientId);
+            DebugLog?.Invoke($"Exception en HandleClient: {ex.Message}");
         }
         finally
         {
+            DebugLog?.Invoke($"Finally RemoverCliente: {clientId}");
             RemoverCliente(client);
             client.Close();
         }
     }
 
-    private void RemoverCliente(TcpClient client)
+    internal void RemoverCliente(TcpClient client)
     {
         try
         {
@@ -144,7 +190,7 @@ public class SocketServerService : BackgroundService
         }
     }
 
-    private async Task<bool> ProcesarMensajeAsync(string mensaje, TcpClient client, NetworkStream stream, CancellationToken stoppingToken)
+    internal async Task<bool> ProcesarMensajeAsync(string mensaje, TcpClient client, NetworkStream? stream, CancellationToken stoppingToken)
     {
         try
         {
@@ -218,40 +264,47 @@ public class SocketServerService : BackgroundService
 
     private async Task ProcesarPedidosChannelAsync(CancellationToken stoppingToken)
     {
-        await foreach (var pedido in _pedidoChannel.Reader.ReadAllAsync(stoppingToken))
+        try
         {
-            using var scope = _scopeFactory.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<PizzeriaDbContext>();
-
-            var pedidoCompleto = await db.Pedidos
-                .Include(p => p.Cliente)
-                .Include(p => p.PedidoPizzas)
-                    .ThenInclude(pp => pp.Pizza)
-                .FirstOrDefaultAsync(p => p.Id == pedido.Id, stoppingToken);
-
-            if (pedidoCompleto is null) continue;
-
-            var mensaje = JsonSerializer.Serialize(new
+            await foreach (var pedido in _pedidoChannel.Reader.ReadAllAsync(stoppingToken))
             {
-                TipoMensaje = "NuevoPedido",
-                pedidoCompleto.Id,
-                Detalle = new
-                {
-                    Cliente = pedidoCompleto.Cliente.Nombre,
-                    Direccion = !string.IsNullOrWhiteSpace(pedidoCompleto.DireccionEntrega) ? pedidoCompleto.DireccionEntrega : pedidoCompleto.Cliente.Direccion,
-                    Items = pedidoCompleto.PedidoPizzas.Select(pp => new
-                    {
-                        Pizza = pp.Pizza.Nombre,
-                        Tamano = pp.Tamano.ToString(),
-                        pp.Cantidad,
-                        pp.PrecioUnitario,
-                        pp.Subtotal
-                    }),
-                    Total = pedidoCompleto.Total
-                }
-            });
+                using var scope = _scopeFactory.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<PizzeriaDbContext>();
 
-            await EnviarATodosAsync(_kitchenClients, mensaje, stoppingToken);
+                var pedidoCompleto = await db.Pedidos
+                    .Include(p => p.Cliente)
+                    .Include(p => p.PedidoPizzas)
+                        .ThenInclude(pp => pp.Pizza)
+                    .FirstOrDefaultAsync(p => p.Id == pedido.Id, stoppingToken);
+
+                if (pedidoCompleto is null) continue;
+
+                var mensaje = JsonSerializer.Serialize(new
+                {
+                    TipoMensaje = "NuevoPedido",
+                    pedidoCompleto.Id,
+                    Detalle = new
+                    {
+                        Cliente = pedidoCompleto.Cliente.Nombre,
+                        Direccion = !string.IsNullOrWhiteSpace(pedidoCompleto.DireccionEntrega) ? pedidoCompleto.DireccionEntrega : pedidoCompleto.Cliente.Direccion,
+                        Items = pedidoCompleto.PedidoPizzas.Select(pp => new
+                        {
+                            Pizza = pp.Pizza.Nombre,
+                            Tamano = pp.Tamano.ToString(),
+                            pp.Cantidad,
+                            pp.PrecioUnitario,
+                            pp.Subtotal
+                        }),
+                        Total = pedidoCompleto.Total
+                    }
+                });
+
+                await EnviarATodosAsync(_kitchenClients, mensaje, stoppingToken);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Apagado normal del servicio
         }
     }
 
