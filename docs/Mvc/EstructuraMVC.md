@@ -9,7 +9,7 @@ Su propósito es responder detalladamente el ciclo completo de cada solicitud we
 
 ## 1. Arquitectura General y Topología de Red
 
-El ecosistema **BearPizzeria** opera con una topología de microservicios y clientes desacoplados en .NET 9:
+El ecosistema **BearPizzeria** opera con una topología de microservicios y clientes desacoplados en .NET 10:
 
 ```mermaid
 flowchart TD

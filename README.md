@@ -96,15 +96,24 @@ PSR-MinimalAPI/
 │   ├── DiagramaDeCasosDeUso.md        ← Relevamiento, RFs, Casos de Uso UML y Trazabilidad
 │   ├── DiagramaDeClases.md            ← Modelo estructural de Clases UML y multiplicidades
 │   ├── AutenticacionHibrida.md        ← Flujo y arquitectura de Cookies HttpOnly + JWT
-│   └── Mvc/
-│       ├── EstructuraMVC.md           ← Desglose URL por URL del Frontend MVC y JS
-│       └── Layout.md                  ← Arquitectura visual y componentes Razor
+│   ├── Mvc/
+│   │   ├── EstructuraMVC.md           ← Desglose URL por URL del Frontend MVC y JS
+│   │   └── Layout.md                  ← Arquitectura visual y componentes Razor
+│   └── old/                           ← Documentación histórica de etapas anteriores
 ├── src/
 │   ├── BearPizzeria.slnx              ← Solución .NET 10
 │   ├── BearPizzeria.Api/              ← Backend Minimal API + EF Core + Servidor Sockets TCP (:5250 / :5050)
 │   ├── BearPizzeria.Mvc/              ← Frontend Web ASP.NET Core MVC + Razor + ES6 Modules (:5082)
 │   ├── BearPizzeria.Kitchen/          ← Worker Consola C# — Cocina Automatizada (Cliente TCP :5050)
 │   └── BearPizzeria.Delivery/         ← Worker Consola C# — Reparto Automatizado (Cliente TCP :5050)
+├── tests/
+│   ├── BearPizzeria.Tests.slnx        ← Solución de pruebas automatizadas
+│   ├── BearPizzeria.Api.Tests/        ← Pruebas de integración, servicios y validadores de la API
+│   ├── BearPizzeria.Mvc.Tests/        ← Pruebas de controladores, servicios y helpers MVC
+│   ├── BearPizzeria.Kitchen.Tests/    ← Pruebas del procesador de mensajes de Cocina
+│   ├── BearPizzeria.Delivery.Tests/   ← Pruebas del procesador de mensajes de Reparto
+│   ├── BearPizzeria.Sockets.Tests/    ← Pruebas de integración del servidor de sockets TCP
+│   └── BearPizzeria.Common.Testing/   ← Infraestructura compartida de testing (factories y mocks)
 ├── apuntes/                           ← Material teórico de cátedra (Modelado UML, Casos de Uso y Clases)
 ├── script.sql                         ← Script DDL y Seed inicial de Base de Datos MySQL (5to_Todos)
 └── README.md                          ← Guía general del recorrido del pedido y puesta en marcha
@@ -173,6 +182,13 @@ dotnet run --project src/BearPizzeria.Delivery
 dotnet run --project src/BearPizzeria.Mvc
 ```
 * Abrir en el navegador: **`http://localhost:5082`**
+
+### 4. Ejecutar Pruebas Automatizadas (`tests/`)
+Para correr toda la suite de tests unitarios y de integración:
+
+```bash
+dotnet test tests/BearPizzeria.Tests.slnx
+```
 
 ---
 

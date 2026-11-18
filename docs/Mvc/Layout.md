@@ -34,9 +34,10 @@ Al habilitar endpoints HTTP REST para la comunicación entre el frontend ASP.NET
 │ Tablas:                │      │ 👨‍🍳 Cocina Automatizada│
 │ • Clientes             │      │  (BearPizzeria.Kitchen)│
 │ • Usuarios             │      │                        │
-│ • Pizzas               │      │ 🛵 Reparto             │
-│ • Carritos             │      │  (BearPizzeria.Delivery)│
-│ • CarritoItems         │      └────────────────────────┘
+│ • DireccionesCliente   │      │ 🛵 Reparto             │
+│ • Pizzas               │      │  (BearPizzeria.Delivery)│
+│ • Carritos             │      └────────────────────────┘
+│ • CarritoItems         │
 │ • Pedidos & PedidoPizzas│
 └────────────────────────┘
 ```
@@ -104,15 +105,27 @@ src/BearPizzeria.Mvc/
 │   └── ProfileController.cs     # Perfil, Historial y StatusTracker en vivo
 ├── Models/
 │   ├── ViewModels/
-│   │   ├── HomeViewModel.cs
+│   │   ├── AuthViewModels.cs
 │   │   ├── CartViewModel.cs
-│   │   ├── ProfileViewModel.cs
-│   │   └── AuthViewModels.cs
-│   └── DTOs/
-│       └── ApiDTOs.cs
+│   │   ├── EditProfileViewModel.cs
+│   │   ├── HomeViewModel.cs
+│   │   ├── OrdersViewModel.cs
+│   │   └── ProfileViewModel.cs
+│   ├── DTOs/
+│   │   ├── ActualizarClienteDto.cs
+│   │   └── ApiDTOs.cs
+│   └── ErrorViewModel.cs
 ├── Services/
-│   ├── IBearApiClient.cs        # Cliente HTTP tipado hacia la Minimal API
-│   └── BearApiClient.cs
+│   ├── Interfaces/              # Interfaces desacopladas por dominio
+│   │   ├── ICarritoApiService.cs
+│   │   ├── IPedidoApiService.cs
+│   │   ├── IPizzaApiService.cs
+│   │   └── IUsuarioApiService.cs
+│   └── Api/                     # Implementaciones HttpClient tipadas
+│       ├── CarritoApiService.cs
+│       ├── PedidoApiService.cs
+│       ├── PizzaApiService.cs
+│       └── UsuarioApiService.cs
 ├── Views/
 │   ├── Shared/
 │   │   ├── _Layout.cshtml              # Layout maestro Dark Mode
@@ -120,8 +133,10 @@ src/BearPizzeria.Mvc/
 │   │   ├── _Footer.cshtml              # Footer informativo con red de puertos
 │   │   ├── _HamburgerDrawer.cshtml     # Menú lateral móvil
 │   │   ├── _MobileBottomNav.cshtml     # Barra inferior de acceso rápido
+│   │   ├── _AddressSidebar.cshtml      # Panel lateral de gestión de direcciones
 │   │   ├── _CustomizerModal.cshtml     # Modal táctil de personalización de pizzas
 │   │   ├── _AuthGuardModal.cshtml      # Modal de intercepción de invitados
+│   │   ├── _RepeatOrderStockModal.cshtml # Modal de stock al repetir pedido
 │   │   └── _ToastNotifications.cshtml  # Notificaciones flotantes
 │   ├── Home/
 │   │   ├── Index.cshtml                # Home
@@ -131,7 +146,9 @@ src/BearPizzeria.Mvc/
 │   ├── Cart/
 │   │   └── Index.cshtml                # Pantalla completa de carrito y checkout
 │   ├── Profile/
-│   │   └── Index.cshtml                # Historial de pedidos + Widget de Tracking en vivo
+│   │   ├── Index.cshtml                # Perfil del usuario
+│   │   ├── Orders.cshtml               # Historial de pedidos
+│   │   └── Trackers.cshtml             # Tracking en vivo de pedidos activos
 │   └── Auth/
 │       ├── Login.cshtml
 │       └── Register.cshtml
@@ -140,14 +157,19 @@ src/BearPizzeria.Mvc/
     │   ├── tokens.css                  # Tokens del sistema de diseño
     │   ├── layout.css                  # Estructura base, grid, header, drawer, bottom nav
     │   ├── components.css              # Cards, badges, sliders, modales, tracker
-    │   └── animations.css              # Keyframes, transiciones y micro-interacciones
+    │   ├── animations.css              # Keyframes, transiciones y micro-interacciones
+    │   └── site.css
     └── js/
         ├── app.js                      # Inicializador principal y orquestador
+        ├── site.js
         └── modules/
+            ├── addressDrawer.js        # Control del panel lateral de direcciones
+            ├── addresses.js            # Gestión CRUD de direcciones del cliente
             ├── api.js                  # Cliente fetch aislado hacia BearPizzeria.Api
             ├── auth.js                 # Manejo de identidad y sesión
             ├── cart.js                 # Manejador del carrito persistido en BD
             ├── customizer.js           # Lógica modal de personalización y tamaños
+            ├── repeatOrderModal.js     # Lógica del modal de repetir pedido
             ├── tracker.js              # Polling y actualización del StatusTracker
             └── ui.js                   # Control de Drawer, modales, toasts y filtros
 ```
